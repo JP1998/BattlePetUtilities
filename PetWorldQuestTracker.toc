@@ -1,0 +1,13 @@
+## Author: Luckyowl-Stormrage (https://www.github.com/JP1998)
+## Interface: 90002
+## Title: Battle Pet World Quest Tracker
+## Name: Battle Pet World Quest Tracker
+## SavedVariables: BattlePetWorldQuestSettings
+## Notes: Addon for tracking completion of currently active battle pet world quests on your characters.
+## Version: 1.0.0
+src/base.lua
+locales/enUS.lua
+locales/enGB.lua
+locales/deDE.lua
+Settings.lua
+BattlePetWorldQuestTracker.lua
