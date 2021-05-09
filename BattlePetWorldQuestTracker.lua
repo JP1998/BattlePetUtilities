@@ -17,6 +17,7 @@ app:RegisterEvent("QUEST_LOG_UPDATE");
 app:RegisterEvent("MAIL_SHOW");
 app:RegisterEvent("SEND_MAIL_SUCCESS");
 app:RegisterEvent("SEND_MAIL_FAILED");
+app:RegisterEvent("VARIABLES_LOADED");
 
 app.events.QUEST_LOG_UPDATE = function(...)
     app.print("Quest log has updated.");
@@ -29,4 +30,8 @@ app.events.SEND_MAIL_SUCCESS = function(...)
 end
 app.events.SEND_MAIL_FAILED = function(...)
     app.print("You tried to send mail, which failed.");
+end
+app.events.VARIABLES_LOADED = function()
+    app.Version = GetAddOnMetadata("Battle Pet World Quest Tracker", "Version");
+    app.Settings:Initialize();
 end
