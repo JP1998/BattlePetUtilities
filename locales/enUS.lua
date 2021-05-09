@@ -3,6 +3,8 @@ local name, app = ...;
 app.L = {
     ["TITLE"] = "|cFFD13653Battle Pet World Quest Tracker|r";
 
+    ["ERROR_UNKNOWN_COMMAND"] = "Unknown command: '%s'. Type '/bpwqt help' for some help.";
+
     --[[
         Settings strings
     ]]

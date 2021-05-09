@@ -11,6 +11,20 @@ SLASH_BattlePetWorldQuestTracker2 = "/battlepetwqtracker";
 SLASH_BattlePetWorldQuestTracker3 = "/bpwqt";
 SlashCmdList["BattlePetWorldQuestTracker"] = function(cmd)
     app.print("You typed '/bpwqt' or something similar.");
+    if cmd then
+        cmd = string.lower(cmd);
+        if cmd == "" or cmd == "main" then
+            -- TODO: Open the WQ tracker frame (NYI)
+        elseif cmd == "op" or cmd == "option" or cmd == "options" then
+            app.Settings:Open();
+        elseif cmd == "help" then
+            -- TODO: Print help
+        else
+            app.print(string.format(L["ERROR_UNKNOWN_COMMAND"], cmd));
+        end
+    else
+        -- TODO: Open the WQ tracker frame (NYI)
+    end
 end
 
 app:RegisterEvent("QUEST_LOG_UPDATE");

@@ -153,11 +153,34 @@ settings.Get = function(self, category, option)
         return BattlePetWorldQuestSettings and BattlePetWorldQuestSettings[category][option];
     end
 end
+settings.GetMailerItem = function(self, itemId)
+    return BattlePetWorldQuestSettings and BattlePetWorldQuestSettings["MailerOptions"]["Items"][itemId];
+end
+settings.GetWorldQuestTrackerItem = function(self, itemId)
+    return BattlePetWorldQuestSettings and BattlePetWorldQuestSettings["WorldQuestTrackerOptions"]["Items"][itemId];
+end
 settings.Set = function(self, category, option, value)
-    -- TODO: Add logic for settings a value
+    if category == "MailerOptions" and option == "Character" then
+        local _, realm = UnitName("player");
+        realm = realm or GetRealmName();
+
+        if BattlePetWorldQuestSettings then
+            BattlePetWorldQuestSettings[category][option][realm] = value;
+        end
+    else
+        BattlePetWorldQuestSettings[category][option] = value;
+    end
 
     self:Refresh();
 end
+settings.SetMailerItem = function(self, itemId, value) {
+    BattlePetWorldQuestSettings["MailerOptions"]["Items"][itemId] = value;
+    self:Refresh();
+}
+settings.SetWorldQuestTrackerItem = function(self, itemId, value) {
+    BattlePetWorldQuestSettings["WorldQuestTrackerOptions"]["Items"][itemId] = value;
+    self:Refresh();
+}
 settings.Refresh = function(self)
     for i,tab in ipairs(self.Tabs) do
         if tab.OnRefresh then
