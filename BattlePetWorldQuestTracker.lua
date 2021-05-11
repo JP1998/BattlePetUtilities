@@ -6,6 +6,10 @@ app.print = function(self, ...)
     print("[", L["TITLE"], "]: ", ...);
 end
 
+function app:UpdateWorldQuestDisplay()
+    app.print("Updated your world quest display :)");
+end
+
 SLASH_BattlePetWorldQuestTracker1 = "/battlepetworldquesttracker";
 SLASH_BattlePetWorldQuestTracker2 = "/battlepetwqtracker";
 SLASH_BattlePetWorldQuestTracker3 = "/bpwqt";
