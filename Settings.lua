@@ -99,7 +99,7 @@ local function DeepCopy(t)
     if type(t) == "table" then
         local copy = {};
 
-        for k,v in pairs(t) do
+        for k,v in ipairs(t) do
             copy[k] = DeepCopy(v);
         end
 
@@ -194,3 +194,273 @@ settings.Refresh = function(self)
         end
     end
 end
+settings.CreateCheckBox = function(self, text, OnRefresh, OnClick)
+    local cb = CreateFrame("CheckButton", self:GetName() .. "-" .. text, self, "InterfaceOptionsCheckButtonTemplate");
+
+    table.insert(self.MostRecentTab.objects, cb);
+
+    cb:SetScript("OnClick", OnClick);
+    cb.OnRefresh = OnRefresh;
+    cb.Text:SetText(text);
+    cb:SetHitRectInsets(0,0 - cb.Text:GetWidth(),0,0);
+
+    return cb;
+end
+settings.CreateTab = function(self, text)
+    local id = #self.Tabs + 1;
+    local tab = CreateFrame("Button", self:GetName() .. "-Tab" .. id, self, "OptionsFrameTabButtonTemplate");
+
+    if id > 1 then
+        tab:SetPoint("TOPLEFT", self.Tabs[id - 1], "TOPRIGHT", 0, 0);
+    end
+
+    table.insert(self.Tabs, tab);
+    self.MostRecentTab = tab;
+
+    tab.objects = {};
+    tab:SetID(id);
+    tab:SetText(text);
+
+    PanelTemplates_TabResize(tab, 0);
+    tab:SetScript("OnClick", OnClickForTab);
+
+    return tab;
+end
+
+local f = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+f:SetPoint("TOPLEFT", settings, "TOPLEFT", 12, -12);
+f:SetJustifyH("LEFT");
+f:SetText(L["TITLE"]);
+f:SetScale(1.5);
+f:Show();
+settings.title = f;
+
+f = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+f:SetPoint("TOPRIGHT", settings, "TOPRIGHT", -12, -12);
+f:SetJustifyH("RIGHT");
+f:SetText("v" .. GetAddOnMetadata("Battle Pet World Quest Tracker", "Version"));
+f:Show();
+settings.version = f;
+
+--[[
+    The World Quest Tracker Tab
+]]
+local line;
+(function()
+    local tab = settings:CreateTab(L["OPTIONS_WORLDQUESTTRACKER_HEADER"]);
+    tab:SetPoint("TOPLEFT", settings.title, "BOTTOMLEFT", 16, -8);
+
+    line = settings:CreateTexture(nil, "ARTWORK");
+    line:SetPoint("LEFT", settings, "LEFT", 4, 0);
+    line:SetPoint("RIGHT", settings, "RIGHT", -4, 0);
+    line:SetPoint("TOP", settings.Tabs[1], "BOTTOM", 0, 0);
+    line:SetColorTexture(1, 1, 1, 0.4);
+    line:SetHeight(2);
+
+    local HeaderLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    HeaderLabel:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 8, -8);
+    HeaderLabel:SetJustifyH("LEFT");
+    HeaderLabel:Show();
+    HeaderLabel:SetText(L["OPTIONS_WORLDQUESTTRACKER_HEADER"]);
+    table.insert(settings.MostRecentTab.objects, HeaderLabel);
+
+    local ShowNoItemCheckBox = settings:CreateCheckBox(L["OPTIONS_WORLDQUESTTRACKER_SHOW_NO_ITEM"],
+    function(self) -- OnRefresh
+        self:SetChecked(settings:Get("WorldQuestTrackerOptions", "ShowNoItem"));
+    end,
+    function(self) -- OnClick
+        settings:Set("WorldQuestTrackerOptions", "ShowNoItem", self:GetChecked());
+    end);
+    ShowNoItemCheckBox:SetPoint("TOPLEFT", HeaderLabel, "BOTTOMLEFT", 0, -1);
+
+    local ShowUnknownItemCheckBox = settings:CreateCheckBox(L["OPTIONS_WORLDQUESTTRACKER_SHOW_UNKNOWN_ITEM"],
+    function(self) -- OnRefresh
+        self:SetChecked(settings:Get("WorldQuestTrackerOptions", "ShowUnknownItem"));
+    end,
+    function(self) -- OnClick
+        settings:Set("WorldQuestTrackerOptions", "ShowUnknownItem", self:GetChecked());
+    end);
+    ShowUnknownItemCheckBox:SetPoint("TOPLEFT", ShowNoItemCheckBox, "BOTTOMLEFT", 0, 4);
+
+    local PrintUnknownItemCheckBox = settings:CreateCheckBox(L["OPTIONS_WORLDQUESTTRACKER_PRINT_UNKNOWN_ITEM"],
+    function(self) -- OnRefresh
+        self:SetChecked(settings:Get("WorldQuestTrackerOptions", "PrintUnknownItem"));
+    end,
+    function(self) -- OnClick
+        settings:Set("WorldQuestTrackerOptions", "PrintUnknownItem", self:GetChecked());
+    end);
+    PrintUnknownItemCheckBox:SetPoint("TOPLEFT", ShowUnknownItemCheckBox, "BOTTOMLEFT", 0, 4);
+
+    local ItemLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    ItemLabel:SetPoint("TOPLEFT", PrintUnknownItem, "BOTTOMLEFT", 0, -6);
+    ItemLabel:SetJustifyH("LEFT");
+    ItemLabel:SetText(L["OPTIONS_WORLDQUESTTRACKER_ITEMS_HEADER"]);
+    ItemLabel:Show();
+    table.insert(settings.MostRecentTab.objects, ItemLabel);
+
+    (function(relativeTo, labelOffset, checkBoxOffset, horizontalOffset, data)
+        local y = 0;
+        local nextY = 0;
+
+        for group=1,#data do
+            local label = settings:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
+            label:SetPoint("TOPLEFT", relativeTo, "BOTTOMLEFT", 0, y + labelOffset);
+            label:SetJustifyH("LEFT");
+            label:SetText(data[group]["Title"]);
+            label:Show();
+            table.insert(settings.MostRecentTab.objects, label);
+
+            y = y + label:GetHeight() + labelOffset;
+
+            for item=1,#data[group]["Items"] do
+                local checkbox = settings:CreateCheckBox(
+                    data[group]["Items"][item]["Name"],
+                    function(self) -- OnRefresh
+                        self:SetChecked(settings:GetWorldQuestTrackerItem(data[group]["Item"][item]["ItemId"]));
+                    end,
+                    function(self) -- OnClick
+                        settings:SetWorldQuestTrackerItem(data[group]["Item"][item]["ItemId"], self:GetChecked());
+                    end);
+
+                if item % 2 == 1 then
+                    checkbox:SetPoint("TOPLEFT", relativeTo, "BOTTOMLEFT", 0, y + checkBoxOffset);
+                    nextY = y + checkbox:GetHeight() + checkBoxOffset;
+                else
+                    checkbox:SetPoint("TOPLEFT", relativeTo, "BOTTOMLEFT", horizontalOffset, y + checkBoxOffset);
+                    y = nextY;
+                end
+            end
+
+            y = nextY;
+        end
+    end)(ItemLabel, -6, 4, 220, {
+        {   -- General Items
+            ["Title"] = L["OPTIONS_ITEM_GENERAL_HEADER"],
+            ["Items"] = {
+                {
+                    ["Name"] = L["OPTIONS_ITEM_BATTLE_PET_BANDAGE"],
+                    ["ItemId"] = 86143
+                } -- [1]
+            }
+        }, -- [1]
+        {   -- Pet Charms
+            ["Title"] = L["OPTIONS_ITEM_PETCHARMS_HEADER"],
+            ["Items"] = {
+                {
+                    ["Name"] = L["OPTIONS_ITEM_POLISHED_PET_CHARM"],
+                    ["ItemId"] = 163036
+                }, -- [1]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_SHINY_PET_CHARM"],
+                    ["ItemId"] = 116415
+                } -- [2]
+            }
+        }, -- [2]
+        {   -- General Battle-Stones
+            ["Title"] = L["OPTIONS_ITEM_GENERAL_BATTLESTONES_HEADER"],
+            ["Items"] = {
+                {
+                    ["Name"] = L["OPTIONS_ITEM_ULTIMATE_BATTLE_TRAINING_STONE"],
+                    ["ItemId"] = 163036
+                }, -- [1]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_MARKED_FLAWLESS_BATTLE_STONE"],
+                    ["ItemId"] = 163036
+                }, -- [2]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FELTOUCHED_BATTLE_TRAINING_STONE"],
+                    ["ItemId"] = 163036
+                }, -- [3]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FLAWLESS_BATTLE_TRAINING_STONE"],
+                    ["ItemId"] = 116415
+                } -- [4]
+            }
+        }, -- [3]
+        {   -- Family Battle-Stones
+            ["Title"] = L["OPTIONS_ITEM_FAMILY_BATTLESTONES_HEADER"],
+            ["Items"] = {
+                {
+                    ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [1]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [2]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [3]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [4]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [5]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [6]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [7]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [8]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [9]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [10]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [11]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [12]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [13]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [14]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [15]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [16]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [17]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
+                    ["ItemId"] = 163036
+                }, -- [18]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FELTOUCHED_BATTLE_TRAINING_STONE"],
+                    ["ItemId"] = 163036
+                }, -- [19]
+                {
+                    ["Name"] = L["OPTIONS_ITEM_FLAWLESS_BATTLE_TRAINING_STONE"],
+                    ["ItemId"] = 116415
+                } -- [20]
+            }
+        } -- [4]
+    });
+end)();
