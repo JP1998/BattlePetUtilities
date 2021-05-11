@@ -174,16 +174,16 @@ settings.Set = function(self, category, option, value)
     self:Refresh();
     app:UpdateWorldQuestDisplay();
 end
-settings.SetMailerItem = function(self, itemId, value) {
+settings.SetMailerItem = function(self, itemId, value)
     BattlePetWorldQuestSettings["MailerOptions"]["Items"][itemId] = value;
     self:Refresh();
-}
-settings.SetWorldQuestTrackerItem = function(self, itemId, value) {
+end
+settings.SetWorldQuestTrackerItem = function(self, itemId, value)
     BattlePetWorldQuestSettings["WorldQuestTrackerOptions"]["Items"][itemId] = value;
 
     self:Refresh();
     app:UpdateWorldQuestDisplay();
-}
+end
 settings.Refresh = function(self)
     for i,tab in ipairs(self.Tabs) do
         if tab.OnRefresh then
