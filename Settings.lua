@@ -95,19 +95,6 @@ local SettingsBase = {
         }
     }
 };
-local function DeepCopy(t)
-    if type(t) == "table" then
-        local copy = {};
-
-        for k,v in ipairs(t) do
-            copy[k] = DeepCopy(v);
-        end
-
-        return copy;
-    else
-        return t;
-    end
-end
 local OnClickForTab = function(self)
     local id = self:GetID();
     local parent = self:GetParent();
@@ -129,7 +116,7 @@ settings.Initialize = function(self)
     PanelTemplates_SetNumTabs(self, #self.Tabs);
 
     if not BattlePetWorldQuestSettings then
-        BattlePetWorldQuestSettings = DeepCopy(SettingsBase);
+        BattlePetWorldQuestSettings = CopyTable(SettingsBase);
     end
 
     OnClickForTab(self.Tabs[1]);
