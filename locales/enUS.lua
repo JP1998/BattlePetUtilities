@@ -58,4 +58,15 @@ app.L = {
     ["OPTIONS_ITEM_FBS_UNDEAD"] = "Flawless Undead Battle-Stone";
     ["OPTIONS_ITEM_BTS_AQUATIC"] = "Aquatic Battle-Training Stone";
     ["OPTIONS_ITEM_FBS_AQUATIC"] = "Flawless Aquatic Battle-Stone";
+
+    --[[
+        Feature Strings
+    ]]
+
+    -- Item Mailer Strings
+    ["MAILER_SUBJECT"] = "Your Battle Pet Care Package has arrived!";
+    ["MAILER_BODY"] = "I hope you will enjoy it. :)";
+
+    ["MAILER_SENT"] = "We sent your items away. %s/%s";
+    ["MAILER_ABORT"] = "We had to abort sending your items.";
 };

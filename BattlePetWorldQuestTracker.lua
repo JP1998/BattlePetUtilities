@@ -17,7 +17,7 @@ SLASH_BattlePetWorldQuestTracker1 = "/battlepetworldquesttracker";
 SLASH_BattlePetWorldQuestTracker2 = "/battlepetwqtracker";
 SLASH_BattlePetWorldQuestTracker3 = "/bpwqt";
 SlashCmdList["BattlePetWorldQuestTracker"] = function(cmd)
-    app.print("You typed '/bpwqt' or something similar.");
+    app:print("You typed '/bpwqt' or something similar.");
     if cmd then
         cmd = string.lower(cmd);
         if cmd == "" or cmd == "main" then
@@ -51,14 +51,18 @@ end
 app.Mailer.SendMail = function(self, last)
     self.SentMailCount = self.SentMailCount or 0;
 
-    -- TODO: Check if a character is defined
-    -- TODO: Actually send the mail
-    if last then
-        app:print(string.format("We sent your items away. %d/%d", self.SentMailCount + 1,  self.SentMailCount + 1));
-        self.SentMailCount = 0;
+    if GetMoney() >= GetSendMailPrice() then
+        SendMail(app.Settings:Get("MailerOptions", "Character"), L["MAILER_SUBJECT"], L["MAILER_BODY"]);
+
+        if last then
+            app:print(string.format(L["MAILER_SENT"], self.SentMailCount + 1,  self.SentMailCount + 1));
+            self.SentMailCount = 0;
+        else
+            self.SentMailCount = self.SentMailCount + 1;
+            app:print(string.format(L["MAILER_SENT"], self.SentMailCount, "?"));
+        end
     else
-        self.SentMailCount = self.SentMailCount + 1;
-        app:print(string.format("We sent your items away. %d/?", self.SentMailCount));
+
     end
 end
 app.Mailer.ScanBags = function(self)
@@ -103,7 +107,7 @@ app.Mailer.ScanBags = function(self)
 end
 app.Mailer.ResetScanner = function(self)
     if self.Continuation then
-        app:print("We had to abort sending your items.");
+        app:print(L["MAILER_ABORT"]);
     end
 
     self.Continuation = nil;
@@ -139,21 +143,21 @@ app.events.QUEST_LOG_UPDATE = function(...)
     app:print("Quest log has updated.");
 end
 app.events.MAIL_SHOW = function(...)
-    app:print("You opened your mail.");
+    app:print("You opened your mail."); -- TODO: Remove or add DEBUG condition
 
     if app.Mailer:Enabled() then
         app.Mailer:ScanBags();
     end
 end
 app.events.SEND_MAIL_SUCCESS = function(...)
-    app:print("You successfully sent mail.");
+    app:print("You successfully sent mail."); -- TODO: Remove or add DEBUG condition
 
     if app.Mailer:Enabled() and app.Mailer.Continuation then
         app.Mailer:ScanBags();
     end
 end
 app.events.SEND_MAIL_FAILED = function(...)
-    app:print("You tried to send mail, which failed.");
+    app:print("You tried to send mail, which failed."); -- TODO: Remove or add DEBUG condition
 
     if app.Mailer:Enabled() then
         app.Mailer:ResetScanner();
