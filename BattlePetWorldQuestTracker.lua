@@ -10,6 +10,8 @@ function app.UpdateWorldQuestDisplay(self)
     app.print("Updated your world quest display :)");
 end
 
+local MAX_NUM_MAIL_ITEMS = 12;
+
 SLASH_BattlePetWorldQuestTracker1 = "/battlepetworldquesttracker";
 SLASH_BattlePetWorldQuestTracker2 = "/battlepetwqtracker";
 SLASH_BattlePetWorldQuestTracker3 = "/bpwqt";
@@ -72,15 +74,15 @@ app.Mailer.ScanBags = function(self)
             if itemId ~= nil and self:IsItemToBeMailed(itemId) then
                 items = items + 1;
 
-                PickupContainerItem(bag, slot);
-                ClickSendMailItemButton(items);
-
-                if items == 12 then -- TODO: Keep searching and only indicating another search once we find a 13th item
+                if items > MAX_NUM_MAIL_ITEMS then
                     self:SendMail(false);
                     self.Continuation = {
                         ["StartBag"] = bag,
-                        ["StartSlot"] = slot + 1
+                        ["StartSlot"] = slot
                     };
+                else
+                    PickupContainerItem(bag, slot);
+                    ClickSendMailItemButton(items);
                 end
             end
         end
