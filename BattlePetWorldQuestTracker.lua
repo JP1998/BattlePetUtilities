@@ -6,11 +6,12 @@ app.print = function(self, ...)
     print("[", L["TITLE"], "]: ", ...);
 end
 
-function app.UpdateWorldQuestDisplay(self)
-    app.print("Updated your world quest display :)");
+string.trim = function(str)
+    return (string.gsub(str, "^%s*(.-)%s*$", "%1"));
 end
 
 local MAX_NUM_MAIL_ITEMS = 12;
+local MIN_CHARACTER_NAME_LENGTH = 3;
 
 SLASH_BattlePetWorldQuestTracker1 = "/battlepetworldquesttracker";
 SLASH_BattlePetWorldQuestTracker2 = "/battlepetwqtracker";
@@ -31,6 +32,10 @@ SlashCmdList["BattlePetWorldQuestTracker"] = function(cmd)
     else
         -- TODO: Open the WQ tracker frame (NYI)
     end
+end
+
+function app.UpdateWorldQuestDisplay(self)
+    app.print("Updated your world quest display :)");
 end
 
 app.Mailer = {}
@@ -104,10 +109,24 @@ app.Mailer.ResetScanner = function(self)
     self.Continuation = nil;
     self.SentMailCount = 0;
 end
+app.Mailer.ChechCharacterStatus = function(self, character)
+    character = string.trim(character);
+
+    if character == nil or character == "" then
+        return false;
+    end
+
+    if string.len(character) < MIN_CHARACTER_NAME_LENGTH then
+        return false;
+    end
+
+    return true;
+end
 app.Mailer.Enabled = function(self)
     local settings = app.Settings:Get("MailerOptions");
+    local character = app.Settings:Get("MailerOptions", "Character");
 
-    return settings.Enabled and app.Settings:Get("MailerOptions", "Character") ~= "";
+    return settings.Enabled and self.ChechCharacterStatus(character);
 end
 
 app:RegisterEvent("QUEST_LOG_UPDATE");
