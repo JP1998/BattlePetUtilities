@@ -123,7 +123,11 @@ settings.Initialize = function(self)
     self:Refresh();
 end
 settings.Get = function(self, category, option)
-    if category == "MailerOptions" and option == "Character" then
+    if category == nil then
+        return BattlePetWorldQuestSettings;
+    elseif option == nil then
+        return BattlePetWorldQuestSettings and BattlePetWorldQuestSettings[category];
+    elseif category == "MailerOptions" and option == "Character" then
         local _, realm = UnitName("player");
         realm = realm or GetRealmName();
 
