@@ -9,12 +9,14 @@ app.L = {
         Settings strings
     ]]
 
+    -- Item Mailer Options Strings
     ["OPTIONS_MAILER_HEADER"] = "Items Mailer";
     ["OPTIONS_MAILER_DESCRIPTION"] = "If enabled, this feature will send battle pet related items to a character, every time you open the mail window. It will send only items you define to be sent to a character defined by you. Since you can only send mail to characters on your server, this setting is stored for each server separately.\n\nThis feature is not functional and (most likely) never will be. This is the result of a WeakAuras limitation, which I kind of agree with, even. Considering the code itself is working (with the exception of the actual sending of the mail) you can make a macro, which sends the mail to your specified character and use this WA to put all the items into the mail. Therefor you'll need to set the `DISABLED` flag in the custom trigger of \"Pet Items Auto Mailer\" to false.\n\nSaid macro would look like this `/run SendMail(\"<char name>\", \"Your Pet Battle Item Package\", \"\");";
     ["OPTIONS_MAILER_ENABLED_DESCRIPTION"] = "Enable Items Mailer";
     ["OPTIONS_MAILER_CHARACTER_DESCRIPTION"] = "Character:";
     ["OPTIONS_MAILER_ITEMS_HEADER"] = "Items To Mail";
 
+    -- World Quest Tracker Options Strings
     ["OPTIONS_WORLDQUESTTRACKER_HEADER"] = "World Quest Tracker";
     ["OPTIONS_WORLDQUESTTRACKER_SHOW_NO_ITEM"] = "Show World Quests with no item reward";
     ["OPTIONS_WORLDQUESTTRACKER_SHOW_UNKNOWN_ITEM"] = "Show World Quests with item rewards that are not recognized";
