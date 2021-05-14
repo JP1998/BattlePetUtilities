@@ -283,19 +283,19 @@ local ITEMS_GENERAL_BS = {
     ["Items"] = {
         {
             ["Name"] = L["OPTIONS_ITEM_ULTIMATE_BATTLE_TRAINING_STONE"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 122457
         }, -- [1]
         {
             ["Name"] = L["OPTIONS_ITEM_MARKED_FLAWLESS_BATTLE_STONE"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 98715
         }, -- [2]
         {
             ["Name"] = L["OPTIONS_ITEM_FELTOUCHED_BATTLE_TRAINING_STONE"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 127755
         }, -- [3]
         {
             ["Name"] = L["OPTIONS_ITEM_FLAWLESS_BATTLE_TRAINING_STONE"],
-            ["ItemId"] = 116415
+            ["ItemId"] = 116429
         } -- [4]
     }
 };
@@ -304,83 +304,83 @@ local ITEMS_FAMILY_BS = {
     ["Items"] = {
         {
             ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 116374
         }, -- [1]
         {
             ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 92675
         }, -- [2]
         {
-            ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_BTS_HUMANOID"],
+            ["ItemId"] = 116416
         }, -- [3]
         {
-            ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_FBS_HUMANOID"],
+            ["ItemId"] = 92682
         }, -- [4]
         {
-            ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_BTS_MECHANICAL"],
+            ["ItemId"] = 116417
         }, -- [5]
         {
-            ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_FBS_MECHANICAL"],
+            ["ItemId"] = 92680
         }, -- [6]
         {
-            ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_BTS_CRITTER"],
+            ["ItemId"] = 116418
         }, -- [7]
         {
-            ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_FBS_CRITTER"],
+            ["ItemId"] = 92676
         }, -- [8]
         {
-            ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_BTS_DRAGONKIN"],
+            ["ItemId"] = 116419
         }, -- [9]
         {
-            ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_FBS_DRAGONKIN"],
+            ["ItemId"] = 92683
         }, -- [10]
         {
-            ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_BTS_ELEMENTAL"],
+            ["ItemId"] = 116420
         }, -- [11]
         {
-            ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_FBS_ELEMENTAL"],
+            ["ItemId"] = 92665
         }, -- [12]
         {
-            ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_BTS_FLYING"],
+            ["ItemId"] = 116421
         }, -- [13]
         {
-            ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_FBS_FLYING"],
+            ["ItemId"] = 92677
         }, -- [14]
         {
-            ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_BTS_MAGIC"],
+            ["ItemId"] = 116422
         }, -- [15]
         {
-            ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_FBS_MAGIC"],
+            ["ItemId"] = 92678
         }, -- [16]
         {
-            ["Name"] = L["OPTIONS_ITEM_BTS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_BTS_UNDEAD"],
+            ["ItemId"] = 116423
         }, -- [17]
         {
-            ["Name"] = L["OPTIONS_ITEM_FBS_BEAST"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_FBS_UNDEAD"],
+            ["ItemId"] = 92681
         }, -- [18]
         {
-            ["Name"] = L["OPTIONS_ITEM_FELTOUCHED_BATTLE_TRAINING_STONE"],
-            ["ItemId"] = 163036
+            ["Name"] = L["OPTIONS_ITEM_BTS_AQUATIC"],
+            ["ItemId"] = 116424
         }, -- [19]
         {
-            ["Name"] = L["OPTIONS_ITEM_FLAWLESS_BATTLE_TRAINING_STONE"],
-            ["ItemId"] = 116415
+            ["Name"] = L["OPTIONS_ITEM_FBS_AQUATIC"],
+            ["ItemId"] = 92679
         } -- [20]
     }
 };
@@ -519,6 +519,7 @@ end)();
     table.insert(settings.MostRecentTab.objects, ItemLabel);
 
     settings:CreateItemGroupings(ItemLabel, -6, 4, 220, {
+        ITEMS_GENERAL,
         ITEMS_PET_CHARMS,
         ITEMS_GENERAL_BS,
         ITEMS_FAMILY_BS
