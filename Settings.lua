@@ -282,7 +282,7 @@ local line;
     PrintUnknownItemCheckBox:SetPoint("TOPLEFT", ShowUnknownItemCheckBox, "BOTTOMLEFT", 0, 4);
 
     local ItemLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
-    ItemLabel:SetPoint("TOPLEFT", PrintUnknownItem, "BOTTOMLEFT", 0, -6);
+    ItemLabel:SetPoint("TOPLEFT", PrintUnknownItemCheckBox, "BOTTOMLEFT", 0, -6);
     ItemLabel:SetJustifyH("LEFT");
     ItemLabel:SetText(L["OPTIONS_WORLDQUESTTRACKER_ITEMS_HEADER"]);
     ItemLabel:Show();
@@ -453,4 +453,59 @@ local line;
             }
         } -- [4]
     });
+end)();
+
+(function()
+    local tab = settings:CreateTab(L["OPTIONS_MAILER_HEADER"]);
+
+    local HeaderLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    HeaderLabel:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 8, -8);
+    HeaderLabel:SetJustifyH("LEFT");
+    HeaderLabel:Show();
+    HeaderLabel:SetText(L["OPTIONS_MAILER_HEADER"]);
+    table.insert(settings.MostRecentTab.objects, HeaderLabel);
+
+    local DescriptionLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
+    DescriptionLabel:SetPoint("TOPLEFT", HeaderLabel, "BOTTOMLEFT", 0, -8);
+    DescriptionLabel:SetPoint("RIGHT", line, "BOTTOMRIGHT", -8, 0);
+    DescriptionLabel:SetJustifyH("LEFT");
+    DescriptionLabel:SetText(L["OPTIONS_MAILER_DESCRIPTION"]);
+    DescriptionLabel:Show();
+    table.insert(settings.MostRecentTab.objects, DescriptionLabel);
+
+    local EnabledCheckBox = settings:CreateCheckBox(L["OPTIONS_MAILER_ENABLED_DESCRIPTION"],
+    function(self) -- OnRefresh
+        self:SetChecked(settings:Get("MailerOptions", "Enabled"));
+    end,
+    function(self) -- OnClick
+        settings:Set("MailerOptions", "Enabled", self:GetChecked());
+    end);
+    EnabledCheckBox:SetPoint("TOPLEFT", DescriptionLabel, "BOTTOMLEFT", 0, -1);
+
+    local CharacterLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
+    CharacterLabel:SetPoint("TOPLEFT", EnabledCheckBox, "BOTTOMLEFT", 0, -8);
+    CharacterLabel:SetJustifyH("LEFT");
+    CharacterLabel:SetText(L["OPTIONS_MAILER_CHARACTER_DESCRIPTION"]);
+    CharacterLabel:Show();
+    table.insert(settings.MostRecentTab.objects, CharacterLabel);
+
+    local CharacterEditBox = settings:CreateFrame("EditBox", "Character-EditBox", settings);
+    CharacterEditBox:SetPoint("TOPLEFT", CharacterLabel, "TOPRIGHT", 4, 4);
+    CharacterEditBox:SetPoint("RIGHT", line, "BOTTOMRIGHT", -4, 0);
+    CharacterEditBox:SetMultiLine(false);
+    CharacterEditBox.OnRefresh = function(self)
+        self:SetText(settings.Get("MailerOptions", "Character"));
+    end;
+    CharacterEditBox.SetScript("OnTextChanged", function(self)
+        settings.Set("MailerOptions", "Character", self:GetText());
+    end);
+    CharacterEditBox:Show();
+    table.insert(settings.MostRecentTab.objects, CharacterEditBox);
+
+    local ItemLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    ItemLabel:SetPoint("TOPLEFT", CharacterLabel, "BOTTOMLEFT", 0, -6);
+    ItemLabel:SetJustifyH("LEFT");
+    ItemLabel:SetText(L["OPTIONS_MAILER_ITEMS_HEADER"]);
+    ItemLabel:Show();
+    table.insert(settings.MostRecentTab.objects, ItemLabel);
 end)();
