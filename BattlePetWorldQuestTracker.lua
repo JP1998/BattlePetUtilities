@@ -2,6 +2,12 @@
 local app = select(2, ...);
 local L = app.L;
 
+--[[
+ --
+ -- General Utility stuff
+ --
+--]]
+
 app.print = function(self, ...)
     print("[", L["TITLE"], "]: ", ...);
 end
@@ -9,9 +15,6 @@ end
 string.trim = function(str)
     return (string.gsub(str, "^%s*(.-)%s*$", "%1"));
 end
-
-local MAX_NUM_MAIL_ITEMS = 12;
-local MIN_CHARACTER_NAME_LENGTH = 3;
 
 SLASH_BattlePetWorldQuestTracker1 = "/battlepetworldquesttracker";
 SLASH_BattlePetWorldQuestTracker2 = "/battlepetwqtracker";
@@ -34,9 +37,20 @@ SlashCmdList["BattlePetWorldQuestTracker"] = function(cmd)
     end
 end
 
-function app.UpdateWorldQuestDisplay(self)
-    app.print("Updated your world quest display :)");
+app:RegisterEvent("VARIABLES_LOADED");
+app.events.VARIABLES_LOADED = function()
+    app.Version = GetAddOnMetadata("Battle Pet World Quest Tracker", "Version");
+    app.Settings:Initialize();
 end
+
+--[[
+ --
+ -- Mailer Feature Stuff
+ --
+--]]
+
+local MAX_NUM_MAIL_ITEMS = 12;
+local MIN_CHARACTER_NAME_LENGTH = 3;
 
 app.Mailer = {}
 app.Mailer.IsItemToBeMailed = function(self, itemId)
@@ -133,15 +147,10 @@ app.Mailer.Enabled = function(self)
     return settings.Enabled and self.ChechCharacterStatus(character);
 end
 
-app:RegisterEvent("QUEST_LOG_UPDATE");
 app:RegisterEvent("MAIL_SHOW");
 app:RegisterEvent("SEND_MAIL_SUCCESS");
 app:RegisterEvent("SEND_MAIL_FAILED");
-app:RegisterEvent("VARIABLES_LOADED");
 
-app.events.QUEST_LOG_UPDATE = function(...)
-    app:print("Quest log has updated.");
-end
 app.events.MAIL_SHOW = function(...)
     app:print("You opened your mail."); -- TODO: Remove or add DEBUG condition
 
@@ -163,7 +172,18 @@ app.events.SEND_MAIL_FAILED = function(...)
         app.Mailer:ResetScanner();
     end
 end
-app.events.VARIABLES_LOADED = function()
-    app.Version = GetAddOnMetadata("Battle Pet World Quest Tracker", "Version");
-    app.Settings:Initialize();
+
+--[[
+ --
+ -- World Quest Tracker Stuff
+ --
+--]]
+
+function app.UpdateWorldQuestDisplay(self)
+    app.print("Updated your world quest display :)");
+end
+
+app:RegisterEvent("QUEST_LOG_UPDATE");
+app.events.QUEST_LOG_UPDATE = function(...)
+    app:print("Quest log has updated.");
 end
