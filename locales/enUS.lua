@@ -4,6 +4,7 @@ app.L = {
     ["TITLE"] = "|cFFD13653Battle Pet World Quest Tracker|r";
 
     ["ERROR_UNKNOWN_COMMAND"] = "Unknown command: '%s'. Type '/bpwqt help' for some help.";
+    ["MESSAGE_GENERAL_DUMP"] = "Here's a dump of the current addon's state:\n%s";
 
     --[[
         Settings strings

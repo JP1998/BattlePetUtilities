@@ -11,7 +11,38 @@ local L = app.L;
 app.print = function(self, ...)
     print("[", L["TITLE"], "]: ", ...);
 end
+app.stringify = function(t)
+    if type(t) == "table" then
+        local text = "{ ";
+        local first = true;
 
+        for k,v in pairs(t) do
+            if not first then
+                text = text .. ", ";
+            end
+
+            first = false;
+            text = text .. string.format("[%s] = %s", app.stringify(k), app.stringify(v));
+        end
+
+        text = text .. " }";
+
+        return text;
+    elseif type(t) == "boolean" then
+        return t and "true" or "false"
+    elseif type(t) == "number" then
+        return "" .. t;
+    elseif type(t) == "string" then
+        return string.escape(t);
+    elseif type(t) == "function" then
+        return "<function>";
+    elseif type(t) == "nil" then
+        return "nil";
+    end
+end
+string.escape = function(s)
+    return string.gsub(string.format("%q", s), "\n", "n");
+end
 string.trim = function(str)
     return (string.gsub(str, "^%s*(.-)%s*$", "%1"));
 end
@@ -29,6 +60,8 @@ SlashCmdList["BattlePetWorldQuestTracker"] = function(cmd)
             app.Settings:Open();
         elseif cmd == "help" then
             -- TODO: Print help
+        elseif cmd == "dump" then
+            app:print(string.format(L["MESSAGE_GENERAL_DUMP"], app.stringify(app)));
         else
             app.print(string.format(L["ERROR_UNKNOWN_COMMAND"], cmd));
         end
