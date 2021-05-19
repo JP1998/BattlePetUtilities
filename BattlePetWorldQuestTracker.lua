@@ -55,7 +55,7 @@ SlashCmdList["BattlePetWorldQuestTracker"] = function(cmd)
     if cmd then
         cmd = string.lower(cmd);
         if cmd == "" or cmd == "main" then
-            -- TODO: Open the WQ tracker frame (NYI)
+            app.WorldQuestTracker:GetWindow("WorldQuestTracker"):Toggle();
         elseif cmd == "op" or cmd == "option" or cmd == "options" then
             app.Settings:Open();
         elseif cmd == "help" then
@@ -66,7 +66,7 @@ SlashCmdList["BattlePetWorldQuestTracker"] = function(cmd)
             app.print(string.format(L["ERROR_UNKNOWN_COMMAND"], cmd));
         end
     else
-        -- TODO: Open the WQ tracker frame (NYI)
+        app.WorldQuestTracker:GetWindow("WorldQuestTracker"):Toggle();
     end
 end
 
@@ -212,11 +212,222 @@ end
  --
 --]]
 
-function app.UpdateWorldQuestDisplay(self)
+app.WorldQuestTracker = {};
+app.WorldQuestTracker.Windows = {};
+
+--[[
+    Most of the following code was taken (and adopted) from the AllTheThings-Addon.
+    Credit goes to Dylan Fortune (IGN: Crieve-Sargeras) and his team.
+]]
+
+-- common window functions
+local function SetVisible(self, show)
+    if show then
+        self:Show();
+        self:Update();
+    else
+        self:Hide();
+    end
+end
+local function ToggleWindow(self)
+    --
+    return SetVisible(self, not self:IsVisible());
+end
+local function OnCloseButtonPressed(self)
+    --
+    self:GetParent():Hide();
+end
+
+-- common resizable window functions
+local function StopMovingOrSizing(self)
+    self:StopMovingOrSizing();
+    self.isMoving = nil;
+end
+local function StartMovingOrSizing(self, fromChild)
+    if not self:IsMovable() and not self:IsResizable() or self.isLocked then
+        return
+    end
+    if self.isMoving then
+        StopMovingOrSizing(self);
+    else
+        self.isMoving = true;
+        if ((select(2, GetCursorPosition()) / self:GetEffectiveScale()) < math.max(self:GetTop() - 40, self:GetBottom() + 10)) then
+            self:StartSizing();
+            Push(self, "StartMovingOrSizing (Sizing)", function()
+                if self.isMoving then
+                    -- keeps the rows within the window fitting to the window as it resizes
+                    self:Refresh();
+                    return true;
+                end
+            end);
+        elseif self:IsMovable() then
+            self:StartMoving();
+        end
+    end
+end
+-- common scrollbar functions
+local function OnScrollBarMouseWheel(self, delta)
+    --
+    self.ScrollBar:SetValue(self.ScrollBar.CurrentValue - delta);
+end
+local function OnScrollBarValueChanged(self, value)
+    if self.CurrentValue ~= value then
+        self.CurrentValue = value;
+        self:GetParent():Refresh();
+    end
+end
+
+--[[
+    Functions for the world quest tracker window
+]]
+local function RefreshWorldQuestTrackerFrame(self)
+    -- TODO: Create elements for the data and fill said data into the elements
+end
+local function UpdateWorldQuestTrackerFrame(self)
+    -- TODO: Create data and save it onto the frame
+    -- TODO: Refresh the World Quest Tracker Frame
+
+    --[[
+        Data display:
+
+        <Root>
+            - Shadowlands
+                - Zone 1
+                    - World Quest 1
+                    - World Quest 2
+                - Zone 2
+                    - World Quest 3
+            - Battle For Azeroth
+                ...
+            - Legion
+                ...
+    ]]
+end
+local function CreateWorldQuestTrackerFrame(suffix, parent)
+    local window = CreateFrame("Frame", app:GetName() .. "-Frame-" .. suffix, parent or UIParent, BackdropTemplateMixin and "BackdropTemplate");
+    self.Windows[suffix] = window;
+    window.Suffix = suffix;
+
+    window.Refresh = RefreshWorldQuestTrackerFrame;
+    window.BaseUpdate = UpdateWorldQuestTrackerFrame;
+    window.Toggle = ToggleWindow;
+    window.SetVisible = SetVisible;
+
+    window:SetScript("OnMouseWheel", OnScrollBarMouseWheel);
+    window:SetScript("OnMouseDown", StartMovingOrSizing);
+    window:SetScript("OnMouseUp", StopMovingOrSizing);
+    window:SetScript("OnHide", StopMovingOrSizing);
+    window:SetBackdrop({
+        bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+        edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+        tile = true,
+        tileSize = 16,
+        edgeSize = 16,
+        insets = {
+            left = 4,
+            right = 4,
+            top = 4,
+            bottom = 4
+        }
+    });
+    window:SetBackdropBorderColor(1, 1, 1, 1);
+    window:SetBackdropColor(0, 0, 0, 1);
+    window:SetClampedToScreen(true);
+    window:SetToplevel(true);
+    window:EnableMouse(true);
+    window:SetMovable(true);
+    window:SetResizable(true);
+    window:SetPoint("CENTER");
+    window:SetMinResize(96, 32);
+    window:SetSize(300, 300);
+
+    window:SetUserPlaced(true);
+    window.data = {
+        ["title"] = L["TITLE"],
+        ["subtitle"] = nil,
+        ["icon"] = "Interface\\Icons\\PetJournalPortrait",
+        ["visible"] = true,
+        ["expanded"] = true,
+        ["children"] = {}
+    };
+
+    window:Hide();
+
+    -- The Close Button. It's assigned as a local variable so you can change how it behaves.
+    window.CloseButton = CreateFrame("Button", nil, window, "UIPanelCloseButton");
+    window.CloseButton:SetPoint("TOPRIGHT", window, "TOPRIGHT", 4, 3);
+    window.CloseButton:SetScript("OnClick", OnCloseButtonPressed);
+
+    -- The Scroll Bar.
+    local scrollbar = CreateFrame("Slider", nil, window, "UIPanelScrollBarTemplate");
+    scrollbar:SetPoint("TOP", window.CloseButton, "BOTTOM", 0, -10);
+    scrollbar:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT", -4, 36);
+    scrollbar:SetScript("OnValueChanged", OnScrollBarValueChanged);
+    scrollbar.back = scrollbar:CreateTexture(nil, "BACKGROUND");
+    scrollbar.back:SetColorTexture(0,0,0,0.4)
+    scrollbar.back:SetAllPoints(scrollbar);
+    scrollbar:SetMinMaxValues(1, 1);
+    scrollbar:SetValueStep(1);
+    scrollbar:SetObeyStepOnDrag(true);
+    scrollbar.CurrentValue = 1;
+    scrollbar:SetWidth(16);
+    scrollbar:EnableMouseWheel(true);
+    window:EnableMouseWheel(true);
+    window.ScrollBar = scrollbar;
+
+    -- The Corner Grip. (this isn't actually used, but it helps indicate to players that they can do something)
+    local grip = window:CreateTexture(nil, "ARTWORK");
+    grip:SetTexture("Interface\\AddOns\\AllTheThings\\assets\\grip"); -- TODO: Copy and rename!
+    grip:SetSize(16, 16);
+    grip:SetTexCoord(0,1,0,1);
+    grip:SetPoint("BOTTOMRIGHT", -5, 5);
+    window.Grip = grip;
+
+    -- The Row Container. This contains all of the row frames.
+    local container = CreateFrame("FRAME", nil, window);
+    container:SetPoint("TOPLEFT", window, "TOPLEFT", 0, -6);
+    container:SetPoint("RIGHT", scrollbar, "LEFT", 0, 0);
+    container:SetPoint("BOTTOM", window, "BOTTOM", 0, 6);
+    window.Container = container;
+    container.rows = {};
+    scrollbar:SetValue(1);
+    container:Show();
+
+    window.Update = UpdateWorldQuestTrackerFrame;
+    window:Update();
+
+    return window;
+end
+
+--[[
+    General window functions that are to be exposed
+]]
+app.WorldQuestTracker.UpdateWorldQuestDisplay = function(self)
     app.print("Updated your world quest display :)");
+end
+app.WorldQuestTracker.CreateWindow = function(self, suffix, parent)
+    local WindowCreator = {
+        ["WorldQuestTracker"] = CreateWorldQuestTrackerFrame;
+    };
+
+    if WindowCreator[suffix] then
+        return WindowCreator[suffix](suffix, parent);
+    else
+        return nil;
+    end
+end
+app.WorldQuestTracker.GetWindow = function(self, suffix, parent)
+    local window = self.Windows[suffix];
+
+    if not window then
+        window = self:CreateWindow(suffix, parent);
+    end
+
+    return window;
 end
 
 app:RegisterEvent("QUEST_LOG_UPDATE");
 app.events.QUEST_LOG_UPDATE = function(...)
     app:print("Quest log has updated.");
+    app.WorldQuestTracker:UpdateWorldQuestDisplay();
 end
