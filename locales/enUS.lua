@@ -70,4 +70,7 @@ app.L = {
 
     ["MAILER_SENT"] = "We sent your items away. %s/%s";
     ["MAILER_ABORT"] = "We had to abort sending your items.";
+
+    -- World Quest Tracker Strings
+    ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "We found a world quest with an unknown item reward: %s.";
 };

@@ -413,7 +413,13 @@ app.WorldQuestTracker.ShowReward = function(self, itemId)
     elseif conf.Items[itemId] == nil then
         app.WorldQuestTracker.UnknownItemsPrinted = app.WorldQuestTracker.UnknownItemsPrinted or {};
 
-        -- TODO: Perhaps print the unknown item.
+        if conf.PrintUnknownItem and not app.WorldQuestTracker.UnknownItemsPrinted[key] then
+            app.print(string.format(
+                L["WORLDQUESTTRACKER_UNKNOWNITEM"],
+                app.createItemLink(C_Item.GetItemQualityByID(itemId), itemId, C_Item.GetItemNameByID(itemId))
+            ));
+            app.WorldQuestTracker.UnknownItemsPrinted[key] = true;
+        end
 
         return conf.ShowUnknownItem;
     else
