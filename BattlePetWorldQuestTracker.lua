@@ -40,6 +40,9 @@ app.stringify = function(t)
         return "nil";
     end
 end
+app.createItemLink = function(quality, id, name)
+    return ITEM_QUALITY_COLORS[quality].hex .. "|Hitem:" .. id .. ":::::::::::::::|h[" .. name .. "]|h|r";
+end
 string.escape = function(s)
     return string.gsub(string.format("%q", s), "\n", "n");
 end
@@ -400,8 +403,23 @@ local function CreateWorldQuestTrackerFrame(suffix, parent)
 end
 
 --[[
-    General window functions that are to be exposed
+    General world quest tracker functions
 ]]
+app.WorldQuestTracker.ShowReward = function(self, itemId)
+    local conf = app.Settings:Get("WorldQuestTrackerOptions");
+
+    if itemId == nil then
+        return conf.ShowNoItem;
+    elseif conf.Items[itemId] == nil then
+        app.WorldQuestTracker.UnknownItemsPrinted = app.WorldQuestTracker.UnknownItemsPrinted or {};
+
+        -- TODO: Perhaps print the unknown item.
+
+        return conf.ShowUnknownItem;
+    else
+        return conf.Items[itemId];
+    end
+end
 app.WorldQuestTracker.UpdateWorldQuestDisplay = function(self)
     app.print("Updated your world quest display :)");
 end
