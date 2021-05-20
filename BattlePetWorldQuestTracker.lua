@@ -287,27 +287,11 @@ local function RefreshWorldQuestTrackerFrame(self)
     -- TODO: Create elements for the data and fill said data into the elements
 end
 local function UpdateWorldQuestTrackerFrame(self)
-    -- TODO: Create data and save it onto the frame
-    -- TODO: Refresh the World Quest Tracker Frame
-
-    --[[
-        Data display:
-
-        <Root>
-            - Shadowlands
-                - Zone 1
-                    - World Quest 1
-                    - World Quest 2
-                - Zone 2
-                    - World Quest 3
-            - Battle For Azeroth
-                ...
-            - Legion
-                ...
-    ]]
+    self.data = app.WorldQuestTracker:CreateWorldQuestData();
+    self:Refresh();
 end
 local function CreateWorldQuestTrackerFrame(suffix, parent)
-    local window = CreateFrame("Frame", app:GetName() .. "-Frame-" .. suffix, parent or UIParent, BackdropTemplateMixin and "BackdropTemplate");
+    local window = CreateFrame("Frame", app:GetName() .. "-Frame-" .. suffix, parent, BackdropTemplateMixin and "BackdropTemplate");
     self.Windows[suffix] = window;
     window.Suffix = suffix;
 
@@ -522,7 +506,8 @@ app.WorldQuestTracker.ShowReward = function(self, itemId)
     end
 end
 app.WorldQuestTracker.UpdateWorldQuestDisplay = function(self)
-    app.print("Updated your world quest display :)");
+    app.print("Updated your world quest display :)"); -- TODO: Remove or add DEBUG condition
+    app.WorldQuestTracker.GetWindow("WorldQuestTracker"):Update();
 end
 app.WorldQuestTracker.CreateWindow = function(self, suffix, parent)
     local WindowCreator = {
@@ -530,7 +515,7 @@ app.WorldQuestTracker.CreateWindow = function(self, suffix, parent)
     };
 
     if WindowCreator[suffix] then
-        return WindowCreator[suffix](suffix, parent);
+        return WindowCreator[suffix](suffix, parent or UIParent);
     else
         return nil;
     end
@@ -547,6 +532,6 @@ end
 
 app:RegisterEvent("QUEST_LOG_UPDATE");
 app.events.QUEST_LOG_UPDATE = function(...)
-    app:print("Quest log has updated.");
+    app:print("Quest log has updated."); -- TODO: Remove or add DEBUG condition
     app.WorldQuestTracker:UpdateWorldQuestDisplay();
 end
