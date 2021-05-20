@@ -73,4 +73,15 @@ app.L = {
 
     -- World Quest Tracker Strings
     ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "We found a world quest with an unknown item reward: %s.";
+    ["WORLDQUESTTRACKER_DEFAULT_ICON"] = ""; -- TODO: Add icon with id 643856 !
+    ["WORLDQUESTTRACKER_ROOT_ICON"] = "Interface\\Icons\\PetJournalPortrait";
+
+    ["WORLDQUESTTRACKER_SHADOWLANDS_TITLE"] = "Shadowlands";
+    ["WORLDQUESTTRACKER_SHADOWLANDS_ICON"] = ""; -- TODO: Add icon!
+
+    ["WORLDQUESTTRACKER_BATTLEFORAZEROTH_TITLE"] = "Battle for Azeroth";
+    ["WORLDQUESTTRACKER_BATTLEFORAZEROTH_ICON"] = ""; -- TODO: Add icon!
+
+    ["WORLDQUESTTRACKER_LEGION_TITLE"] = "Legion";
+    ["WORLDQUESTTRACKER_LEGION_ICON"] = ""; -- TODO: Add icon!
 };
