@@ -35,7 +35,19 @@ app.stringify = function(t)
     elseif type(t) == "string" then
         return string.escape(t);
     elseif type(t) == "function" then
-        return "<function>";
+        if debug then
+            local info = debug.getinfo(t, "S");
+
+            if info.what == "Lua" then
+                local where, _ = info.source:gsub("(@)(.*" .. app:GetName() .. ")(.*)", "%1%3");
+
+                return string.format("<function%s:%s>", where, info.linedefined);
+            else
+                return "<C function:?>";
+            end
+        else
+            return "<function>";
+        end
     elseif type(t) == "nil" then
         return "nil";
     end
