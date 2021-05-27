@@ -62,28 +62,69 @@ string.trim = function(str)
     return (string.gsub(str, "^%s*(.-)%s*$", "%1"));
 end
 
-SLASH_BattlePetWorldQuestTracker1 = "/battlepetworldquesttracker";
-SLASH_BattlePetWorldQuestTracker2 = "/battlepetwqtracker";
-SLASH_BattlePetWorldQuestTracker3 = "/bpwqt";
-SlashCmdList["BattlePetWorldQuestTracker"] = function(cmd)
+
+local createSlashCommand = (function()
+    local function eliminateEmptyStrings(list)
+        local result = {};
+
+        for i,s in ipairs(list) do
+            if s ~= "" then
+                table.insert(result, s);
+            end
+        end
+
+        return result;
+    end
+    local function parseSlashCommandArgs(cmd)
+        return eliminateEmptyStrings(strsplit(" ", cmd));
+    end
+
+    return function(func, id, ...)
+        local slashes = { ... };
+        if #slashes == 0 then
+            return; -- cant create slash command without slashes
+        end
+
+        if type(id) ~= "string" or id == "" then
+            return; -- need id that is a non-empty string
+        end
+
+        for i,slash in ipairs(slashes) do
+            setglobal(string.format("SLASH_%s%d", id, i), slash);
+        end
+        _G.SlashCmdList[id] = function(cmd, msgBox)
+            func(parseSlashCommandArgs(cmd), msgBox);
+        end
+    end
+end)();
+
+local function bpwqt_slashhandler(args, msgbox)
     app:print("You typed '/bpwqt' or something similar.");
-    if cmd then
-        cmd = string.lower(cmd);
+
+    if #args > 0 then
+        local cmd = string.lower(args[1]);
+
         if cmd == "" or cmd == "main" then
             app.WorldQuestTracker:GetWindow("WorldQuestTracker"):Toggle();
         elseif cmd == "op" or cmd == "option" or cmd == "options" then
             app.Settings:Open();
         elseif cmd == "help" then
-            -- TODO: Print help
+            if #args > 1 and string.lower(args[2]) == "advanced" then
+                -- TODO: Print advanced help; mostly for dev/snoopy noses :^)
+            else
+                -- TODO: Print help
+            end
         elseif cmd == "dump" then
             app:print(string.format(L["MESSAGE_GENERAL_DUMP"], app.stringify(app)));
         else
-            app.print(string.format(L["ERROR_UNKNOWN_COMMAND"], cmd));
+            app:print(string.format(L["ERROR_UNKNOWN_COMMAND"], cmd));
         end
     else
         app.WorldQuestTracker:GetWindow("WorldQuestTracker"):Toggle();
     end
 end
+
+createSlashCommand(bpwqt_slashhandler, "BattlePetWorldQuestTracker", "/battlepetworldquesttracker", "/battlepetwqtracker", "/bpwqt");
 
 app:RegisterEvent("VARIABLES_LOADED");
 app.events.VARIABLES_LOADED = function()
