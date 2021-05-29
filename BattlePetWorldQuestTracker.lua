@@ -417,7 +417,7 @@ local function CreateWorldQuestTrackerFrame(suffix, parent)
 
     -- The Corner Grip. (this isn't actually used, but it helps indicate to players that they can do something)
     local grip = window:CreateTexture(nil, "ARTWORK");
-    grip:SetTexture("Interface\\AddOns\\AllTheThings\\assets\\grip"); -- TODO: Copy and rename!
+    grip:SetTexture("Interface\\AddOns\\BattlePetWorldQuestTracker\\assets\\grip");
     grip:SetSize(16, 16);
     grip:SetTexCoord(0,1,0,1);
     grip:SetPoint("BOTTOMRIGHT", -5, 5);
