@@ -2,6 +2,8 @@
 local app = select(2, ...);
 local L = app.L;
 
+app.debug = false;
+
 --[[
  --
  -- General Utility stuff
@@ -10,6 +12,11 @@ local L = app.L;
 
 app.print = function(self, ...)
     print("[", L["TITLE"], "]: ", ...);
+end
+app.log = function(self, msg, ...)
+    if app.debug then
+        print(string.format("DEBUG [%s]: %s", L["TITLE"], msg), ...);
+    end
 end
 app.stringify = function(t)
     if type(t) == "table" then
@@ -125,7 +132,7 @@ local createSlashCommand = (function()
 end)();
 
 local function bpwqt_slashhandler(args, msgbox)
-    app:print("You typed '/bpwqt' or something similar.");
+    app:log("You typed '/bpwqt' or something similar.");
 
     if #args > 0 then
         local cmd = string.lower(args[1]);
@@ -141,7 +148,14 @@ local function bpwqt_slashhandler(args, msgbox)
                 -- TODO: Print help
             end
         elseif cmd == "dump" then
-            app:print(string.format(L["MESSAGE_GENERAL_DUMP"], app.stringify(app)));
+            if app.debug then
+                app:log(string.format(L["MESSAGE_GENERAL_DUMP"], app.stringify(app)));
+            else
+                app:print(L["MESSAGE_DEBUG_DISABLED"]);
+            end
+        elseif cmd == "debug" then
+            app.debug = not app.debug;
+            app:print(string.format(L["MESSAGE_DEBUG_TOGGLE"], app.debug));
         else
             app:print(string.format(L["ERROR_UNKNOWN_COMMAND"], cmd));
         end
@@ -267,21 +281,21 @@ app:RegisterEvent("SEND_MAIL_SUCCESS");
 app:RegisterEvent("SEND_MAIL_FAILED");
 
 app.events.MAIL_SHOW = function(...)
-    app:print("You opened your mail."); -- TODO: Remove or add DEBUG condition
+    app:log("You opened your mail.");
 
     if app.Mailer:Enabled() then
         app.Mailer:ScanBags();
     end
 end
 app.events.SEND_MAIL_SUCCESS = function(...)
-    app:print("You successfully sent mail."); -- TODO: Remove or add DEBUG condition
+    app:log("You successfully sent mail.");
 
     if app.Mailer:Enabled() and app.Mailer.Continuation then
         app.Mailer:ScanBags();
     end
 end
 app.events.SEND_MAIL_FAILED = function(...)
-    app:print("You tried to send mail, which failed."); -- TODO: Remove or add DEBUG condition
+    app:log("You tried to send mail, which failed.");
 
     if app.Mailer:Enabled() then
         app.Mailer:ResetScanner();
@@ -292,14 +306,12 @@ end
  --
  -- World Quest Tracker Stuff
  --
+ -- Much of the following code was taken (and adopted) from the AllTheThings-Addon.
+ -- Credit goes to Dylan Fortune (IGN: Crieve-Sargeras) and his team.
+ --
 --]]
 
 app.WorldQuestTracker = {};
-
---[[
-    Most of the following code was taken (and adopted) from the AllTheThings-Addon.
-    Credit goes to Dylan Fortune (IGN: Crieve-Sargeras) and his team.
-]]
 
 -- common window functions
 local function SetVisible(self, show)
@@ -571,7 +583,7 @@ app.WorldQuestTracker.ShowReward = function(self, itemId)
         app.WorldQuestTracker.UnknownItemsPrinted = app.WorldQuestTracker.UnknownItemsPrinted or {};
 
         if conf.PrintUnknownItem and not app.WorldQuestTracker.UnknownItemsPrinted[key] then
-            app.print(string.format(
+            app:print(string.format(
                 L["WORLDQUESTTRACKER_UNKNOWNITEM"],
                 app.createItemLink(C_Item.GetItemQualityByID(itemId), itemId, C_Item.GetItemNameByID(itemId))
             ));
@@ -584,13 +596,13 @@ app.WorldQuestTracker.ShowReward = function(self, itemId)
     end
 end
 app.WorldQuestTracker.UpdateWorldQuestDisplay = function(self)
-    app.print("Updated your world quest display :)"); -- TODO: Remove or add DEBUG condition
+    app:log("Updated your world quest display :)");
     app.WorldQuestTracker.GetWindow("WorldQuestTracker"):Update();
 end
 
 
 app:RegisterEvent("QUEST_LOG_UPDATE");
 app.events.QUEST_LOG_UPDATE = function(...)
-    app:print("Quest log has updated."); -- TODO: Remove or add DEBUG condition
+    app:log("Quest log has updated.");
     app.WorldQuestTracker:UpdateWorldQuestDisplay();
 end
