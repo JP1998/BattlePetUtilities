@@ -55,6 +55,32 @@ end
 app.createItemLink = function(quality, id, name)
     return ITEM_QUALITY_COLORS[quality].hex .. "|Hitem:" .. id .. ":::::::::::::::|h[" .. name .. "]|h|r";
 end
+
+app.Windows = {};
+app.RegisterWindow = function(self, suffix, window)
+    self.Windows[suffix] = window;
+end
+app.CreateWindow = function(self, suffix, parent)
+    local WindowCreator = {
+        ["WorldQuestTracker"] = app.WorldQuestTracker.CreateWorldQuestTrackerFrame;
+    };
+
+    if WindowCreator[suffix] then
+        return WindowCreator[suffix](suffix, parent or UIParent);
+    else
+        return nil;
+    end
+end
+app.GetWindow = function(self, suffix, parent)
+    local window = self.Windows[suffix];
+
+    if not window then
+        window = self:CreateWindow(suffix, parent);
+    end
+
+    return window;
+end
+
 string.escape = function(s)
     return string.gsub(string.format("%q", s), "\n", "n");
 end
@@ -269,7 +295,6 @@ end
 --]]
 
 app.WorldQuestTracker = {};
-app.WorldQuestTracker.Windows = {};
 
 --[[
     Most of the following code was taken (and adopted) from the AllTheThings-Addon.
@@ -343,9 +368,9 @@ local function UpdateWorldQuestTrackerFrame(self)
     self.data = app.WorldQuestTracker:CreateWorldQuestData();
     self:Refresh();
 end
-local function CreateWorldQuestTrackerFrame(suffix, parent)
+app.WorldQuestTracker.CreateWorldQuestTrackerFrame = function(suffix, parent)
     local window = CreateFrame("Frame", app:GetName() .. "-Frame-" .. suffix, parent, BackdropTemplateMixin and "BackdropTemplate");
-    self.Windows[suffix] = window;
+    app:RegisterWindow(suffix, window);
     window.Suffix = suffix;
 
     window.Refresh = RefreshWorldQuestTrackerFrame;
@@ -562,26 +587,7 @@ app.WorldQuestTracker.UpdateWorldQuestDisplay = function(self)
     app.print("Updated your world quest display :)"); -- TODO: Remove or add DEBUG condition
     app.WorldQuestTracker.GetWindow("WorldQuestTracker"):Update();
 end
-app.WorldQuestTracker.CreateWindow = function(self, suffix, parent)
-    local WindowCreator = {
-        ["WorldQuestTracker"] = CreateWorldQuestTrackerFrame;
-    };
 
-    if WindowCreator[suffix] then
-        return WindowCreator[suffix](suffix, parent or UIParent);
-    else
-        return nil;
-    end
-end
-app.WorldQuestTracker.GetWindow = function(self, suffix, parent)
-    local window = self.Windows[suffix];
-
-    if not window then
-        window = self:CreateWindow(suffix, parent);
-    end
-
-    return window;
-end
 
 app:RegisterEvent("QUEST_LOG_UPDATE");
 app.events.QUEST_LOG_UPDATE = function(...)
