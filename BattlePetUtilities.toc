@@ -13,3 +13,4 @@ Settings.lua
 BattlePetUtilities.lua
 ItemMailer.lua
 WorldQuestTracker.lua
+WorldQuestTrackerData.lua

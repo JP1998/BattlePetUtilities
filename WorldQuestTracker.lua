@@ -278,40 +278,6 @@ end
     General world quest tracker functions
 ]]
 
--- Data -> put into its own file
-local app.WorldQuestTracker.QuestIds = {
-    ["shadowlands"] = {
-        61784, 61787, 61783, 61791, -- Bastion
-        61866, 61867, 61868, 61870, -- Maldraxxus
-        61879, 61883, 61885, 61886, -- Revendreth
-        61946, 61947, 61948, 61949, -- Ardenweald
-    },
-    ["battleforazeroth"] = {
-        56382, 56386, 56391, 56392, 56389, 56388, 56385, 56381, 56387, 56384, 56383, 56390, -- Nazjatar
-        56397, 56396, 56393, 56395, 56399, 56400, 56398, 56394, -- Mechagon
-        58746, 58747, 58748, 58749, -- Vale of Eternal Blossoms
-        58742, 58744, 58743, 58745, -- Uldum
-        52471, 52751, 52430, 52455, -- Tiragarde Sound
-        52325, 52316, 52165, 52126, -- Stormsong Valley
-        52297, 52278, 52218, 52009, -- Drustvar
-        52923, 52938, 52937, 52892, -- Zuldazar
-        52779, 52754, 52803, 52799, -- Nazmir
-        52850, 52878, 52864, 52856, -- Vol'dun
-    },
-    ["legion"] = {
-        46111, 46112, 46113, -- The Broken Shore
-        42442, 40299, 41881, 40298, 41886, 42062, 40277, -- Dalaran
-        42063, 42146, 42159, 42148, 42154, -- Azsuna
-        40279, 41862, 41861, 41855, 41860, -- Val'sharah
-        40280, 40282, 41766, 42064, 41687, 41624, -- Highmountain
-        42067, 41944, 41958, 40278, 41948, 41935, -- Stormheim
-        41895, 41914, 41990, 40337, 42015, 41931, -- Suramar
-        49044, 49043, 49045, 49042, 49046, 49041, -- Krokuun
-        49052, 49047, 49048, 49049, 49050, 49051, -- Mac'Aree
-        49057, 49056, 49054, 49058, 49053, 49055, -- Antoran Wastes
-    },
-};
-
 app.WorldQuestTracker.AssembleExpansionData = function(self, expansion)
     return {
         ["title"] = L["WORLDQUESTTRACKER_" .. string.upper(expansion) .. "_TITLE"],
@@ -351,11 +317,11 @@ app.WorldQuestTracker.CreateWorldQuestData = function(self)
     };
 
 
-    for i,xpac in pairs(app.WorldQuestTracker.QuestIds) do
+    for i,xpac in pairs(app.WorldQuestTracker.QuestData.WorldQuests) do
         local expansionData = app.WorldQuestTracker:AssembleExpansionData(xpac);
         table.insert(data.children, expansionData);
 
-        for j,questId in pairs(app.WorldQuestTracker.QuestIds[xpac]) do
+        for j,questId in pairs(app.WorldQuestTracker.QuestData.WorldQuests[xpac]) do
             if C_TaskQuest.IsActive(questId) then
                 local zoneName = C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(quest).name);
                 local name, _ = C_TaskQuest.GetQuestInfoByQuestID(questId);
