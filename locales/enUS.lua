@@ -75,8 +75,8 @@ app.L = {
 
     -- World Quest Tracker Strings
     ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "We found a world quest with an unknown item reward: %s.";
-    ["WORLDQUESTTRACKER_DEFAULT_ICON"] = ""; -- TODO: Add icon with id 643856 !
-    ["WORLDQUESTTRACKER_ROOT_ICON"] = "Interface\\Icons\\PetJournalPortrait";
+    ["WORLDQUESTTRACKER_DEFAULT_ICON"] = "Interface\\Icons\\PetJournalPortrait";
+    ["WORLDQUESTTRACKER_ROOT_ICON"] = "Interface\\Icons\\Inv_Pet_Frostwolfpup";
 
     ["WORLDQUESTTRACKER_SHADOWLANDS_TITLE"] = "Shadowlands";
     ["WORLDQUESTTRACKER_SHADOWLANDS_ICON"] = ""; -- TODO: Add icon!

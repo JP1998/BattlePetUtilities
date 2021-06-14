@@ -168,7 +168,7 @@ createSlashCommand(bpwqt_slashhandler, "BattlePetWorldQuestTracker", "/battlepet
 
 app:RegisterEvent("VARIABLES_LOADED");
 app.events.VARIABLES_LOADED = function()
-    app.Version = GetAddOnMetadata("Battle Pet World Quest Tracker", "Version");
+    app.Version = GetAddOnMetadata(app:GetName(), "Version");
     app.Settings:Initialize();
 end
 
@@ -373,8 +373,107 @@ end
 --[[
     Functions for the world quest tracker window
 ]]
+local function CreateRow(window)
+    -- TODO: Create a simple row container and stuff
+    local row = CreateFrame("Button", nil, window.Container);
+    row.index = #window.Container.Rows;
+    if row.index == 0 then
+        -- This means relative to the parent.
+        row:SetPoint("TOPLEFT");
+        row:SetPoint("TOPRIGHT");
+    else
+        -- This means relative to the row above this one.
+        row:SetPoint("TOPLEFT", window.Container.Rows[row.index], "BOTTOMLEFT");
+        row:SetPoint("TOPRIGHT", window.Container.Rows[row.index], "BOTTOMRIGHT");
+    end
+    table.insert(window.Container.Rows, row);
+
+    row:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD");
+    -- TODO: Implement collapse/expand of groups.
+    -- row:RegisterForClicks("LeftButtonDown","RightButtonDown");
+    -- row:SetScript("OnClick", RowOnClick);
+    -- row:SetScript("OnEnter", RowOnEnter);
+    -- row:SetScript("OnLeave", RowOnLeave);
+    -- row:EnableMouse(true);
+
+    row.Icon = row:CreateTexture(nil, "ARTWORK");
+    row.Icon:SetPoint("LEFT");
+    row.Icon:SetPoint("TOP");
+    -- TODO: Possibly need a background/border for the icon:
+    row.Icon.Background = row:CreateTexture(nil, "BACKGROUND");
+    row.Icon.Background:SetPoint("LEFT");
+    row.Icon.Background:SetPoint("TOP");
+    row.Icon.Border = row:CreateTexture(nil, "BORDER");
+    row.Icon.Border:SetPoint("LEFT");
+    row.Icon.Border:SetPoint("TOP");
+
+    row.TitleLabel = row:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    row.TitleLabel:SetJustifyH("LEFT");
+    row.TitleLabel:SetPoint("TOP");
+
+    local iconSize = select(2, row.TitleLabel:GetFont());
+    row.Icon:SetHeight(iconSize);
+    row.Icon:SetWidth(iconSize);
+    row.Icon.Background:SetHeight(iconSize);
+    row.Icon.Background:SetWidth(iconSize);
+    row.Icon.Border:SetHeight(iconSize);
+    row.Icon.Border:SetWidth(iconSize);
+
+    row.TitleLabel:SetPoint("LEFT", row.Icon, "RIGHT", 4, 0);
+
+    row.SubTitleLabel = row:CreateFontString(nil, "ARTWORK", "GameFontNormal");
+    row.SubTitleLabel:SetJustifyH("LEFT");
+    row.SubTitleLabel:SetPoint("TOPLEFT", row.TitleLabel, "BOTTOMLEFT", -8, 6);
+
+    row.Background = row:CreateTexture(nil, "BACKGROUND");
+    row.Background:SetPoint("LEFT", 4, 0);
+    row.Background:SetPoint("BOTTOM");
+    row.Background:SetPoint("RIGHT");
+    row.Background:SetPoint("TOP");
+    row.Background:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight");
+end
+local function PopulateRow(window, data, rowInd, indent)
+    -- TODO: Populate the row container with the given data
+    local row = window.Container.Rows[rowInd];
+
+    row:SetPoint("LEFT", window.Container, "LEFT", indent * 8, 0);
+
+    row.Icon:SetTexture(data.icon);
+    row.TitleLabel:SetText(data.title);
+
+    if data.subtitle then
+        row:SetHeight(select(2, row.TitleLabel:GetFont()) + select(2, row.SubTitleLabel:GetFont()) + 10);
+        row.SubTitleLabel:SetText(data.subtitle);
+    else
+        row:SetHeight(select(2, row.TitleLabel:GetFont()) + 4);
+        row.SubTitleLabel:Hide();
+    end
+end
+local function CreateOrRefreshRow(window, data, rowInd, indent)
+    if #window.Container.Rows < rowInd then
+        CreateRow(window);
+    end
+
+    PopulateRow(window, data, rowInd, indent);
+    rowInd = rowInd + 1;
+
+    for i,dataChild in ipairs(data.children) do
+        rowInd = CreateOrRefreshRow(window, dataChild, rowInd, indent + 1);
+    end
+
+    return rowInd;
+end
 local function RefreshWorldQuestTrackerFrame(self)
-    -- TODO: Create elements for the data and fill said data into the elements
+    local firstNonPopulatedIndex = CreateOrRefreshRow(self, self.data, 1, 0);
+
+    -- Hide every row after the last populated index.
+    for i = firstNonPopulatedIndex,#self.Container.Rows do
+        self.Container.Rows[i].Icon:Hide();
+        self.Container.Rows[i].TitleLabel:Hide();
+        self.Container.Rows[i].SubTitleLabel:Hide();
+        self.Container.Rows[i].Background:Hide();
+        self.Container.Rows[i]:Hide();
+    end
 end
 local function UpdateWorldQuestTrackerFrame(self)
     self.data = app.WorldQuestTracker:CreateWorldQuestData();
@@ -422,7 +521,7 @@ app.WorldQuestTracker.CreateWorldQuestTrackerFrame = function(suffix, parent)
     window.data = {
         ["title"] = L["TITLE"],
         ["subtitle"] = nil,
-        ["icon"] = "Interface\\Icons\\PetJournalPortrait",
+        ["icon"] = "Interface\\Icons\\INV_Misc_SeagullPet_01",
         ["visible"] = true,
         ["expanded"] = true,
         ["children"] = {}
@@ -466,7 +565,7 @@ app.WorldQuestTracker.CreateWorldQuestTrackerFrame = function(suffix, parent)
     container:SetPoint("RIGHT", scrollbar, "LEFT", 0, 0);
     container:SetPoint("BOTTOM", window, "BOTTOM", 0, 6);
     window.Container = container;
-    container.rows = {};
+    container.Rows = {};
     scrollbar:SetValue(1);
     container:Show();
 
@@ -479,6 +578,8 @@ end
 --[[
     General world quest tracker functions
 ]]
+
+-- Data -> put into its own file
 local app.WorldQuestTracker.QuestIds = {
     ["shadowlands"] = {
         61784, 61787, 61783, 61791, -- Bastion
@@ -516,7 +617,7 @@ app.WorldQuestTracker.AssembleExpansionData = function(self, expansion)
     return {
         ["title"] = L["WORLDQUESTTRACKER_" .. string.upper(expansion) .. "_TITLE"],
         ["subtitle"] = nil,
-        ["icon"] = L["WORLDQUESTTRACKER_" .. string.upper(expansion) .. "_ICON"], -- "Interface\\Icons\\PetJournalPortrait",
+        ["icon"] = L["WORLDQUESTTRACKER_" .. string.upper(expansion) .. "_ICON"],
         ["visible"] = true,
         ["expanded"] = true,
         ["children"] = {}
@@ -563,7 +664,7 @@ app.WorldQuestTracker.CreateWorldQuestData = function(self)
                 local rewardName, rewardIcon, rewardAmount, rewardQuality, _, rewardItemId, _
                     = GetQuestLogRewardInfo(1, questId);
 
-                if app.WorldQuestTracker.ShowReward(rewardItemId) then
+                if app.WorldQuestTracker:ShowReward(rewardItemId) then
                     local questData = app.WorldQuestTracker:AssembleQuestData(
                         name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
                     table.insert(expansionData.children, questData);
