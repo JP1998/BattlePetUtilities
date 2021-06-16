@@ -10,8 +10,8 @@ app.debug = false;
  --
 --]]
 
-app.print = function(self, ...)
-    print("[", L["TITLE"], "]: ", ...);
+app.print = function(self, msg, ...)
+    print(string.format("[%s]: %s", L["TITLE"], msg), ...);
 end
 app.log = function(self, msg, ...)
     if app.debug then

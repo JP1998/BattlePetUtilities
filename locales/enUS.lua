@@ -62,6 +62,28 @@ app.L = {
     ["OPTIONS_ITEM_BTS_AQUATIC"] = "Aquatic Battle-Training Stone";
     ["OPTIONS_ITEM_FBS_AQUATIC"] = "Flawless Aquatic Battle-Stone";
 
+    ["OPTIONS_ITEM_DUNGEON_REWARDS_HEADER"] = "Battle Pet Dungeon Rewards";
+    ["OPTIONS_ITEM_CELESTIAL_COIN"] = "Celestial Coins";
+    ["OPTIONS_ITEM_OLD_BOTTLE_CAP"] = "Old Bottle Cap";
+    ["OPTIONS_ITEM_PRISTINE_GIZMO"] = "Pristine Gizmo";
+    ["OPTIONS_ITEM_CLEANSED_REMAINS"] = "Cleansed Remains";
+    ["OPTIONS_ITEM_SHADOWY_GEMS"] = "Shadowy Gems";
+    ["OPTIONS_ITEM_DAMP_PET_SUPPLIES"] = "Damp Pet Supplies";
+
+    ["OPTIONS_ITEM_PETSUPPLIES_HEADER"] = "Pet Supply Bags";
+    ["OPTIONS_ITEM_GREATER_DARKMOON_PET_SUPPLIES"] = "Greater Darkmoon Pet Supplies";
+    ["OPTIONS_ITEM_DARKMOON_PET_SUPPLIES"] = "Darkmoon Pet Supplies";
+    ["OPTIONS_ITEM_PSPS_BURNING"] = "Pandaren Spirit Pet Supplies (Burning)";
+    ["OPTIONS_ITEM_PSPS_FLOWING"] = "Pandaren Spirit Pet Supplies (Flowing)";
+    ["OPTIONS_ITEM_PSPS_WHISPERING"] = "Pandaren Spirit Pet Supplies (Whispering)";
+    ["OPTIONS_ITEM_PSPS_THUNDERING"] = "Pandaren Spirit Pet Supplies (Thundering)";
+    ["OPTIONS_ITEM_SACK_OF_PET_SUPPLIES"] = "Sack of Pet Supplies";
+    ["OPTIONS_ITEM_BIG_BAG_OF_PET_SUPPLIES"] = "Big Bag of Pet Supplies";
+    ["OPTIONS_ITEM_TRAVELERS_PET_SUPPLIES"] = "Traveler's Pet Supplies";
+    ["OPTIONS_ITEM_LEPROUS_SACK_OF_PET_SUPPLIES"] = "Leprous Sack of Pet Supplies";
+    ["OPTIONS_ITEM_TORN_SACK_OF_PET_SUPPLIES"] = "Torn Sack of Pet Supplies";
+    ["OPTIONS_ITEM_FABLED_PANDAREN_PET_SUPPLIES"] = "Fabled Pandaren Pet Supplies";
+
     --[[
         Feature Strings
     ]]

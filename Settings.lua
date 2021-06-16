@@ -11,8 +11,14 @@ settings.ModifierKeys = { "None", "Shift", "Ctrl", "Alt" };
 settings:SetBackdrop({
     bgFile = "Interface/RAIDFRAME/UI-RaidFrame-GroupBg",
     edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-    tile = false, edgeSize = 16,
-    insets = { left = 4, right = 4, top = 4, bottom = 4 }
+    tile = false,
+    edgeSize = 16,
+    insets = {
+        left = 4,
+        right = 4,
+        top = 4,
+        bottom = 4
+    }
 });
 settings:SetBackdropColor(0, 0, 0, 1);
 InterfaceOptions_AddCategory(settings);
@@ -32,12 +38,15 @@ local SettingsBase = {
         ["Character"] = {},
         ["Items"] = {
             [86143]  = true, -- Battle Pet Bandage
+
             [163036] = true, -- Polished Pet Charms
             [116415] = true, -- Shiny Pet Charms
+
             [122457] = true, -- Ultimate Battle-Training Stone
             [98715]  = true, -- Marked Flawless Battle-Stone
             [127755] = true, -- Fel-Touched Battle-Training Stone
             [116429] = true, -- Flawless Battle-Training Stone
+
             [116374] = true, -- Beast Battle-Training Stone
             [92675]  = true, -- Flawless Beast Battle-Stone
             [116416] = true, -- Humanoid Battle-Training Stone
@@ -66,12 +75,15 @@ local SettingsBase = {
         ["PrintUnknownItem"] = true,
         ["Items"] = {
             [86143]  = true, -- Battle Pet Bandage
+
             [163036] = true, -- Polished Pet Charms
             [116415] = true, -- Shiny Pet Charms
+
             [122457] = true, -- Ultimate Battle-Training Stone
             [98715]  = true, -- Marked Flawless Battle-Stone
             [127755] = true, -- Fel-Touched Battle-Training Stone
             [116429] = true, -- Flawless Battle-Training Stone
+
             [116374] = true, -- Beast Battle-Training Stone
             [92675]  = true, -- Flawless Beast Battle-Stone
             [116416] = true, -- Humanoid Battle-Training Stone
@@ -91,7 +103,27 @@ local SettingsBase = {
             [116423] = true, -- Undead Battle-Training Stone
             [92681]  = true, -- Flawless Undead Battle-Stone
             [116424] = true, -- Aquatic Battle-Training Stone
-            [92679]  = true  -- Flawless Aquatic Battle-Stone
+            [92679]  = true, -- Flawless Aquatic Battle-Stone
+
+            [101529] = true, -- Celestial Coins
+            [151191] = true, -- Old Bottle Cap
+            [165835] = true, -- Pristine Gizmo
+            [169665] = true, -- Cleansed Remains
+            [174360] = true, -- Shadowy Gems
+            [143753] = true, -- Damp Pet Supplies
+
+            [116062] = true, -- Greater Darkmoon Pet Supplies
+            [91086]  = true, -- Darkmoon Pet Supplies
+            [93146]  = true, -- Pandaren Spirit Pet Supplies (Burning)
+            [93147]  = true, -- Pandaren Spirit Pet Supplies (Flowing)
+            [93148]  = true, -- Pandaren Spirit Pet Supplies (Whispering)
+            [93149]  = true, -- Pandaren Spirit Pet Supplies (Thundering)
+            [89125]  = true, -- Sack of Pet Supplies
+            [118697] = true, -- Big Bag of Pet Supplies
+            [122535] = true, -- Traveler's Pet Supplies
+            [151638] = true, -- Leprous Sack of Pet Supplies
+            [142447] = true, -- Torn Sack of Pet Supplies
+            [94207]  = true, -- Fabled Pandaren Pet Supplies
         }
     }
 };
@@ -388,6 +420,88 @@ local ITEMS_FAMILY_BS = {
         } -- [20]
     }
 };
+local ITEMS_DUNGEON_REWARDS = {
+    ["Title"] = L["OPTIONS_ITEM_DUNGEON_REWARDS_HEADER"],
+    ["Items"] = {
+        {
+            ["Name"] = L["OPTIONS_ITEM_CELESTIAL_COIN"],
+            ["ItemId"] = 101529
+        }, -- [1]
+        {
+            ["Name"] = L["OPTIONS_ITEM_OLD_BOTTLE_CAP"],
+            ["ItemId"] = 151191
+        }, -- [2]
+        {
+            ["Name"] = L["OPTIONS_ITEM_PRISTINE_GIZMO"],
+            ["ItemId"] = 165835
+        }, -- [3]
+        {
+            ["Name"] = L["OPTIONS_ITEM_CLEANSED_REMAINS"],
+            ["ItemId"] = 169665
+        }, -- [4]
+        {
+            ["Name"] = L["OPTIONS_ITEM_SHADOWY_GEMS"],
+            ["ItemId"] = 174360
+        }, -- [5]
+        {
+            ["Name"] = L["OPTIONS_ITEM_DAMP_PET_SUPPLIES"],
+            ["ItemId"] = 143753
+        }  -- [6]
+    }
+};
+local ITEMS_PET_SUPPLIES = {
+    ["Title"] = L["OPTIONS_ITEM_PETSUPPLIES_HEADER"],
+    ["Items"] = {
+        {
+            ["Name"] = L["OPTIONS_ITEM_GREATER_DARKMOON_PET_SUPPLIES"],
+            ["ItemId"] = 116062
+        }, -- [1]
+        {
+            ["Name"] = L["OPTIONS_ITEM_DARKMOON_PET_SUPPLIES"],
+            ["ItemId"] = 163036
+        }, -- [2]
+        {
+            ["Name"] = L["OPTIONS_ITEM_PSPS_BURNING"],
+            ["ItemId"] = 163036
+        }, -- [3]
+        {
+            ["Name"] = L["OPTIONS_ITEM_PSPS_FLOWING"],
+            ["ItemId"] = 163036
+        }, -- [4]
+        {
+            ["Name"] = L["OPTIONS_ITEM_PSPS_WHISPERING"],
+            ["ItemId"] = 163036
+        }, -- [5]
+        {
+            ["Name"] = L["OPTIONS_ITEM_PSPS_THUNDERING"],
+            ["ItemId"] = 163036
+        }, -- [6]
+        {
+            ["Name"] = L["OPTIONS_ITEM_SACK_OF_PET_SUPPLIES"],
+            ["ItemId"] = 163036
+        }, -- [7]
+        {
+            ["Name"] = L["OPTIONS_ITEM_BIG_BAG_OF_PET_SUPPLIES"],
+            ["ItemId"] = 163036
+        }, -- [8]
+        {
+            ["Name"] = L["OPTIONS_ITEM_TRAVELERS_PET_SUPPLIES"],
+            ["ItemId"] = 163036
+        }, -- [9]
+        {
+            ["Name"] = L["OPTIONS_ITEM_LEPROUS_SACK_OF_PET_SUPPLIES"],
+            ["ItemId"] = 163036
+        }, -- [10]
+        {
+            ["Name"] = L["OPTIONS_ITEM_TORN_SACK_OF_PET_SUPPLIES"],
+            ["ItemId"] = 163036
+        }, -- [11]
+        {
+            ["Name"] = L["OPTIONS_ITEM_FABLED_PANDAREN_PET_SUPPLIES"],
+            ["ItemId"] = 116415
+        } -- [12]
+    }
+};
 
 local f = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 f:SetPoint("TOPLEFT", settings, "TOPLEFT", 12, -12);
@@ -464,7 +578,9 @@ local line;
         ITEMS_GENERAL,
         ITEMS_PET_CHARMS,
         ITEMS_GENERAL_BS,
-        ITEMS_FAMILY_BS
+        ITEMS_FAMILY_BS,
+        ITEMS_DUNGEON_REWARDS,
+        ITEMS_PET_SUPPLIES
     }, settings.SetWorldQuestTrackerItem, settings.GetWorldQuestTrackerItem);
 end)();
 
