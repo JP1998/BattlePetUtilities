@@ -338,13 +338,13 @@ app.WorldQuestTracker.CreateWorldQuestData = function(self)
     };
 
 
-    for i,xpac in pairs(app.WorldQuestTracker.QuestData.WorldQuests) do
+    for xpac,quests in pairs(app.WorldQuestTracker.QuestData.WorldQuests) do
         local expansionData = app.WorldQuestTracker:AssembleExpansionData(xpac);
         table.insert(data.children, expansionData);
 
-        for j,questId in pairs(app.WorldQuestTracker.QuestData.WorldQuests[xpac]) do
+        for i,questId in ipairs(quests) do
             if C_TaskQuest.IsActive(questId) then
-                local zoneName = C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(quest).name);
+                local zoneName = C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(questId)).name;
                 local name, _ = C_TaskQuest.GetQuestInfoByQuestID(questId);
 
                 local rewardName, rewardIcon, rewardAmount, rewardQuality, _, rewardItemId, _
