@@ -174,7 +174,7 @@ local function RefreshWorldQuestTrackerFrame(self)
     end
 end
 local function UpdateWorldQuestTrackerFrame(self)
-    self.data = app.WorldQuestTracker:CreateWorldQuestData();
+    self.data = app.WorldQuestTracker:CreateDisplayData();
     self:Refresh();
 end
 app.WorldQuestTracker.CreateWorldQuestTrackerFrame = function(suffix, parent)
@@ -277,6 +277,27 @@ end
     General world quest tracker functions
 ]]
 
+app.WorldQuestTracker.ShowReward = function(self, itemId)
+    local conf = app.Settings:Get("WorldQuestTrackerOptions");
+
+    if itemId == nil then
+        return conf.ShowNoItem;
+    elseif conf.Items[itemId] == nil then
+        app.WorldQuestTracker.UnknownItemsPrinted = app.WorldQuestTracker.UnknownItemsPrinted or {};
+
+        if conf.PrintUnknownItem and not app.WorldQuestTracker.UnknownItemsPrinted[key] then
+            app:print(string.format(
+                L["WORLDQUESTTRACKER_UNKNOWNITEM"],
+                app.createItemLink(C_Item.GetItemQualityByID(itemId), itemId, C_Item.GetItemNameByID(itemId))
+            ));
+            app.WorldQuestTracker.UnknownItemsPrinted[key] = true;
+        end
+
+        return conf.ShowUnknownItem;
+    else
+        return conf.Items[itemId];
+    end
+end
 app.WorldQuestTracker.AssembleExpansionData = function(self, expansion)
     return {
         ["title"] = L["WORLDQUESTTRACKER_" .. string.upper(expansion) .. "_TITLE"],
@@ -305,11 +326,12 @@ app.WorldQuestTracker.AssembleQuestData = function(self, questName, zoneName, re
 
     return data;
 end
+
 app.WorldQuestTracker.CreateWorldQuestData = function(self)
     local data = {
-        ["title"] = L["TITLE"],
+        ["title"] = L["WORLDQUESTTRACKER_WORLDQUEST_TITLE"],
         ["subtitle"] = nil,
-        ["icon"] = L["WORLDQUESTTRACKER_ROOT_ICON"],
+        ["icon"] = L["WORLDQUESTTRACKER_WORLDQUEST_ICON"],
         ["visible"] = true,
         ["expanded"] = true,
         ["children"] = {}
@@ -339,27 +361,146 @@ app.WorldQuestTracker.CreateWorldQuestData = function(self)
 
     return data;
 end
-app.WorldQuestTracker.ShowReward = function(self, itemId)
-    local conf = app.Settings:Get("WorldQuestTrackerOptions");
 
-    if itemId == nil then
-        return conf.ShowNoItem;
-    elseif conf.Items[itemId] == nil then
-        app.WorldQuestTracker.UnknownItemsPrinted = app.WorldQuestTracker.UnknownItemsPrinted or {};
-
-        if conf.PrintUnknownItem and not app.WorldQuestTracker.UnknownItemsPrinted[key] then
-            app:print(string.format(
-                L["WORLDQUESTTRACKER_UNKNOWNITEM"],
-                app.createItemLink(C_Item.GetItemQualityByID(itemId), itemId, C_Item.GetItemNameByID(itemId))
-            ));
-            app.WorldQuestTracker.UnknownItemsPrinted[key] = true;
-        end
-
-        return conf.ShowUnknownItem;
+--[[
+    This method returns the opposite faction of whose (english) name
+    was given. Anything but a (english) faction (i.e. anything but
+    "Alliance", "Horde" or "Neutral") will result in nil being returned.
+]]
+local function GetOppositeFaction(faction)
+    if faction == "Neutral" then
+        return "Neutral";
+    elseif faction == "Alliance" then
+        return "Horde";
     else
-        return conf.Items[itemId];
+        return "Alliance";
     end
 end
+--[[
+    This method attempts to retrieve the most sensible quest giver for
+    the current character, according to their faction.
+]]
+local function GetQuestGiver(quest)
+    local faction, _ = UnitFactionGroup("player");
+
+    if quest.questgiver[faction] then
+        return quest.questgiver[faction];
+    elseif quest.questgiver["Neutral"] then
+        return quest.questgiver["Neutral"];
+    else
+        return quest.questgiver[GetOppositeFaction(faction)];
+    end
+end
+
+app.WorldQuestTracker.CreateRepeatableQuestData = function(self)
+    local data = {
+        ["title"] = L["WORLDQUESTTRACKER_REPEATABLEQUEST_TITLE"],
+        ["subtitle"] = nil,
+        ["icon"] = L["WORLDQUESTTRACKER_REPEATABLEQUEST_ICON"],
+        ["visible"] = true,
+        ["expanded"] = true,
+        ["children"] = {}
+    };
+
+    for xpac,quests in pairs(app.WorldQuestTracker.QuestData.RepeatableQuests) do
+        local expansionData = app.WorldQuestTracker:AssembleExpansionData(xpac);
+        table.insert(data.children, expansionData);
+
+        for i,quest in ipairs(quests) do
+            if not C_QuestLog.IsQuestFlaggedCompleted(quest.questId) then
+                local rewardItemId = nil;
+                local rewardAmount = 0;
+                local found = false;
+
+                for i = 1,#quest.rewards do
+                    if quest.rewards[i].itemId and app.WorldQuestTracker:ShowReward(quest.rewards[i].itemId) then
+                        rewardItemId = quest.rewards[i].itemId;
+                        rewardAmount = quest.rewards[i].amount;
+                        found = true;
+                        break;
+                    end
+                end
+
+                if app.WorldQuestTracker:ShowReward(rewardItemId) then
+                    -- TODO: Add setting to hide quests for the other faction (?)
+                    local name;
+                    if quest.faction ~= "Neutral" then
+                        name = string.format(L["WORLDQUESTTRACKER_FACTION_ICON"], quest.faction, quest.name);
+                    else
+                        name = quest.name;
+                    end
+
+                    local zoneName = C_Map.GetMapInfo(GetQuestGiver(quest).zoneId).name;
+
+                    local rewardName;
+                    local rewardIcon;
+                    local rewardQuality;
+
+                    if rewardItemId then
+                        rewardName = C_Item.GetItemNameByID(rewardItemId);
+                        rewardIcon = C_Item.GetItemIconByID(rewardItemId);
+                        rewardQuality = C_Item.GetItemQualityByID(rewardItemId);
+                    end
+
+                    local questdata = app.WorldQuestTracker:AssembleQuestData(
+                        name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
+                    table.insert(expansionData.children, questData);
+                end
+            end
+        end
+    end
+
+    return data;
+end
+
+--[[
+    (boolean) function({ ["children"] = { ... } })
+
+    This function truncates any groups within the given data, if
+    they are empty or only contain empty groups.
+
+    Any data (tables that do not contain a `children` fiels) and
+    their parents will be preserved.
+]]
+local function truncateEmptyGroups(data)
+    if data.children then
+        local truncatable = true;
+
+        for i,child in ipairs(data.children) do
+            local truncate = truncateEmptyGroups(child);
+
+            if truncate then
+                table.remove(data.children, i);
+            end
+            
+            -- Groups are only truncatable if they're either empty
+            -- or only contain empty groups (which in turn will be truncated)
+            truncatable = truncatable and truncate;
+        end
+
+        return truncatable;
+    else
+        return false; -- data is not truncatable
+    end
+end
+app.WorldQuestTracker.CreateDisplayData = function(self)
+    local root = {
+        ["title"] = L["TITLE"],
+        ["subtitle"] = nil,
+        ["icon"] = L["WORLDQUESTTRACKER_ROOT_ICON"],
+        ["visible"] = true,
+        ["expanded"] = true,
+        ["children"] = {}
+    };
+
+    table.insert(root.children, app.WorldQuestTracker:CreateWorldQuestData());
+    table.insert(root.children, app.WorldQuestTracker:CreateRepeatableQuestData());
+
+    truncateEmptyGroups(root.children);
+
+    return root;
+end
+
 app.WorldQuestTracker.UpdateWorldQuestDisplay = function(self)
     app:log("Updated your world quest display :)");
     app.WorldQuestTracker.GetWindow("WorldQuestTracker"):Update();

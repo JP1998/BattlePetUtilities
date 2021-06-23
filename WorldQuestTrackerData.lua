@@ -12,9 +12,9 @@ local QuestTypes = {
 };
 
 local Factions = {
-    ["alliance"] = "alliance",
-    ["horde"] = "horde",
-    ["neutral"] = "neutral"
+    ["Alliance"] = "Alliance",
+    ["Horde"] = "Horde",
+    ["Neutral"] = "Neutral"
 };
 
 local ZoneIds = {
@@ -131,13 +131,13 @@ local function GenericQuestGiver(name, questgiver)
                                     -- and returning a multival would cut off the second return value.
 end
 local function NeutralQuestGiver(questgiver)
-    return GenericQuestGiver(Factions.neutral, questgiver);
+    return GenericQuestGiver(Factions.Neutral, questgiver);
 end
 local function AllianceQuestGiver(questgiver)
-    return GenericQuestGiver(Factions.alliance, questgiver);
+    return GenericQuestGiver(Factions.Alliance, questgiver);
 end
 local function HordeQuestGiver(questgiver)
-    return GenericQuestGiver(Factions.horde, questgiver);
+    return GenericQuestGiver(Factions.Horde, questgiver);
 end
 local function QuestGiverTable( ... )
     local args = { ... };
@@ -292,7 +292,7 @@ app.WorldQuestTracker.QuestData = {
             49057, 49056, 49054, 49058, 49053, 49055, -- Antoran Wastes
         },
     },
-    ["RepeatableQuests"] = { -- TODO: Localize names
+    ["RepeatableQuests"] = {
         ["dungeons"] = {
             Quest(L["QUESTDATA_QUESTNAME_THE_CELESTIAL_TOURNAMENT"],                33137,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Master_Li)),                                                          ItemReward(101529, 1), CurrencyReward(777, 1000)), -- [1]
             Quest(L["QUESTDATA_QUESTNAME_PET_BATTLE_CHALLENGE_WAILING_CAVERNS"],    45539,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Muyani)),                                                             ItemReward(143753, 1)), -- [2]
@@ -305,7 +305,7 @@ app.WorldQuestTracker.QuestData = {
             Quest(L["QUESTDATA_QUESTNAME_DARKMOON_PET_BATTLE"],                     32175,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Jeremy_Feasel)),                                                      ItemReward(91086, 1)), -- [1]
             Quest(L["QUESTDATA_QUESTNAME_A_NEW_DARKMOON_CHALLENGER"],               36471,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Christoph_VonFeasel)),                                                ItemReward(116062, 1)), -- [2]
         },
-        -- are there no BfA/SL dailies?
+        -- TODO: Investigate whether there really are no BfA/SL dailies
         ["legion"] = {
             Quest(L["QUESTDATA_QUESTNAME_SHIPWRECKED_CAPTIVE"],                     40310,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Shipwrecked_Captive)),                                                ItemReward(116415, 4)), -- [1]
         },
@@ -324,7 +324,7 @@ app.WorldQuestTracker.QuestData = {
             Quest(L["QUESTDATA_QUESTNAME_TARR_THE_TERRIBLE"],                       37206,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Tarr_the_Terrible)),                                                  ItemReward(116415, 2)), -- [12]
             Quest(L["QUESTDATA_QUESTNAME_GARGRA"],                                  37205,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Gargra)),                                                             ItemReward(116415, 2)), -- [13]
         },
-        ["pandaria"] = {
+        ["mistsofpandaria"] = {
             Quest(L["QUESTDATA_QUESTNAME_BEASTS_OF_FABLE_BOOK_I"],                  32604,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(HordeQuestGiver(QuestGivers.Gentle_San), AllianceQuestGiver(QuestGivers.Sara_Finkleswitch)),        ItemReward(94207, 1)), -- [1]
             Quest(L["QUESTDATA_QUESTNAME_BEASTS_OF_FABLE_BOOK_II"],                 32868,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(HordeQuestGiver(QuestGivers.Gentle_San), AllianceQuestGiver(QuestGivers.Sara_Finkleswitch)),        ItemReward(94207, 1)), -- [2]
             Quest(L["QUESTDATA_QUESTNAME_BEASTS_OF_FABLE_BOOK_III"],                32869,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(HordeQuestGiver(QuestGivers.Gentle_San), AllianceQuestGiver(QuestGivers.Sara_Finkleswitch)),        ItemReward(94207, 1)), -- [3]
@@ -362,7 +362,7 @@ app.WorldQuestTracker.QuestData = {
             Quest(L["QUESTDATA_QUESTNAME_NARROK"],                                  31924,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Narrok))), -- [5]
         },
         ["classic"] = {
-            -- Investigate the validity of the faction
+            -- TODO: Investigate the validity of the faction
             Quest(L["QUESTDATA_QUESTNAME_BERTS_BOTS"],                              47895,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Environeer_Bert)),                                                    ItemReward(151638, 1)), -- [1]
             Quest(L["QUESTDATA_QUESTNAME_CRYSAS_FLYERS"],                           45083,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Crysa)),                                                              ItemReward(142447, 1)), -- [2]
             Quest(L["QUESTDATA_QUESTNAME_GRAND_MASTER_TRIXXY"],                     31909,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Stone_Cold_Trixxy)),                                                  ItemReward(89125, 1)), -- [3]
