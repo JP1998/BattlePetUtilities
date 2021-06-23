@@ -73,7 +73,6 @@ end
     Functions for the world quest tracker window
 ]]
 local function CreateRow(window)
-    -- TODO: Create a simple row container and stuff
     local row = CreateFrame("Button", nil, window.Container);
     row.index = #window.Container.Rows;
     if row.index == 0 then
@@ -98,7 +97,6 @@ local function CreateRow(window)
     row.Icon = row:CreateTexture(nil, "ARTWORK");
     row.Icon:SetPoint("LEFT");
     row.Icon:SetPoint("TOP");
-    -- TODO: Possibly need a background/border for the icon:
     row.Icon.Background = row:CreateTexture(nil, "BACKGROUND");
     row.Icon.Background:SetPoint("LEFT");
     row.Icon.Background:SetPoint("TOP");
@@ -132,7 +130,6 @@ local function CreateRow(window)
     row.Background:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight");
 end
 local function PopulateRow(window, data, rowInd, indent)
-    -- TODO: Populate the row container with the given data
     local row = window.Container.Rows[rowInd];
 
     row:SetPoint("LEFT", window.Container, "LEFT", indent * 8, 0);
@@ -156,8 +153,10 @@ local function CreateOrRefreshRow(window, data, rowInd, indent)
     PopulateRow(window, data, rowInd, indent);
     rowInd = rowInd + 1;
 
-    for i,dataChild in ipairs(data.children) do
-        rowInd = CreateOrRefreshRow(window, dataChild, rowInd, indent + 1);
+    if data.children then
+        for i,dataChild in ipairs(data.children) do
+            rowInd = CreateOrRefreshRow(window, dataChild, rowInd, indent + 1);
+        end
     end
 
     return rowInd;
