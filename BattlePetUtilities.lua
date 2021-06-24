@@ -166,8 +166,12 @@ end
 
 createSlashCommand(bpwqt_slashhandler, "BattlePetUtilities", "/battlepetutilities", "/battlepetutil", "/bpu");
 
-app:RegisterEvent("VARIABLES_LOADED");
-app.events.VARIABLES_LOADED = function()
+app:RegisterEvent("ADDON_LOADED");
+app.events.ADDON_LOADED = function(addon)
+    if addon ~= app:GetName() then
+        return;
+    end
+
     app.Version = GetAddOnMetadata(app:GetName(), "Version");
     app.Settings:Initialize();
 end

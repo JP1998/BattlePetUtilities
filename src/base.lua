@@ -3,7 +3,7 @@ local name, app = ...;
 function app:GetName()
     return name;
 end
-_G["BattlePetUtilities"] = app;
+_G[name] = app;
 
 -- Create an Event Processor.
 local events = {};
