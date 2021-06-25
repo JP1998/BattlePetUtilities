@@ -274,6 +274,70 @@ app.WorldQuestTracker.CreateWorldQuestTrackerFrame = function(suffix, parent)
 end
 
 --[[
+    Utility functions for creating and maintaining quest data
+]]
+
+--[[
+    This method returns the opposite faction of whose (english) name
+    was given. Anything but a (english) faction (i.e. anything but
+    "Alliance", "Horde" or "Neutral") will result in nil being returned.
+]]
+local function GetOppositeFaction(faction)
+    if faction == "Neutral" then
+        return "Neutral";
+    elseif faction == "Alliance" then
+        return "Horde";
+    else
+        return "Alliance";
+    end
+end
+--[[
+    This method attempts to retrieve the most sensible quest giver for
+    the current character, according to their faction.
+]]
+local function GetQuestGiver(quest)
+    local faction, _ = UnitFactionGroup("player");
+
+    if quest.questgiver[faction] then
+        return quest.questgiver[faction];
+    elseif quest.questgiver["Neutral"] then
+        return quest.questgiver["Neutral"];
+    else
+        return quest.questgiver[GetOppositeFaction(faction)];
+    end
+end
+--[[
+    (boolean) function({ ["children"] = { ... } })
+
+    This function truncates any groups within the given data, if
+    they are empty or only contain empty groups.
+
+    Any data (tables that do not contain a `children` fiels) and
+    their parents will be preserved.
+]]
+local function truncateEmptyGroups(data)
+    if data.children then
+        local truncatable = true;
+
+        for i,child in ipairs(data.children) do
+            local truncate = truncateEmptyGroups(child);
+
+            if truncate then
+                table.remove(data.children, i);
+            end
+            
+            -- Groups are only truncatable if they're either empty
+            -- or only contain empty groups (which in turn will be truncated)
+            truncatable = truncatable and truncate;
+        end
+
+        return truncatable;
+    else
+        return false; -- data is not truncatable
+    end
+end
+
+--[[
     General world quest tracker functions
 ]]
 
@@ -364,37 +428,6 @@ app.WorldQuestTracker.CreateWorldQuestData = function(self)
 
     return data;
 end
-
---[[
-    This method returns the opposite faction of whose (english) name
-    was given. Anything but a (english) faction (i.e. anything but
-    "Alliance", "Horde" or "Neutral") will result in nil being returned.
-]]
-local function GetOppositeFaction(faction)
-    if faction == "Neutral" then
-        return "Neutral";
-    elseif faction == "Alliance" then
-        return "Horde";
-    else
-        return "Alliance";
-    end
-end
---[[
-    This method attempts to retrieve the most sensible quest giver for
-    the current character, according to their faction.
-]]
-local function GetQuestGiver(quest)
-    local faction, _ = UnitFactionGroup("player");
-
-    if quest.questgiver[faction] then
-        return quest.questgiver[faction];
-    elseif quest.questgiver["Neutral"] then
-        return quest.questgiver["Neutral"];
-    else
-        return quest.questgiver[GetOppositeFaction(faction)];
-    end
-end
-
 app.WorldQuestTracker.CreateRepeatableQuestData = function(self)
     local data = {
         ["title"] = L["WORLDQUESTTRACKER_REPEATABLEQUEST_TITLE"],
@@ -459,37 +492,6 @@ app.WorldQuestTracker.CreateRepeatableQuestData = function(self)
 
     return data;
 end
-
---[[
-    (boolean) function({ ["children"] = { ... } })
-
-    This function truncates any groups within the given data, if
-    they are empty or only contain empty groups.
-
-    Any data (tables that do not contain a `children` fiels) and
-    their parents will be preserved.
-]]
-local function truncateEmptyGroups(data)
-    if data.children then
-        local truncatable = true;
-
-        for i,child in ipairs(data.children) do
-            local truncate = truncateEmptyGroups(child);
-
-            if truncate then
-                table.remove(data.children, i);
-            end
-            
-            -- Groups are only truncatable if they're either empty
-            -- or only contain empty groups (which in turn will be truncated)
-            truncatable = truncatable and truncate;
-        end
-
-        return truncatable;
-    else
-        return false; -- data is not truncatable
-    end
-end
 app.WorldQuestTracker.CreateDisplayData = function(self)
     local root = {
         ["title"] = L["TITLE"],
@@ -512,7 +514,6 @@ app.WorldQuestTracker.UpdateWorldQuestDisplay = function(self)
     app:log("Updated your world quest display :)");
     app.WorldQuestTracker.GetWindow("WorldQuestTracker"):Update();
 end
-
 
 app:RegisterEvent("QUEST_LOG_UPDATE");
 app.events.QUEST_LOG_UPDATE = function(...)
