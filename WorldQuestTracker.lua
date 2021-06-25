@@ -337,23 +337,26 @@ app.WorldQuestTracker.CreateWorldQuestData = function(self)
         ["children"] = {}
     };
 
+    for j,xpac in ipairs(self.QuestData.ExpansionOrder) do
+        if self.QuestData.WorldQuests[xpac]  then
+            local quests  = self.QuestData.WorldQuests[xpac];
 
-    for xpac,quests in pairs(app.WorldQuestTracker.QuestData.WorldQuests) do
-        local expansionData = app.WorldQuestTracker:AssembleExpansionData(xpac);
-        table.insert(data.children, expansionData);
+            local expansionData = self:AssembleExpansionData(xpac);
+            table.insert(data.children, expansionData);
 
-        for i,questId in ipairs(quests) do
-            if C_TaskQuest.IsActive(questId) then
-                local zoneName = C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(questId)).name;
-                local name, _ = C_TaskQuest.GetQuestInfoByQuestID(questId);
+            for i,questId in ipairs(quests) do
+                if C_TaskQuest.IsActive(questId) then
+                    local zoneName = C_Map.GetMapInfo(C_TaskQuest.GetQuestZoneID(questId)).name;
+                    local name, _ = C_TaskQuest.GetQuestInfoByQuestID(questId);
 
-                local rewardName, rewardIcon, rewardAmount, rewardQuality, _, rewardItemId, _
-                    = GetQuestLogRewardInfo(1, questId);
+                    local rewardName, rewardIcon, rewardAmount, rewardQuality, _, rewardItemId, _
+                        = GetQuestLogRewardInfo(1, questId);
 
-                if app.WorldQuestTracker:ShowReward(rewardItemId) then
-                    local questData = app.WorldQuestTracker:AssembleQuestData(
-                        name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
-                    table.insert(expansionData.children, questData);
+                    if app.WorldQuestTracker:ShowReward(rewardItemId) then
+                        local questData = self:AssembleQuestData(
+                            name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
+                        table.insert(expansionData.children, questData);
+                    end
                 end
             end
         end
@@ -402,49 +405,53 @@ app.WorldQuestTracker.CreateRepeatableQuestData = function(self)
         ["children"] = {}
     };
 
-    for xpac,quests in pairs(app.WorldQuestTracker.QuestData.RepeatableQuests) do
-        local expansionData = app.WorldQuestTracker:AssembleExpansionData(xpac);
-        table.insert(data.children, expansionData);
+    for j,xpac in ipairs(self.QuestData.ExpansionOrder) do
+        if self.QuestData.RepeatableQuests[xpac]  then
+            local quests  = self.QuestData.RepeatableQuests[xpac];
+        
+            local expansionData = self:AssembleExpansionData(xpac);
+            table.insert(data.children, expansionData);
 
-        for i,quest in ipairs(quests) do
-            if not C_QuestLog.IsQuestFlaggedCompleted(quest.questId) then
-                local rewardItemId = nil;
-                local rewardAmount = 0;
-                local found = false;
+            for i,quest in ipairs(quests) do
+                if not C_QuestLog.IsQuestFlaggedCompleted(quest.questId) then
+                    local rewardItemId = nil;
+                    local rewardAmount = 0;
+                    local found = false;
 
-                for i = 1,#quest.rewards do
-                    if quest.rewards[i].itemId and app.WorldQuestTracker:ShowReward(quest.rewards[i].itemId) then
-                        rewardItemId = quest.rewards[i].itemId;
-                        rewardAmount = quest.rewards[i].amount;
-                        found = true;
-                        break;
-                    end
-                end
-
-                if app.WorldQuestTracker:ShowReward(rewardItemId) then
-                    -- TODO: Add setting to hide quests for the other faction (?)
-                    local name;
-                    if quest.faction ~= "Neutral" then
-                        name = string.format(L["WORLDQUESTTRACKER_FACTION_ICON"], quest.faction, quest.name);
-                    else
-                        name = quest.name;
+                    for i = 1,#quest.rewards do
+                        if quest.rewards[i].itemId and self:ShowReward(quest.rewards[i].itemId) then
+                            rewardItemId = quest.rewards[i].itemId;
+                            rewardAmount = quest.rewards[i].amount;
+                            found = true;
+                            break;
+                        end
                     end
 
-                    local zoneName = C_Map.GetMapInfo(GetQuestGiver(quest).zoneId).name;
+                    if self:ShowReward(rewardItemId) then
+                        -- TODO: Add setting to hide quests for the other faction (?)
+                        local name;
+                        if quest.faction ~= "Neutral" then
+                            name = string.format(L["WORLDQUESTTRACKER_FACTION_ICON"], quest.faction, quest.name);
+                        else
+                            name = quest.name;
+                        end
 
-                    local rewardName;
-                    local rewardIcon;
-                    local rewardQuality;
+                        local zoneName = C_Map.GetMapInfo(GetQuestGiver(quest).zoneId).name;
 
-                    if rewardItemId then
-                        rewardName = C_Item.GetItemNameByID(rewardItemId);
-                        rewardIcon = C_Item.GetItemIconByID(rewardItemId);
-                        rewardQuality = C_Item.GetItemQualityByID(rewardItemId);
+                        local rewardName;
+                        local rewardIcon;
+                        local rewardQuality;
+
+                        if rewardItemId then
+                            rewardName = C_Item.GetItemNameByID(rewardItemId);
+                            rewardIcon = C_Item.GetItemIconByID(rewardItemId);
+                            rewardQuality = C_Item.GetItemQualityByID(rewardItemId);
+                        end
+
+                        local questdata = self:AssembleQuestData(
+                            name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
+                        table.insert(expansionData.children, questData);
                     end
-
-                    local questdata = app.WorldQuestTracker:AssembleQuestData(
-                        name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
-                    table.insert(expansionData.children, questData);
                 end
             end
         end
@@ -493,8 +500,8 @@ app.WorldQuestTracker.CreateDisplayData = function(self)
         ["children"] = {}
     };
 
-    table.insert(root.children, app.WorldQuestTracker:CreateWorldQuestData());
-    table.insert(root.children, app.WorldQuestTracker:CreateRepeatableQuestData());
+    table.insert(root.children, self:CreateWorldQuestData());
+    table.insert(root.children, self:CreateRepeatableQuestData());
 
     truncateEmptyGroups(root.children);
 

@@ -260,6 +260,19 @@ local QuestGivers = {
 };
 
 app.WorldQuestTracker.QuestData = {
+    ["ExpansionOrder"] = {
+        "dungeons",
+        "darkmoonfaire",
+        "shadowlands",
+        "battleforazeroth",
+        "legion",
+        "warlordsofdraenor",
+        "mistsofpandaria",
+        "cataclysm",
+        "wrathofthelichking",
+        "theburningcrusade",
+        "classic"
+    },
     ["WorldQuests"] = {
         ["shadowlands"] = {
             61784, 61787, 61783, 61791, -- Bastion
