@@ -257,6 +257,7 @@ local QuestGivers = {
     ["Everessa"]                    = QuestGiver(L["QUESTDATA_QUESTGIVERS_EVERESSA"],                    ZoneIds.Swamp_of_Sorrow,            Location(76.6, 41.4)),
     ["Deiza_Plaguehorn"]            = QuestGiver(L["QUESTDATA_QUESTGIVERS_DEIZA_PLAGUEHORN"],            ZoneIds.Eastern_Plaguelands,        Location(67, 52.4)),
     ["Lindsay"]                     = QuestGiver(L["QUESTDATA_QUESTGIVERS_LINDSAY"],                     ZoneIds.Redridge_Mountains,         Location(33.2, 52.6)),
+    ["Anthea"]                      = QuestGiver(L["QUESTDATA_QUESTGIVERS_ANTHEA"],                      ZoneIds.Kun_Lai_Summit,             Location(70.4, 51.2)),
 };
 
 app.WorldQuestTracker.QuestData = {
@@ -306,6 +307,12 @@ app.WorldQuestTracker.QuestData = {
         },
     },
     ["RepeatableQuests"] = {
+        --[[
+            Currently quests are sorted into expansions by their zone's expansion,
+            not by the date/time they were introduced to the game.
+            We could change that, or even allow this to be an option in the settings,
+            although for now this solution seems the most reasonable to me.
+        ]]
         ["dungeons"] = {
             Quest(L["QUESTDATA_QUESTNAME_THE_CELESTIAL_TOURNAMENT"],                33137,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Master_Li)),                                                          ItemReward(101529, 1), CurrencyReward(777, 1000)), -- [1]
             Quest(L["QUESTDATA_QUESTNAME_PET_BATTLE_CHALLENGE_WAILING_CAVERNS"],    45539,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Muyani)),                                                             ItemReward(143753, 1)), -- [2]
@@ -353,6 +360,7 @@ app.WorldQuestTracker.QuestData = {
             Quest(L["QUESTDATA_QUESTNAME_WHISPERING_PANDAREN_SPIRIT"],              32440,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Whispering_Pandaren_Spirit)),                                         ItemReward(93148, 1)), -- [13]
             Quest(L["QUESTDATA_QUESTNAME_FLOWING_PANDAREN_SPIRIT"],                 32439,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Flowing_Pandaren_Spirit)),                                            ItemReward(93147, 1)), -- [14]
             Quest(L["QUESTDATA_QUESTNAME_LITTLE_TOMMY_NEWCOMER"],                   33222,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Little_Tommy_Newcomer)),                                              CurrencyReward(777, 500)), -- [15]
+            Quest(L["QUESTDATA_QUESTNAME_TEMPLE_THROWDOWN"],                        63435,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Anthea)),                                                             ItemReward(184866, 1)), -- [16]
         },
         ["cataclysm"] = {
             Quest(L["QUESTDATA_QUESTNAME_BROK"],                                    31972,  QuestTypes.daily,   Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Brok))), -- [1]

@@ -83,6 +83,7 @@ app.L = {
     ["OPTIONS_ITEM_LEPROUS_SACK_OF_PET_SUPPLIES"] = "Leprous Sack of Pet Supplies";
     ["OPTIONS_ITEM_TORN_SACK_OF_PET_SUPPLIES"] = "Torn Sack of Pet Supplies";
     ["OPTIONS_ITEM_FABLED_PANDAREN_PET_SUPPLIES"] = "Fabled Pandaren Pet Supplies";
+    ["OPTIONS_ITEM_GRUMMLEPOUCH"] = "Grummlepouch";
 
     --[[
         Quest Data Strings
@@ -162,6 +163,7 @@ app.L = {
     ["QUESTDATA_QUESTGIVERS_EVERESSA"] = "Everessa";
     ["QUESTDATA_QUESTGIVERS_DEIZA_PLAGUEHORN"] = "Deiza Plaguehorn";
     ["QUESTDATA_QUESTGIVERS_LINDSAY"] = "Lindsay";
+    ["QUESTDATA_QUESTGIVERS_ANTHEA"] = "Anthea";
 
     -- Quest Names
     ["QUESTDATA_QUESTNAME_THE_CELESTIAL_TOURNAMENT"] = "The Celestial Tournament";
@@ -239,6 +241,7 @@ app.L = {
     ["QUESTDATA_QUESTNAME_ZONYA_THE_SADIST"] = "Zonya the Sadist";
     ["QUESTDATA_QUESTNAME_EVERESSA"] = "Everessa";
     ["QUESTDATA_QUESTNAME_DEIZA_PLAGUEHORN"] = "Deiza Plaguehorn";
+    ["QUESTDATA_QUESTNAME_TEMPLE_THROWDOWN"] = "Temple Throwdown";
 
     --[[
         Feature Strings

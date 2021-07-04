@@ -124,6 +124,7 @@ local SettingsBase = {
             [151638] = true, -- Leprous Sack of Pet Supplies
             [142447] = true, -- Torn Sack of Pet Supplies
             [94207]  = true, -- Fabled Pandaren Pet Supplies
+            [184866] = true, -- Grummlepouch
         }
     }
 };
@@ -499,7 +500,11 @@ local ITEMS_PET_SUPPLIES = {
         {
             ["Name"] = L["OPTIONS_ITEM_FABLED_PANDAREN_PET_SUPPLIES"],
             ["ItemId"] = 116415
-        } -- [12]
+        }, -- [12]
+        {
+            ["Name"] = L["OPTIONS_ITEM_GRUMMLEPOUCH"],
+            ["ItemId"] = 184866
+        } -- [13]
     }
 };
 
