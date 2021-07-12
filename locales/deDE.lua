@@ -98,8 +98,6 @@ for key,value in pairs({
     ["QUESTDATA_QUESTGIVERS_MASTER_LI"] = "Meister Li";
     -- ["QUESTDATA_QUESTGIVERS_MUYANI"] = "Muyani";
     ["QUESTDATA_QUESTGIVERS_MARCUS_BAGMAN_BROWN"] = "Markus \"Taschmann\" Braun";
-    ["QUESTDATA_QUESTGIVERS_RADEK_FUSELOCK"] = "Radek Luntenschloss";
-    ["QUESTDATA_QUESTGIVERS_TIZZY_GEARJOLT"] = "Tizzy Kolbenschock";
     ["QUESTDATA_QUESTGIVERS_MICRO_ZOOX"] = "Mikrozoox";
     -- ["QUESTDATA_QUESTGIVERS_SEAN_WILKERS"] = "Sean Wilkers";
     -- ["QUESTDATA_QUESTGIVERS_JEREMY_FEASEL"] = "Jeremy Feasel";
@@ -170,6 +168,7 @@ for key,value in pairs({
     ["QUESTDATA_QUESTGIVERS_DEIZA_PLAGUEHORN"] = "Deiza Seuchenhorn";
     -- ["QUESTDATA_QUESTGIVERS_LINDSAY"] = "Lindsay";
     -- ["QUESTDATA_QUESTGIVERS_ANTHEA"] = "Anthea";
+    -- ["QUESTDATA_QUESTGIVERS_BURT_MACKLYN"] = "Burt Macklyn";
 
     -- Quest Names
     ["QUESTDATA_QUESTNAME_THE_CELESTIAL_TOURNAMENT"] = "Das Turnier der Erhabenen";

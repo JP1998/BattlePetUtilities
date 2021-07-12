@@ -20,11 +20,10 @@ local Factions = {
 local ZoneIds = {
     ["Ashenvale"]= 63, -- 1310 (?)
     ["Azsuna"] = 630, -- 1187 (?) probably not 867 (dungeon; ?)
-    ["Boralus"] = 1161,
+    ["Blackrock_Depths"] = 35,
     ["Burning_Steppes"] = 36, -- 1255 (?)
     ["Crystalsong_Forest"] = 127, -- 1405 (?)
     ["Darkmoon_Island"] = 407, -- 408 (dungeon; ?)
-    ["Dazaralor"] = 1165,
     ["Deadwind_Pass"] = 42, -- 1257 (?)
     ["Deepholm"] = 207,
     ["Desolace"] = 66, -- 1313 (?)
@@ -186,8 +185,6 @@ local QuestGivers = {
     ["Master_Li"]                   = QuestGiver(L["QUESTDATA_QUESTGIVERS_MASTER_LI"],                   ZoneIds.Timeless_Isle,              Location(34.8, 59.6)),
     ["Muyani"]                      = QuestGiver(L["QUESTDATA_QUESTGIVERS_MUYANI"],                      ZoneIds.Northern_Barrens,           Location(38.8, 68.2)),
     ["Marcus_Bagman_Brown"]         = QuestGiver(L["QUESTDATA_QUESTGIVERS_MARCUS_BAGMAN_BROWN"],         ZoneIds.Westfall,                   Location(41.4, 71.2)),
-    ["Radek_Fuselock"]              = QuestGiver(L["QUESTDATA_QUESTGIVERS_RADEK_FUSELOCK"],              ZoneIds.Dazaralor,                  Location(56.2, 31)),
-    ["Tizzy_Gearjolt"]              = QuestGiver(L["QUESTDATA_QUESTGIVERS_TIZZY_GEARJOLT"],              ZoneIds.Boralus,                    Location(50, 46.8)),
     ["Micro_Zoox"]                  = QuestGiver(L["QUESTDATA_QUESTGIVERS_MICRO_ZOOX"],                  ZoneIds.Dun_Morogh,                 Location(31.6, 71.2)),
     ["Sean_Wilkers"]                = QuestGiver(L["QUESTDATA_QUESTGIVERS_SEAN_WILKERS"],                ZoneIds.Eastern_Plaguelands,        Location(43.2, 20)),
     ["Jeremy_Feasel"]               = QuestGiver(L["QUESTDATA_QUESTGIVERS_JEREMY_FEASEL"],               ZoneIds.Darkmoon_Island,            Location(47.8, 62.4)),
@@ -258,6 +255,7 @@ local QuestGivers = {
     ["Deiza_Plaguehorn"]            = QuestGiver(L["QUESTDATA_QUESTGIVERS_DEIZA_PLAGUEHORN"],            ZoneIds.Eastern_Plaguelands,        Location(67, 52.4)),
     ["Lindsay"]                     = QuestGiver(L["QUESTDATA_QUESTGIVERS_LINDSAY"],                     ZoneIds.Redridge_Mountains,         Location(33.2, 52.6)),
     ["Anthea"]                      = QuestGiver(L["QUESTDATA_QUESTGIVERS_ANTHEA"],                      ZoneIds.Kun_Lai_Summit,             Location(70.4, 51.2)),
+    ["Burt_Macklyn"]                = QuestGiver(L["QUESTDATA_QUESTGIVERS_BURT_MACKLYN"],                ZoneIds.Blackrock_Depths,           Location(33.6, 23.2)),
 };
 
 app.WorldQuestTracker.QuestData = {
@@ -317,7 +315,7 @@ app.WorldQuestTracker.QuestData = {
             Quest(L["QUESTDATA_QUESTNAME_THE_CELESTIAL_TOURNAMENT"],                33137,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Master_Li)),                                                          ItemReward(101529, 1), CurrencyReward(777, 1000)), -- [1]
             Quest(L["QUESTDATA_QUESTNAME_PET_BATTLE_CHALLENGE_WAILING_CAVERNS"],    45539,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Muyani)),                                                             ItemReward(143753, 1)), -- [2]
             Quest(L["QUESTDATA_QUESTNAME_PET_BATTLE_CHALLENGE_DEADMINES"],          46292,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Marcus_Bagman_Brown)),                                                ItemReward(151191, 1)), -- [3]
-            Quest(L["QUESTDATA_QUESTNAME_PET_BATTLE_CHALLENGE_BLACKROCK_DEPTHS"],   58458,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(HordeQuestGiver(QuestGivers.Radek_Fuselock), AllianceQuestGiver(QuestGivers.Tizzy_Gearjolt)),       ItemReward(174360, 1)), -- [4]
+            Quest(L["QUESTDATA_QUESTNAME_PET_BATTLE_CHALLENGE_BLACKROCK_DEPTHS"],   58458,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Burt_Macklyn)),                                                       ItemReward(174360, 1)), -- [4]
             Quest(L["QUESTDATA_QUESTNAME_PET_BATTLE_CHALLENGE_GNOMEREGAN"],         54186,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Micro_Zoox)),                                                         ItemReward(165835, 1)), -- [5]
             Quest(L["QUESTDATA_QUESTNAME_PET_BATTLE_CHALLENGE_STRATHOLME"],         56492,  QuestTypes.weekly,  Factions.neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Sean_Wilkers)),                                                       ItemReward(169665, 1)), -- [6]
         },
