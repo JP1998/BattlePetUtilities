@@ -161,8 +161,7 @@ settings.Get = function(self, category, option)
     elseif option == nil then
         return BattlePetWorldQuestSettings and BattlePetWorldQuestSettings[category];
     elseif category == "MailerOptions" and option == "Character" then
-        local _, realm = UnitName("player");
-        realm = realm or GetRealmName();
+        local _, realm = UnitFullName("player");
 
         if BattlePetWorldQuestSettings then
             local character = BattlePetWorldQuestSettings[category][option][realm] or "";
@@ -185,8 +184,7 @@ settings.GetWorldQuestTrackerItem = function(self, itemId)
 end
 settings.Set = function(self, category, option, value)
     if category == "MailerOptions" and option == "Character" then
-        local _, realm = UnitName("player");
-        realm = realm or GetRealmName();
+        local _, realm = UnitFullName("player");
 
         if BattlePetWorldQuestSettings then
             BattlePetWorldQuestSettings[category][option][realm] = value;
