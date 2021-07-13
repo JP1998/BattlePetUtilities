@@ -261,41 +261,41 @@ app.L = {
     ["WORLDQUESTTRACKER_FACTION_ICON"] = "|TInterface\\FriendsFrame\\PlusManz-%s:0|t %s"; -- TODO: Possibly use Interface\\COMMON\\icon-%s (?)
 
     ["WORLDQUESTTRACKER_WORLDQUEST_TITLE"] = "World Quests";
-    ["WORLDQUESTTRACKER_WORLDQUEST_ICON"] = ""; -- TODO: Add icon
+    ["WORLDQUESTTRACKER_WORLDQUEST_ICON"] = "Interface\\BUTTONS\\AdventureGuideMicrobuttonAlert";
 
     ["WORLDQUESTTRACKER_REPEATABLEQUEST_TITLE"] = "Repeatable Quests";
-    ["WORLDQUESTTRACKER_REPEATABLEQUEST_ICON"] = ""; -- TODO: Add icon
+    ["WORLDQUESTTRACKER_REPEATABLEQUEST_ICON"] = "Interface\\GossipFrame\\DailyActiveQuestIcon";
 
     ["WORLDQUESTTRACKER_DUNGEONS_TITLE"] = "Battle Pet Dungeons";
-    ["WORLDQUESTTRACKER_DUNGEONS_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_DUNGEONS_ICON"] = "Interface\\MINIMAP\\Dungeon";
 
     ["WORLDQUESTTRACKER_DARKMOONFAIRE_TITLE"] = "Darkmoon Faire";
-    ["WORLDQUESTTRACKER_DARKMOONFAIRE_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_DARKMOONFAIRE_ICON"] = "Interface\\ICONS\\INV_MISC_Cape_DarkmoonFaire_C_01";
 
     ["WORLDQUESTTRACKER_SHADOWLANDS_TITLE"] = "Shadowlands";
-    ["WORLDQUESTTRACKER_SHADOWLANDS_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_SHADOWLANDS_ICON"] = "assets\\expansion-9-shadowlands";
 
     ["WORLDQUESTTRACKER_BATTLEFORAZEROTH_TITLE"] = "Battle for Azeroth";
-    ["WORLDQUESTTRACKER_BATTLEFORAZEROTH_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_BATTLEFORAZEROTH_ICON"] = "assets\\expansion-8-battleforazeroth";
 
     ["WORLDQUESTTRACKER_LEGION_TITLE"] = "Legion";
-    ["WORLDQUESTTRACKER_LEGION_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_LEGION_ICON"] = "assets\\expansion-7-legion";
 
     ["WORLDQUESTTRACKER_WARLORDSOFDRAENOR_TITLE"] = "Warlords of Draenor";
-    ["WORLDQUESTTRACKER_WARLORDSOFDRAENOR_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_WARLORDSOFDRAENOR_ICON"] = "assets\\expansion-6-warlordsofdraenor";
 
     ["WORLDQUESTTRACKER_MISTSOFPANDARIA_TITLE"] = "Mists of Pandaria";
-    ["WORLDQUESTTRACKER_MISTSOFPANDARIA_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_MISTSOFPANDARIA_ICON"] = "assets\\expansion-5-mistsofpandaria";
 
     ["WORLDQUESTTRACKER_CATACLYSM_TITLE"] = "Cataclysm";
-    ["WORLDQUESTTRACKER_CATACLYSM_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_CATACLYSM_ICON"] = "assets\\expansion-4-cataclysm";
 
     ["WORLDQUESTTRACKER_WRATHOFTHELICHKING_TITLE"] = "Wrath of the Lich King";
-    ["WORLDQUESTTRACKER_WRATHOFTHELICHKING_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_WRATHOFTHELICHKING_ICON"] = "assets\\expansion-3-wrathofthelichking";
 
     ["WORLDQUESTTRACKER_THEBURNINGCRUSADE_TITLE"] = "The Burning Crusade";
-    ["WORLDQUESTTRACKER_THEBURNINGCRUSADE_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_THEBURNINGCRUSADE_ICON"] = "assets\\expansion-2-theburningcrusade";
 
     ["WORLDQUESTTRACKER_CLASSIC_TITLE"] = "Classic";
-    ["WORLDQUESTTRACKER_CLASSIC_ICON"] = ""; -- TODO: Add icon!
+    ["WORLDQUESTTRACKER_CLASSIC_ICON"] = "assets\\expansion-1-classic";
 };
