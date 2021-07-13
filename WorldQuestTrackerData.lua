@@ -290,6 +290,8 @@ app.WorldQuestTracker.QuestData = {
             52923, 52938, 52937, 52892, -- Zuldazar
             52779, 52754, 52803, 52799, -- Nazmir
             52850, 52878, 52864, 52856, -- Vol'dun
+            56914, -- Stratholme Pet Dungeon
+            -- TODO: Perhaps Darkshore/Arathi have pet WQs (?)
         },
         ["legion"] = {
             46111, 46112, 46113, -- The Broken Shore
