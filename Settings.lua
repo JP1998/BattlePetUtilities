@@ -156,8 +156,9 @@ settings.Initialize = function(self)
 
     if not BattlePetWorldQuestSettings then
         BattlePetWorldQuestSettings = CopyTable(SettingsBase);
-        settings.Data = BattlePetWorldQuestSettings;
     end
+
+    settings.Data = BattlePetWorldQuestSettings;
 
     OnClickForTab(self.Frame.Tabs[1]);
     self.Frame:Refresh();
