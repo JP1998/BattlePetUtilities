@@ -174,7 +174,7 @@ local function RefreshWorldQuestTrackerFrame(self)
     end
 end
 local function UpdateWorldQuestTrackerFrame(self)
-    self.data = app.WorldQuestTracker:CreateDisplayData();
+    self.data = app.WorldQuestTracker:CreateDisplayData(self.data);
     self:Refresh();
 end
 app.WorldQuestTracker.CreateWorldQuestTrackerFrame = function(suffix, parent)
@@ -336,6 +336,38 @@ local function truncateEmptyGroups(data)
         return false; -- data is not truncatable
     end
 end
+--[[
+    function(table, table)
+
+    This function reapplies the meta data of the old data to the
+    new data given.
+]]
+local function reapplyMetaData(newData, oldData)
+    if not newData or not oldData then
+        return;
+    end
+
+    newData.visible = oldData.visible;
+    newData.expanded = oldData.expanded;
+
+    if newData.children then
+        for _,newSubData in pairs(newData.children) do
+            if newSubData.questId then
+                local oldSubData;
+
+                for _, searchedData in pairs(oldData.children) do
+                    if newSubData.questId == searchedData.questId then
+                        oldSubData = searchedData;
+                    end
+                end
+
+                reapplyMetaData(newSubData, oldSubData);
+            else
+                reapplyMetaData(newSubData, oldData.children[key]);
+            end
+        end
+    end
+end
 
 --[[
     General world quest tracker functions
@@ -372,8 +404,9 @@ app.WorldQuestTracker.AssembleExpansionData = function(self, expansion)
         ["children"] = {}
     };
 end
-app.WorldQuestTracker.AssembleQuestData = function(self, questName, zoneName, rewardItemIcon, rewardItemQuality, rewardItemId, rewardItemName, rewardItemAmount)
+app.WorldQuestTracker.AssembleQuestData = function(self, questId, questName, zoneName, rewardItemIcon, rewardItemQuality, rewardItemId, rewardItemName, rewardItemAmount)
     local data = {
+        ["questId"] = questId,
         ["title"] = string.format("%s (%s)", name, zoneName),
         ["visible"] = true,
         ["expanded"] = true,
@@ -418,7 +451,7 @@ app.WorldQuestTracker.CreateWorldQuestData = function(self)
 
                     if app.WorldQuestTracker:ShowReward(rewardItemId) then
                         local questData = self:AssembleQuestData(
-                            name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
+                            questId, name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
                         table.insert(expansionData.children, questData);
                     end
                 end
@@ -482,7 +515,7 @@ app.WorldQuestTracker.CreateRepeatableQuestData = function(self)
                         end
 
                         local questdata = self:AssembleQuestData(
-                            name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
+                            quest.questId, name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
                         table.insert(expansionData.children, questData);
                     end
                 end
@@ -492,7 +525,7 @@ app.WorldQuestTracker.CreateRepeatableQuestData = function(self)
 
     return data;
 end
-app.WorldQuestTracker.CreateDisplayData = function(self)
+app.WorldQuestTracker.CreateDisplayData = function(self, oldData)
     local root = {
         ["title"] = L["TITLE"],
         ["subtitle"] = nil,
@@ -506,6 +539,7 @@ app.WorldQuestTracker.CreateDisplayData = function(self)
     table.insert(root.children, self:CreateRepeatableQuestData());
 
     truncateEmptyGroups(root.children);
+    reapplyMetaData(root, oldData);
 
     return root;
 end
