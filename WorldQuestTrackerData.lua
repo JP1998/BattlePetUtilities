@@ -143,22 +143,12 @@ local function QuestGiverTable( ... )
 
     assert(#args > 0, "QuestGiverTable cannot be empty.");
 
-    local params = {};
+    local result = {};
 
     for i,v in pairs(args) do
         assert(type(v) == "table" and #v == 2, "Given Questgiver couldn't be assigned.");
 
-        for key,value in pairs(v) do
-            table.insert(params, value);
-        end
-    end
-
-    assert(#params % 2 == 0, "Not possible, making sure nonetheless.");
-
-    local result = {};
-
-    for i = 1,#params,2 do
-        result[params[i]] = params[i + 1];
+        result[v[1]] = v[2];
     end
 
     return result;
