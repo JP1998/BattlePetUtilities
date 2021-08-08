@@ -174,4 +174,5 @@ app.events.ADDON_LOADED = function(addon)
 
     app.Version = GetAddOnMetadata(app:GetName(), "Version");
     app.Settings:Initialize();
+    app.SquirtDayHelper:Initialize();
 end

@@ -14,3 +14,4 @@ BattlePetUtilities.lua
 ItemMailer.lua
 WorldQuestTracker.lua
 WorldQuestTrackerData.lua
+SquirtDayHelper.lua

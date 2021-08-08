@@ -132,6 +132,9 @@ local SettingsBase = {
             [94207]  = true, -- Fabled Pandaren Pet Supplies
             [184866] = true, -- Grummlepouch
         }
+    },
+    ["SquirtDayHelper"] = {
+        ["Enabled"] = false
     }
 };
 local OnClickForTab = function(self)
