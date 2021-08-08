@@ -178,8 +178,13 @@ sdh.ResolveConditional = function(self, conditionals)
 end
 
 sdh.UpdateDisplays = function(self)
-    -- TODO: Check for module being enabled before displaying anything
-    -- TODO: Check conditionals and display text accordingly
+    local settings = app.Settings:Get("SquirtDayHelper");
+
+    if settings.Enabled then
+        -- TODO: Evaluate values and show display accordingly
+    else
+        -- TODO: Disable/Hide the display
+    end
 end
 
 sdh.Initialize = function(self)
@@ -227,3 +232,13 @@ app.events.TOYS_UPDATED = function(e, itemId, isNew, hasFanfare)
     checkToys();
     sdh:UpdateDisplays();
 end
+app:RegisterUpdate("SquirtDayHelper", function(elapsed)
+    local UPDATE_THRESHOLD = 20; -- Update threshold in seconds
+    local currentTime = GetTime();
+
+    if not sdh.LastUpdate or sdh.LastUpdate >= currentTime - UPDATE_THRESHOLD then
+        sdh:UpdateDisplays();
+
+        sdh.LastUpdate = currentTime;
+    end
+end);
