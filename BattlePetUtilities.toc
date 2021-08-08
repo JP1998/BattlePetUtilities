@@ -2,7 +2,7 @@
 ## Interface: 90002
 ## Title: Battle Pet Utilities
 ## Name: Battle Pet Utilities
-## SavedVariables: BattlePetWorldQuestSettings
+## SavedVariables: BattlePetWorldQuestSettings, SquirtDayHelperPersistence
 ## Notes: Addon for tracking completion of currently active battle pet world quests on your characters.
 ## Version: 1.0.0
 src/base.lua

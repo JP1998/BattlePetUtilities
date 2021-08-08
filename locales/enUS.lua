@@ -298,4 +298,31 @@ app.L = {
 
     ["WORLDQUESTTRACKER_CLASSIC_TITLE"] = "Classic";
     ["WORLDQUESTTRACKER_CLASSIC_ICON"] = "assets\\expansion-1-classic";
+
+    -- Squirt Day Helper Strings
+    ["SDH_SUPER_SQUIRT_DAY"] = "|c%s|c%sToday|r is SUPER SQUIRT DAY!!!|r";
+    ["SDH_SQUIRT_DAY"] = "|c%s|c%sToday|r is squirt day!|r";
+    ["SDH_NEXT_SQUIRT"] = "|c%sNext squirt day is on |c%s%s, %s. %s|r.|r";
+    ["SDH_NOT_SUPPORTED"] = "|c%sYour region is sadly not supported.|r";
+    
+    ["WEEKDAY_2"] = "Monday";
+    ["WEEKDAY_3"] = "Tuesday";
+    ["WEEKDAY_4"] = "Wednesday";
+    ["WEEKDAY_5"] = "Thursday";
+    ["WEEKDAY_6"] = "Friday";
+    ["WEEKDAY_7"] = "Saturday";
+    ["WEEKDAY_1"] = "Sunday";
+    
+    ["MONTH_1"] = "January";
+    ["MONTH_2"] = "February";
+    ["MONTH_3"] = "March";
+    ["MONTH_4"] = "April";
+    ["MONTH_5"] = "May";
+    ["MONTH_6"] = "June";
+    ["MONTH_7"] = "July";
+    ["MONTH_8"] = "August";
+    ["MONTH_9"] = "September";
+    ["MONTH_10"] = "October";
+    ["MONTH_11"] = "November";
+    ["MONTH_12"] = "December";
 };

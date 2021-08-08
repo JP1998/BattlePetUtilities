@@ -304,5 +304,32 @@ for key,value in pairs({
     
     -- ["WORLDQUESTTRACKER_CLASSIC_TITLE"] = "Classic";
     -- ["WORLDQUESTTRACKER_CLASSIC_ICON"] = "";
+
+    -- Squirt Day Helper Strings
+    ["SDH_SUPER_SQUIRT_DAY"] = "|c%s|c%sHeute|r ist SUPER SQUIRT DAY!!!|r";
+    ["SDH_SQUIRT_DAY"] = "|c%s|c%sHeute|r ist squirt day!|r";
+    ["SDH_NEXT_SQUIRT"] = "|c%sDer nächste squirt day ist am |c%s%s, %s. %s|r.|r";
+    ["SDH_NOT_SUPPORTED"] = "|c%sDeine Region ist leider nicht unterstützt.|r";
+
+    ["WEEKDAY_2"] = "Montag";
+    ["WEEKDAY_3"] = "Dienstag";
+    ["WEEKDAY_4"] = "Mittwoch";
+    ["WEEKDAY_5"] = "Donnerstag";
+    ["WEEKDAY_6"] = "Freitag";
+    ["WEEKDAY_7"] = "Samstag";
+    ["WEEKDAY_1"] = "Sonntag";
+    
+    ["MONTH_1"] = "Januar";
+    ["MONTH_2"] = "Februar";
+    ["MONTH_3"] = "März";
+    ["MONTH_4"] = "April";
+    ["MONTH_5"] = "Mai";
+    ["MONTH_6"] = "Juni";
+    ["MONTH_7"] = "Juli";
+    ["MONTH_8"] = "August";
+    ["MONTH_9"] = "September";
+    ["MONTH_10"] = "Oktober";
+    ["MONTH_11"] = "November";
+    ["MONTH_12"] = "Dezember";
 })
 do L[key] = value; end
