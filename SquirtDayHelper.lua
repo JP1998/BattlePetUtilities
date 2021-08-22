@@ -194,6 +194,11 @@ sdh.UpdateDisplays = function(self)
     else
         -- TODO: Disable/Hide the display
     end
+
+    -- Store time in the actual update function, since
+    -- it might be updated by an event right before it would
+    -- have been updated anyways, making this more efficient
+    sdh.LastUpdate = currentTime;
 end
 
 sdh.Initialize = function(self)
@@ -237,7 +242,5 @@ app:RegisterUpdate("SquirtDayHelper", function(elapsed)
 
     if not sdh.LastUpdate or sdh.LastUpdate >= currentTime - UPDATE_THRESHOLD then
         sdh:UpdateDisplays();
-
-        sdh.LastUpdate = currentTime;
     end
 end);
