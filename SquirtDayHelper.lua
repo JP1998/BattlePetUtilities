@@ -64,6 +64,15 @@ local sdr_zones = {
     1708, -- Elysian Hold - Sanctum of Binding
 };
 
+local function isOneOf(value, validValues)
+    for _,v in ipairs(validValues) do
+        if value == v then
+            return true;
+        end
+    end
+
+    return false;
+end
 local function createDay(toConvert)
     local daydate = date("*t", toConvert);
     
@@ -130,12 +139,12 @@ local function createReminderText()
             [sdh.Conditionals.NO_SQUIRT_DAY]        = "SDH_NEXT_SQUIRT",
             [sdh.Conditionals.SQUIRT_DAY]           = "SDH_SQUIRT_DAY",
             [sdh.Conditionals.SUPER_SQUIRT_DAY]     = "SDH_SUPER_SQUIRT_DAY",
-        })], 
+        })],
         createColorString({ 255, 255, 255, 255 }), -- text color
         createColorString({ 255,   0,   0, 255 }), -- date color
         L["WEEKDAY_" .. squirtday.wday], -- week day (string)
         squirtday.day, -- month day (integer)
-        L["MONTH_" .. squirtday.month], -- month (string)
+        L["MONTH_" .. squirtday.month] -- month (string)
     );
 end
 
@@ -203,16 +212,6 @@ sdh.Initialize = function(self)
     checkToys();
 
     self:UpdateDisplays();
-end
-
-local function isOneOf(value, validValues)
-    for _,v in ipairs(validValues) do
-        if value == v then
-            return true;
-        end
-    end
-
-    return false;
 end
 
 app:RegisterEvent("ZONE_CHANGED");

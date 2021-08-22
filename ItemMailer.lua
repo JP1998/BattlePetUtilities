@@ -1,5 +1,6 @@
 
-local _,app = ...;
+local app = select(2, ...);
+local L = app.L;
 
 --[[
  --
@@ -85,7 +86,7 @@ app.Mailer.ResetScanner = function(self)
     self.Continuation = nil;
     self.SentMailCount = 0;
 end
-app.Mailer.ChechCharacterStatus = function(self, character)
+app.Mailer.CheckCharacterStatus = function(self, character)
     character = string.trim(character);
 
     if character == nil or character == "" then
@@ -102,7 +103,7 @@ app.Mailer.Enabled = function(self)
     local settings = app.Settings:Get("MailerOptions");
     local character = app.Settings:Get("MailerOptions", "Character");
 
-    return settings.Enabled and self.ChechCharacterStatus(character);
+    return settings.Enabled and self:CheckCharacterStatus(character);
 end
 
 app:RegisterEvent("MAIL_SHOW");
