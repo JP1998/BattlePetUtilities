@@ -211,7 +211,7 @@ sdh.UpdateDisplays = function(self)
             AssureHidden(sdh.Displays.SquirtDayHelper);
         end
 
-        if sdh.Location.AuraReminders then
+        if sdh.Location.AuraReminders and isSquirtDay() then
             if not sdh.Auras.PetTreats then
                 AssureShown(sdh.Displays.PetTreats);
             else
