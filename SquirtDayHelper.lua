@@ -171,15 +171,15 @@ sdh.ResolveConditional = function(self, conditionals)
                 
         if SquirtDayHelperPersistence[region] - offset == today then
             if sdh.Auras.BattlePetEvent then
-                value = conditional[2];
+                value = conditionals[c.SUPER_SQUIRT_DAY];
             else
-                value = conditional[1];
+                value = conditionals[c.SQUIRT_DAY];
             end
         else
-            value = conditional[0];
+            value = conditionals[c.NO_SQUIRT_DAY];
         end
     else
-        value = conditional[-1];
+        value = conditionals[c.REGION_NOT_SUPPORTED];
     end
     
     return value;
