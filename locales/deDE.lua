@@ -32,6 +32,10 @@ for key,value in pairs({
     ["OPTIONS_WORLDQUESTTRACKER_PRINT_UNKNOWN_ITEM"] = "Zeige (dem Addon) unbekannte Artikel-Belohnungen an";
     ["OPTIONS_WORLDQUESTTRACKER_ITEMS_HEADER"] = "Artikel, die angezeigt werden sollen";
 
+    -- Squirt Day Helper Options Strings
+    ["OPTIONS_SQUIRTDAYHELPER_HEADER"] = "Squirt Day Helfer";
+    ["OPTIONS_SQUIRTDAYHELPER_ENABLED_DESCRIPTION"] = "Aktiviere den Squirt Day Helfer";
+
     -- Item descriptions
     ["OPTIONS_ITEM_GENERAL_HEADER"] = "Allgemeine Kampfhaustier-Artikel";
     ["OPTIONS_ITEM_BATTLE_PET_BANDAGE"] = "Kampfhaustierbandage";

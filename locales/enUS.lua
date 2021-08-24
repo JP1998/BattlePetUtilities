@@ -26,6 +26,10 @@ app.L = {
     ["OPTIONS_WORLDQUESTTRACKER_PRINT_UNKNOWN_ITEM"] = "Print item rewards that are not recognized";
     ["OPTIONS_WORLDQUESTTRACKER_ITEMS_HEADER"] = "Items To Track";
 
+    -- Squirt Day Helper Options Strings
+    ["OPTIONS_SQUIRTDAYHELPER_HEADER"] = "Squirt Day Helper";
+    ["OPTIONS_SQUIRTDAYHELPER_ENABLED_DESCRIPTION"] = "Enable Squirt Day Helper";
+
     -- Item descriptions
     ["OPTIONS_ITEM_GENERAL_HEADER"] = "General Battle Pet Items";
     ["OPTIONS_ITEM_BATTLE_PET_BANDAGE"] = "Battle Pet Bandage";

@@ -659,3 +659,24 @@ end)();
         ITEMS_FAMILY_BS
     }, settings.SetMailerItem, settings.GetMailerItem);
 end)();
+
+(function()
+    local tab = settingsFrame:CreateTab(L["OPTIONS_SQUIRTDAYHELPER_HEADER"]);
+
+    local HeaderLabel = settingsFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    HeaderLabel:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 8, -8);
+    HeaderLabel:SetJustifyH("LEFT");
+    HeaderLabel:Show();
+    HeaderLabel:SetText(L["OPTIONS_SQUIRTDAYHELPER_HEADER"]);
+    table.insert(settingsFrame.MostRecentTab.objects, HeaderLabel);
+
+    local EnabledCheckBox = settingsFrame:CreateCheckBox(L["OPTIONS_SQUIRTDAYHELPER_ENABLED_DESCRIPTION"],
+            function(self) -- OnRefresh
+                self:SetChecked(settings:Get("SquirtDayHelper", "Enabled"));
+                app.SquirtDayHelper:UpdateDisplays();
+            end,
+            function(self) -- OnClick
+                settings:Set("SquirtDayHelper", "Enabled", self:GetChecked());
+            end);
+    EnabledCheckBox:SetPoint("TOPLEFT", HeaderLabel, "BOTTOMLEFT", 0, -8);
+end)();
