@@ -528,7 +528,7 @@ settingsFrame.title = f;
 f = settingsFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 f:SetPoint("TOPRIGHT", settingsFrame, "TOPRIGHT", -12, -12);
 f:SetJustifyH("RIGHT");
-f:SetText("v" .. GetAddOnMetadata("Battle Pet World Quest Tracker", "Version"));
+f:SetText("v" .. GetAddOnMetadata(app:GetName(), "Version"));
 f:Show();
 settingsFrame.version = f;
 

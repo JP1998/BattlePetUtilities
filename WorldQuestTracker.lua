@@ -352,7 +352,7 @@ local function reapplyMetaData(newData, oldData)
     newData.expanded = oldData.expanded;
 
     if newData.children then
-        for _,newSubData in pairs(newData.children) do
+        for key,newSubData in pairs(newData.children) do
             if newSubData.questId then
                 local oldSubData;
 
@@ -382,12 +382,12 @@ app.WorldQuestTracker.ShowReward = function(self, itemId)
     elseif conf.Items[itemId] == nil then
         app.WorldQuestTracker.UnknownItemsPrinted = app.WorldQuestTracker.UnknownItemsPrinted or {};
 
-        if conf.PrintUnknownItem and not app.WorldQuestTracker.UnknownItemsPrinted[key] then
+        if conf.PrintUnknownItem and not app.WorldQuestTracker.UnknownItemsPrinted[itemId] then
             app:print(string.format(
                 L["WORLDQUESTTRACKER_UNKNOWNITEM"],
                 app.createItemLink(C_Item.GetItemQualityByID(itemId), itemId, C_Item.GetItemNameByID(itemId))
             ));
-            app.WorldQuestTracker.UnknownItemsPrinted[key] = true;
+            app.WorldQuestTracker.UnknownItemsPrinted[itemId] = true;
         end
 
         return conf.ShowUnknownItem;
@@ -408,7 +408,7 @@ end
 app.WorldQuestTracker.AssembleQuestData = function(self, questId, questName, zoneName, rewardItemIcon, rewardItemQuality, rewardItemId, rewardItemName, rewardItemAmount)
     local data = {
         ["questId"] = questId,
-        ["title"] = string.format("%s (%s)", name, zoneName),
+        ["title"] = string.format("%s (%s)", questName, zoneName),
         ["visible"] = true,
         ["expanded"] = true,
         ["children"] = nil
@@ -416,7 +416,7 @@ app.WorldQuestTracker.AssembleQuestData = function(self, questId, questName, zon
 
     if rewardItemId then
         data["subtitle"] = string.format("%sx%s", app.createItemLink(rewardItemQuality, rewardItemId, rewardItemName), rewardItemAmount);
-        data["icon"] = rewardIcon;
+        data["icon"] = rewardItemIcon;
     else
         data["subtitle"] = nil;
         data["icon"] = L["WORLDQUESTTRACKER_DEFAULT_ICON"];
@@ -479,7 +479,7 @@ app.WorldQuestTracker.CreateRepeatableQuestData = function(self)
             local expansionData = self:AssembleExpansionData(xpac);
             table.insert(data.children, expansionData);
 
-            for i,quest in ipairs(quests) do
+            for _,quest in ipairs(quests) do
                 if not C_QuestLog.IsQuestFlaggedCompleted(quest.questId) then
                     local rewardItemId = nil;
                     local rewardAmount = 0;
@@ -517,7 +517,7 @@ app.WorldQuestTracker.CreateRepeatableQuestData = function(self)
 
                         local questdata = self:AssembleQuestData(
                             quest.questId, name, zoneName, rewardIcon, rewardQuality, rewardItemId, rewardName, rewardAmount);
-                        table.insert(expansionData.children, questData);
+                        table.insert(expansionData.children, questdata);
                     end
                 end
             end

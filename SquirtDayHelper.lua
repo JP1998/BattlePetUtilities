@@ -8,7 +8,7 @@ local sdh = app.SquirtDayHelper;
 
 sdh.Location = {};
 sdh.Location.SquirtDayHelper = false;
-sdh.Location.AuraReminders = false 
+sdh.Location.AuraReminders = false;
 
 sdh.Auras = {};
 sdh.Auras.BattlePetEvent = false;
@@ -131,6 +131,7 @@ local function isSquirtDay()
     });
 end
 local function createReminderText()
+    local region = GetCurrentRegion();
     local squirtday = date("*t", SquirtDayHelperPersistence[region]);
 
     return string.format(L[sdh:ResolveConditional({
@@ -234,7 +235,7 @@ sdh.UpdateDisplays = function(self)
     -- Store time in the actual update function, since
     -- it might be updated by an event right before it would
     -- have been updated anyways, making this more efficient
-    sdh.LastUpdate = currentTime;
+    sdh.LastUpdate = GetTime();
 end
 
 sdh.CreateDisplays = function(self)
