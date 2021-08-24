@@ -208,14 +208,23 @@ sdh.CreateDisplays = function(self)
 
     self.Displays.SquirtDayHelper = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
     self.Displays.SquirtDayHelper:SetPoint("CENTER", self.Displays.Frame, "CENTER", 0, 0);
+    self.Displays.SquirtDayHelper:SetFont("Fonts/FRIZQT__.TTF", 24, "THICKOUTLINE");
+    self.Displays.SquirtDayHelper:SetTextColor(1, 1, 1);
+    self.Displays.SquirtDayHelper:SetShadowColor(0, 0, 0);
 
     self.Displays.PetTreats = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
     self.Displays.PetTreats:SetPoint("CENTER", self.Displays.Frame, "CENTER", 0, -300);
     self.Displays.PetTreats:SetText(L["SDH_PET_TREAT"]);
+    self.Displays.PetTreats:SetFont("Fonts/FRIZQT__.TTF", 18, "THICKOUTLINE");
+    self.Displays.PetTreats:SetTextColor(1, 1, 1);
+    self.Displays.PetTreats:SetShadowColor(0, 0, 0);
 
     self.Displays.PetHat = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
     self.Displays.PetHat:SetPoint("CENTER", self.Displays.Frame, "CENTER", 0, -360);
     self.Displays.PetHat:SetText(L["SDH_PET_HAT"]);
+    self.Displays.PetHat:SetFont("Fonts/FRIZQT__.TTF", 18, "THICKOUTLINE");
+    self.Displays.PetHat:SetTextColor(1, 1, 1);
+    self.Displays.PetHat:SetShadowColor(0, 0, 0);
 end
 
 sdh.Initialize = function(self)
