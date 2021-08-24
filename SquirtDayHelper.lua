@@ -185,13 +185,50 @@ sdh.ResolveConditional = function(self, conditionals)
     return value;
 end
 
+local function AssureShown(display)
+    if not display:IsVisible() then
+        display:Show();
+    end
+end
+local function AssureHidden(display)
+    if display:IsVisible() then
+        display:Hide();
+    end
+end
+local function AssureAurasHidden(group)
+    AssureHidden(group.PetTreats);
+    AssureHidden(group.PetHat);
+end
+
 sdh.UpdateDisplays = function(self)
     local settings = app.Settings:Get("SquirtDayHelper");
 
     if settings.Enabled then
-        -- TODO: Evaluate values and show display accordingly
+        if sdh.Location.SquirtDayHelper then
+            sdh.Displays.SquirtDayHelper:SetText(createReminderText());
+            AssureShown(sdh.Displays.SquirtDayHelper);
+        else
+            AssureHidden(sdh.Displays.SquirtDayHelper);
+        end
+
+        if sdh.Location.AuraReminders then
+            if not sdh.Auras.PetTreats then
+                AssureShown(sdh.Displays.PetTreats);
+            else
+                AssureHidden(sdh.Displays.PetTreats);
+            end
+
+            if sdh.Toys.PetHat and not sdh.Auras.PetHat then
+                AssureShown(sdh.Displays.PetHat);
+            else
+                AssureHidden(sdh.Displays.PetHat);
+            end
+        else
+            AssureAurasHidden(self.Displays);
+        end
     else
-        -- TODO: Disable/Hide the display
+        AssureHidden(self.Displays.SquirtDayHelper);
+        AssureAurasHidden(self.Displays);
     end
 
     -- Store time in the actual update function, since
