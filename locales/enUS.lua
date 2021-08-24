@@ -304,6 +304,9 @@ app.L = {
     ["SDH_SQUIRT_DAY"] = "|c%s|c%sToday|r is squirt day!|r";
     ["SDH_NEXT_SQUIRT"] = "|c%sNext squirt day is on |c%s%s, %s. %s|r.|r";
     ["SDH_NOT_SUPPORTED"] = "|c%sYour region is sadly not supported.|r";
+
+    ["SDH_PET_TREAT"] = "Give your pets some treats!!";
+    ["SDH_PET_HAT"] = "Put on your hat!!";
     
     ["WEEKDAY_2"] = "Monday";
     ["WEEKDAY_3"] = "Tuesday";

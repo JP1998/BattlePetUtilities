@@ -1,6 +1,5 @@
 
-local _, app = ...;
-
+local app = select(2, ...);
 local L = app.L;
 
 app.SquirtDayHelper = {};
@@ -201,6 +200,24 @@ sdh.UpdateDisplays = function(self)
     sdh.LastUpdate = currentTime;
 end
 
+sdh.CreateDisplays = function(self)
+    self.Displays = {};
+
+    self.Displays.Frame = CreateFrame("FRAME", nil, UIParent);
+    self.Displays.Frame:SetPoint("CENTER", UIParent, "TOP", 0, 120);
+
+    self.Displays.SquirtDayHelper = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
+    self.Displays.SquirtDayHelper:SetPoint("CENTER", self.Displays.Frame, "CENTER", 0, 0);
+
+    self.Displays.PetTreats = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
+    self.Displays.PetTreats:SetPoint("CENTER", self.Displays.Frame, "CENTER", 0, -300);
+    self.Displays.PetTreats:SetText(L["SDH_PET_TREAT"]);
+
+    self.Displays.PetHat = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
+    self.Displays.PetHat:SetPoint("CENTER", self.Displays.Frame, "CENTER", 0, -360);
+    self.Displays.PetHat:SetText(L["SDH_PET_HAT"]);
+end
+
 sdh.Initialize = function(self)
     if not SquirtDayHelperPersistence then
         SquirtDayHelperPersistence = createNextSquirt({
@@ -215,6 +232,8 @@ sdh.Initialize = function(self)
     checkLocations();
     checkAuras();
     checkToys();
+
+    self:CreateDisplays();
 
     self:UpdateDisplays();
 end

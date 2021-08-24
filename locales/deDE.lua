@@ -311,6 +311,9 @@ for key,value in pairs({
     ["SDH_NEXT_SQUIRT"] = "|c%sDer nächste squirt day ist am |c%s%s, %s. %s|r.|r";
     ["SDH_NOT_SUPPORTED"] = "|c%sDeine Region ist leider nicht unterstützt.|r";
 
+    ["SDH_PET_TREAT"] = "Gib deinen Haustieren ein paar Leckerli!!";
+    ["SDH_PET_HAT"] = "Zieh deinen Hut auf!!";
+
     ["WEEKDAY_2"] = "Montag";
     ["WEEKDAY_3"] = "Dienstag";
     ["WEEKDAY_4"] = "Mittwoch";
