@@ -155,7 +155,7 @@ sdh.Conditionals = {
 };
 sdh.ResolveConditional = function(self, conditionals)
     local region = GetCurrentRegion();
-    local value = nil;
+    local value;
     
     local c = self.Conditionals;
     
@@ -285,19 +285,19 @@ sdh.Initialize = function(self)
 end
 
 app:RegisterEvent("ZONE_CHANGED");
-app.events.ZONE_CHANGED = function(e)
+app.events.ZONE_CHANGED = function()
     checkLocations();
     sdh:UpdateDisplays();
 end
 app:RegisterEvent("UNIT_AURA");
-app.events.UNIT_AURA = function(e, targetUnit)
+app.events.UNIT_AURA = function(targetUnit)
     if targetUnit == "player" then
         checkAuras();
         sdh:UpdateDisplays();
     end
 end
 app:RegisterEvent("TOYS_UPDATED");
-app.events.TOYS_UPDATED = function(e, itemId, isNew, hasFanfare)
+app.events.TOYS_UPDATED = function(itemId, isNew, hasFanfare)
     checkToys();
     sdh:UpdateDisplays();
 end
