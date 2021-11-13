@@ -3,7 +3,7 @@ local name, app = ...;
 app.L = {
     ["TITLE"] = "|cFFD13653Battle Pet Utilities|r";
 
-    ["ERROR_UNKNOWN_COMMAND"] = "Unknown command: '%s'. Type '/bpwqt help' for some help.";
+    ["ERROR_UNKNOWN_COMMAND"] = "Unknown command: '%s'. Type '/bpu help' for some help.";
     ["MESSAGE_GENERAL_DUMP"] = "Here's a dump of the current addon's state:\n%s";
     ["MESSAGE_DEBUG_TOGGLE"] = "Toggled debug state. Current value: %s";
     ["MESSAGE_DEBUG_DISABLED"] = "This command is only usable with debug mode on.";

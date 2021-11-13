@@ -9,7 +9,7 @@ local L = app.L;
 for key,value in pairs({
     -- ["TITLE"] = "|cFFD13653Battle Pet Utilities|r";
 
-    ["ERROR_UNKNOWN_COMMAND"] = "Unbekannter Befehl: '%s'. Gib '/bpwqt help' ein, um die Hilfe anzuzeigen.";
+    ["ERROR_UNKNOWN_COMMAND"] = "Unbekannter Befehl: '%s'. Gib '/bpu help' ein, um die Hilfe anzuzeigen.";
     ["MESSAGE_GENERAL_DUMP"] = "Hier ist ein Dump von dem Zustand des Addons:\n%s";
     ["MESSAGE_DEBUG_TOGGLE"] = "Debug-Modus wurde getoggelt. Derzeitiger Wert: %s";
     ["MESSAGE_DEBUG_DISABLED"] = "Dieser Befehl kann nur genutzt werden, wenn der Debug-Modus eingestellt ist.";
