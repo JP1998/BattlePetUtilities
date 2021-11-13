@@ -306,7 +306,7 @@ app.L = {
     -- Squirt Day Helper Strings
     ["SDH_SUPER_SQUIRT_DAY"] = "|c%s|c%sToday|r is SUPER SQUIRT DAY!!!|r";
     ["SDH_SQUIRT_DAY"] = "|c%s|c%sToday|r is squirt day!|r";
-    ["SDH_NEXT_SQUIRT"] = "|c%sNext squirt day is on |c%s%s, %s. %s|r.|r";
+    ["SDH_NEXT_SQUIRT"] = "|c%sNext squirt day is on |c%s{weekday}, {day}. {month}|r.|r";
     ["SDH_NOT_SUPPORTED"] = "|c%sYour region is sadly not supported.|r";
 
     ["SDH_PET_TREAT"] = "Give your pets some treats!!";

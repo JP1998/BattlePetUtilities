@@ -141,11 +141,11 @@ local function createReminderText()
             [sdh.Conditionals.SUPER_SQUIRT_DAY]     = "SDH_SUPER_SQUIRT_DAY",
         })],
         createColorString({ 255, 255, 255, 255 }), -- text color
-        createColorString({ 255,   0,   0, 255 }), -- date color
-        L["WEEKDAY_" .. squirtday.wday], -- week day (string)
-        squirtday.day, -- month day (integer)
-        L["MONTH_" .. squirtday.month] -- month (string)
-    );
+        createColorString({ 255,   0,   0, 255 }) -- date color
+    )
+    :gsub("{month}", L["MONTH_" .. squirtday.month]) -- month (string)
+    :gsub("{day}", squirtday.day) -- month day (integer)
+    :gsub("{weekday}", L["WEEKDAY_" .. squirtday.wday]); -- week day (string)
 end
 
 sdh.Conditionals = {

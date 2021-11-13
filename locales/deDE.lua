@@ -312,7 +312,7 @@ for key,value in pairs({
     -- Squirt Day Helper Strings
     ["SDH_SUPER_SQUIRT_DAY"] = "|c%s|c%sHeute|r ist SUPER SQUIRT DAY!!!|r";
     ["SDH_SQUIRT_DAY"] = "|c%s|c%sHeute|r ist squirt day!|r";
-    ["SDH_NEXT_SQUIRT"] = "|c%sDer nächste squirt day ist am |c%s%s, %s. %s|r.|r";
+    ["SDH_NEXT_SQUIRT"] = "|c%sDer nächste squirt day ist am |c%s{weekday}, {day}. {month}|r.|r";
     ["SDH_NOT_SUPPORTED"] = "|c%sDeine Region ist leider nicht unterstützt.|r";
 
     ["SDH_PET_TREAT"] = "Gib deinen Haustieren ein paar Leckerli!!";
