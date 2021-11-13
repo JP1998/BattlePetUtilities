@@ -18,7 +18,7 @@ local Factions = {
 };
 
 local ZoneIds = {
-    ["Ashenvale"]= 63, -- 1310 (?)
+    ["Ashenvale"] = 63, -- 1310 (?)
     ["Azsuna"] = 630, -- 1187 (?) probably not 867 (dungeon; ?)
     ["Blackrock_Depths"] = 35,
     ["Burning_Steppes"] = 36, -- 1255 (?)
@@ -30,9 +30,9 @@ local ZoneIds = {
     ["Dragonblight"] = 115, -- 1397 (?)
     ["Dread_Wastes"] = 422,
     ["Dun_Morogh"] = 27, -- 1253 (?) probably not 523 (micro; ?)
+    ["Durotar"] = 1, -- 1305 (?) 1535 (orphan; ?)
     ["Duskwood"] = 47, -- 1258 (?)
     ["Dustwallow_Marsh"] = 70, -- 1315 (?) 483 (orphan; ?) 416 (orphan; ?)
-    ["Durotar"] = 1, -- 1305 (?) 1535 (orphan; ?)
     ["Eastern_Plaguelands"] = 23, -- 1250 (?)
     ["Elwynn_Forest"] = 37, -- 1256 (?)
     ["Felwood"] = 77, -- 1318
@@ -294,7 +294,7 @@ app.WorldQuestTracker.QuestData = {
             49044, 49043, 49045, 49042, 49046, 49041, -- Krokuun
             49052, 49047, 49048, 49049, 49050, 49051, -- Mac'Aree
             49057, 49056, 49054, 49058, 49053, 49055, -- Antoran Wastes
-        },
+        }
     },
     ["RepeatableQuests"] = {
         --[[
@@ -354,8 +354,8 @@ app.WorldQuestTracker.QuestData = {
         },
         ["cataclysm"] = {
             Quest(L["QUESTDATA_QUESTNAME_BROK"],                                    31972,  QuestTypes.daily,   Factions.Neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Brok))), -- [1]
-            Quest(L["QUESTDATA_QUESTNAME_BORDIN_STEADYFIST"],                       31973,  QuestTypes.daily,   Factions.Neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Bordin_Steadyfist))), -- [3]
-            Quest(L["QUESTDATA_QUESTNAME_GRAND_MASTER_OBALIS"],                     31971,  QuestTypes.daily,   Factions.Neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Obalis)),                                                             ItemReward(89125, 1)), -- [2]
+            Quest(L["QUESTDATA_QUESTNAME_BORDIN_STEADYFIST"],                       31973,  QuestTypes.daily,   Factions.Neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Bordin_Steadyfist))), -- [2]
+            Quest(L["QUESTDATA_QUESTNAME_GRAND_MASTER_OBALIS"],                     31971,  QuestTypes.daily,   Factions.Neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Obalis)),                                                             ItemReward(89125, 1)), -- [3]
             Quest(L["QUESTDATA_QUESTNAME_GOZ_BANEFURY"],                            31974,  QuestTypes.daily,   Factions.Neutral,   QuestGiverTable(NeutralQuestGiver(QuestGivers.Goz_Banefury))), -- [4]
         },
         ["wrathofthelichking"] = {
