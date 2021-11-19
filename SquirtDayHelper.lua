@@ -335,7 +335,7 @@ app.events.TOYS_UPDATED = function(itemId, isNew, hasFanfare)
 end
 app:RegisterEvent("PET_BATTLE_OPENING_START");
 app.events.PET_BATTLE_OPENING_START = function()
-    if isSquirtDay() and isSquirtDayFight() then
+    if isSquirtDayFight() then
         sdh.FightTracker = findUnleveledBattlePets();
     end
 end
