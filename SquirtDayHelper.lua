@@ -130,6 +130,15 @@ local function isSquirtDay()
         [sdh.Conditionals.SUPER_SQUIRT_DAY]     = true,
     });
 end
+local function isSquirtDayFight()
+    return C_PetBattles.IsInBattle();
+end
+local function findUnleveledBattlePets()
+    return {};
+end
+local function getAmountNewlyLeveled()
+    return 0;
+end
 local function createReminderText()
     local region = GetCurrentRegion();
     local squirtday = date("*t", SquirtDayHelperPersistence.SquirtDays[region]);
@@ -308,6 +317,29 @@ app.events.TOYS_UPDATED = function(itemId, isNew, hasFanfare)
     checkToys();
     sdh:UpdateDisplays();
 end
+app:RegisterEvent("PET_BATTLE_OPENING_START");
+app.events.PET_BATTLE_OPENING_START = function()
+    if isSquirtDay() and isSquirtDayFight() then
+        sdh.FightTracker = findUnleveledBattlePets();
+    end
+end
+app:RegisterEvent("PET_BATTLE_CLOSE");
+app.event.PET_BATTLE_CLOSE = function()
+    if sdh.FightTracker ~= nil then
+        SquirtDayHelperPersistence.Statistics.Battles = SquirtDayHelperPersistence.Statistics.Battles + 1;
+        local amount_levelled = getAmountNewlyLeveled();
+        SquirtDayHelperPersistence.Statistics.PetsLevelled = SquirtDayHelperPersistence.Statistics.PetsLevelled + amount_levelled;
+
+        sdh.FightTracker = nil;
+
+        if amount_levelled > 0 then
+            app:print(("Squirt Day Helper: You have levelled {pets} pets in {battles} battles.")
+                    :gsub("{battles}", SquirtDayHelperPersistence.Statistics.Battles)
+                    :gsub("{pets}", SquirtDayHelperPersistence.Statistics.PetsLevelled));
+        end
+    end
+end
+
 app:RegisterUpdate("SquirtDayHelper", function(elapsed)
     local UPDATE_THRESHOLD = 20; -- Update threshold in seconds
     local currentTime = GetTime();
