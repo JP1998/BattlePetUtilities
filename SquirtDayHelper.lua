@@ -132,7 +132,7 @@ local function isSquirtDay()
 end
 local function createReminderText()
     local region = GetCurrentRegion();
-    local squirtday = date("*t", SquirtDayHelperPersistence[region]);
+    local squirtday = date("*t", SquirtDayHelperPersistence.SquirtDays[region]);
 
     return string.format(L[sdh:ResolveConditional({
             [sdh.Conditionals.REGION_NOT_SUPPORTED] = "SDH_NOT_SUPPORTED",
@@ -160,17 +160,17 @@ sdh.ResolveConditional = function(self, conditionals)
     
     local c = self.Conditionals;
     
-    if SquirtDayHelperPersistence[region] ~= nil then
+    if SquirtDayHelperPersistence.SquirtDays[region] ~= nil then
         local today = createDay(GetServerTime());
         
-        if SquirtDayHelperPersistence[region] < today then
-            createNextSquirt(SquirtDayHelperPersistence, GetServerTime());
+        if SquirtDayHelperPersistence.SquirtDays[region] < today then
+            createNextSquirt(SquirtDayHelperPersistence.SquirtDays, GetServerTime());
         end
         
         local hour = 60 --[[ mins ]] * 60 --[[ secs ]];
         local offset = 12 * hour;
                 
-        if SquirtDayHelperPersistence[region] - offset == today then
+        if SquirtDayHelperPersistence.SquirtDays[region] - offset == today then
             if sdh.Auras.BattlePetEvent then
                 value = conditionals[c.SUPER_SQUIRT_DAY];
             else
@@ -267,13 +267,19 @@ end
 
 sdh.Initialize = function(self)
     if not SquirtDayHelperPersistence then
-        SquirtDayHelperPersistence = createNextSquirt({
-            [1] = time({ year=2020, month=12, day=14 }), -- US
-            [2] = nil, -- KR
-            [3] = time({ year=2020, month=12, day=23 }), -- EU
-            [4] = nil, -- TW
-            [5] = nil, -- CN
-        }, GetServerTime());
+        SquirtDayHelperPersistence = {
+            ["SquirtDays"] = createNextSquirt({
+                [1] = time({ year=2020, month=12, day=14 }), -- US
+                [2] = nil, -- KR
+                [3] = time({ year=2020, month=12, day=23 }), -- EU
+                [4] = nil, -- TW
+                [5] = nil, -- CN
+            }, GetServerTime());
+            ["Statistics"] = {
+                ["Battles"] = 0;
+                ["PetsLevelled"] = 0;
+            };
+        };
     end
 
     checkLocations();
