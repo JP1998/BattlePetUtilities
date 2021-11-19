@@ -134,7 +134,15 @@ local function isSquirtDayFight()
     return C_PetBattles.IsInBattle();
 end
 local function findUnleveledBattlePets()
-    return {};
+    local result = {};
+
+    for pet = 1,C_PetBattles.GetNumPets(2) do
+        if C_PetBattles.GetLevel(2, pet) < 25 then
+            table.insert(result, pet);
+        end
+    end
+
+    return result;
 end
 local function getAmountNewlyLeveled()
     return 0;
