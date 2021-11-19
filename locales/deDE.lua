@@ -318,6 +318,8 @@ for key,value in pairs({
     ["SDH_PET_TREAT"] = "Gib deinen Haustieren ein paar Leckerli!!";
     ["SDH_PET_HAT"] = "Zieh deinen Hut auf!!";
 
+    ["SDH_STATISTICS"] = "Squirt Day Helfer: Bis jetzt hast du {pets} Haustiere in {battles} Kämpfen gelevelt.";
+
     ["WEEKDAY_2"] = "Montag";
     ["WEEKDAY_3"] = "Dienstag";
     ["WEEKDAY_4"] = "Mittwoch";

@@ -311,7 +311,9 @@ app.L = {
 
     ["SDH_PET_TREAT"] = "Give your pets some treats!!";
     ["SDH_PET_HAT"] = "Put on your hat!!";
-    
+
+    ["SDH_STATISTICS"] = "Squirt Day Helper: So far you have levelled {pets} pets in {battles} battles.";
+
     ["WEEKDAY_2"] = "Monday";
     ["WEEKDAY_3"] = "Tuesday";
     ["WEEKDAY_4"] = "Wednesday";
