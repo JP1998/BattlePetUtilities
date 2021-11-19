@@ -145,7 +145,15 @@ local function findUnleveledBattlePets()
     return result;
 end
 local function getAmountNewlyLeveled()
-    return 0;
+    local amount = 0;
+
+    for _,pet in ipairs(sdh.FightTracker) do
+        if C_PetBattles.GetLevel(2, pet) == 25 then
+            amount = amount + 1;
+        end
+    end
+
+    return amount;
 end
 local function createReminderText()
     local region = GetCurrentRegion();
