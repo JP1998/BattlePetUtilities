@@ -349,9 +349,10 @@ app.event.PET_BATTLE_CLOSE = function()
         sdh.FightTracker = nil;
 
         if amount_levelled > 0 then
-            app:print(L["SDH_STATISTICS"]
+            local message = L["SDH_STATISTICS"]
                     :gsub("{battles}", SquirtDayHelperPersistence.Statistics.Battles)
-                    :gsub("{pets}", SquirtDayHelperPersistence.Statistics.PetsLevelled));
+                    :gsub("{pets}", SquirtDayHelperPersistence.Statistics.PetsLevelled);
+            app:print(message);
         end
     end
 end
