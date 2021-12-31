@@ -173,11 +173,16 @@ settings.Get = function(self, category, option)
         return BattlePetWorldQuestSettings and BattlePetWorldQuestSettings[category];
     elseif category == "MailerOptions" and option == "Character" then
         local _, realm = UnitFullName("player");
+        local faction, _ = UnitFactionGroup("player");
 
         if BattlePetWorldQuestSettings then
-            local character = BattlePetWorldQuestSettings[category][option][realm] or "";
+            if not BattlePetWorldQuestSettings[category][option][realm] then
+                BattlePetWorldQuestSettings[category][option][realm] = {};
+            end
 
-            BattlePetWorldQuestSettings[category][option][realm] = character;
+            local character = BattlePetWorldQuestSettings[category][option][realm][faction] or "";
+
+            BattlePetWorldQuestSettings[category][option][realm][faction] = character;
 
             return character;
         else
@@ -196,9 +201,14 @@ end
 settings.Set = function(self, category, option, value)
     if category == "MailerOptions" and option == "Character" then
         local _, realm = UnitFullName("player");
+        local faction, _ = UnitFactionGroup("player");
 
         if BattlePetWorldQuestSettings then
-            BattlePetWorldQuestSettings[category][option][realm] = value;
+            if not BattlePetWorldQuestSettings[category][option][realm] then
+                BattlePetWorldQuestSettings[category][option][realm] = {};
+            end
+
+            BattlePetWorldQuestSettings[category][option][realm][faction] = value;
         end
     else
         BattlePetWorldQuestSettings[category][option] = value;
