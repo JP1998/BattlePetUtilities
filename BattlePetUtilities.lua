@@ -95,7 +95,6 @@ app.stringTrim = function(str)
     return (string.gsub(str, "^%s*(.-)%s*$", "%1"));
 end
 
-
 local createSlashCommand = (function()
     local function eliminateEmptyStrings(list)
         local result = {};
@@ -131,7 +130,7 @@ local createSlashCommand = (function()
     end
 end)();
 
-local function bpwqt_slashhandler(args, msgbox)
+local function bpu_slashhandler(args, msgbox)
     app:log("You typed '/bpu' or something similar.");
 
     if #args > 0 then
@@ -164,7 +163,7 @@ local function bpwqt_slashhandler(args, msgbox)
     end
 end
 
-createSlashCommand(bpwqt_slashhandler, "BattlePetUtilities", "/battlepetutilities", "/battlepetutil", "/bpu");
+createSlashCommand(bpu_slashhandler, "BattlePetUtilities", "/battlepetutilities", "/battlepetutil", "/bpu");
 
 app:RegisterEvent("ADDON_LOADED");
 app.events.ADDON_LOADED = function(addon)
