@@ -94,6 +94,7 @@ app.GetWindow = function(self, suffix, parent)
 
     if not window then
         window = self:CreateWindow(suffix, parent);
+        self.Windows[suffix] = window;
     end
 
     return window;
@@ -148,7 +149,7 @@ local function bpu_slashhandler(args, msgbox)
         local cmd = string.lower(args[1]);
 
         if cmd == "" or cmd == "main" then
-            app.WorldQuestTracker:GetWindow("WorldQuestTracker"):Toggle();
+            app:GetWindow("WorldQuestTracker"):Toggle();
         elseif cmd == "op" or cmd == "option" or cmd == "options" then
             app.Settings:Open();
         elseif cmd == "help" then
@@ -170,7 +171,7 @@ local function bpu_slashhandler(args, msgbox)
             app:print(string.format(L["ERROR_UNKNOWN_COMMAND"], cmd));
         end
     else
-        app.WorldQuestTracker:GetWindow("WorldQuestTracker"):Toggle();
+        app:GetWindow("WorldQuestTracker"):Toggle();
     end
 end
 

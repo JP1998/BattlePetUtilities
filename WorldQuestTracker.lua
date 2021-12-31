@@ -547,7 +547,7 @@ end
 
 app.WorldQuestTracker.UpdateWorldQuestDisplay = function(self)
     app:log("Updated your world quest display :)");
-    app.WorldQuestTracker.GetWindow("WorldQuestTracker"):Update();
+    app:GetWindow("WorldQuestTracker"):Update();
 end
 
 app:RegisterEvent("QUEST_LOG_UPDATE");
