@@ -19,51 +19,65 @@ sdh.Toys = {};
 sdh.Toys.PetHat = false;
 
 local auras_zones = {
-    582, -- Lunarfall
-    590, -- Frostwall
+    ["Alliance"] = {
+        582, -- Lunarfall
+    },
+    ["Horde"] = {
+        590, -- Frostwall
+    },
 };
 local sdr_zones = {
-    84, -- Stormwind
-    85, -- Orgrimmar
-    86, --     - Clecft of Shadow
-    87, -- Ironforge
-    88, -- Thunder Bluff
-    89, -- Darnassus
-    90, -- Undercity
-    103, -- The Exodar
-    110, -- Silvermoon
-    111, -- Shattrath
-    125, -- Dalaran (Northrend)
-    126, --     - Underbelly
-    391, -- Shrine of Two Moons
-    392, -- ^
-    393, -- Shrine of Seven Stars
-    394, -- ^
-    582, -- Lunarfall
-    590, -- Frostwall
-    627, -- Dalaran (Broken Isles)
-    626, --     - The Hall of Shadows
-    628, --     - The Underbelly
-    629, --     - Aegwynn's Gallery
-    1161, -- Boralus
-    1165, -- Dazar'alor
-    1163, --     - The Great Seal
-    1164, --     - Hall of Chroniclers
-    1670, -- Oribos
-    1671, --     - Ring of Transference
-    1672, --     - The Broker's Den
-    1673, --     - The Crucible
-    1698, -- Seat of the Primus (Necrolord Covenant Sanctum)
-    1699, -- Sinfall Reaches
-    1700, -- Sinfall Depths
-    1701, -- Heart of the Forest - The Trunk
-    1702, -- Heart of the Forest - The Roots
-    1703, -- Heart of the Forest - The Canopy
-    1707, -- Elysian Hold - Archon's Rise
-    1708, -- Elysian Hold - Sanctum of Binding
+    ["Neutral"] = {
+        111, -- Shattrath
+        125, -- Dalaran (Northrend)
+        126, --     - Underbelly
+        627, -- Dalaran (Broken Isles)
+        626, --     - The Hall of Shadows
+        628, --     - The Underbelly
+        629, --     - Aegwynn's Gallery -- I think that's the mage class hall?
+        1670, -- Oribos
+        1671, --     - Ring of Transference
+        1672, --     - The Broker's Den
+        1673, --     - The Crucible
+        1698, -- Seat of the Primus (Necrolord Covenant Sanctum)
+        1699, -- Sinfall Reaches
+        1700, -- Sinfall Depths
+        1701, -- Heart of the Forest - The Trunk
+        1702, -- Heart of the Forest - The Roots
+        1703, -- Heart of the Forest - The Canopy
+        1707, -- Elysian Hold - Archon's Rise
+        1708, -- Elysian Hold - Sanctum of Binding
+    },
+    ["Alliance"] = {
+        84, -- Stormwind
+        87, -- Ironforge
+        89, -- Darnassus
+        103, -- The Exodar
+        393, -- Shrine of Seven Stars
+        394, -- ^
+        582, -- Lunarfall
+        1161, -- Boralus
+    },
+    ["Horde"] = {
+        85, -- Orgrimmar
+        86, --     - Cleft of Shadow
+        88, -- Thunder Bluff
+        90, -- Undercity
+        110, -- Silvermoon
+        391, -- Shrine of Two Moons
+        392, -- ^
+        590, -- Frostwall
+        1165, -- Dazar'alor
+        1163, --     - The Great Seal
+        1164, --     - Hall of Chroniclers
+    },
 };
 
 local function isOneOf(value, validValues)
+    if type(validValues) ~= "table" then
+        return false;
+    end
+
     for _,v in ipairs(validValues) do
         if value == v then
             return true;
@@ -101,11 +115,16 @@ local function createNextSquirt(knownSquirts, currentTime)
     return knownSquirts;
 end
 
+local function checkValidLocation(currentZone, faction, validLocations)
+    return isOneOf(currentZone, validLocations["Neutral"]) or isOneOf(currentZone, validLocations[faction]);
+end
+
 local function checkLocations()
     local currentZone = C_Map.GetBestMapForUnit("player");
+    local faction, _ = UnitFactionGroup("player");
 
-    sdh.Location.AuraReminders = isOneOf(currentZone, auras_zones);
-    sdh.Location.SquirtDayHelper = isOneOf(currentZone, sdr_zones);
+    sdh.Location.AuraReminders = checkValidLocation(currentZone, faction, auras_zones);
+    sdh.Location.SquirtDayHelper = checkValidLocation(currentZone, faction, sdr_zones);
 end
 local function playerHasAura(auraId)
     return GetPlayerAuraBySpellID(auraId) ~= nil;
@@ -312,7 +331,6 @@ sdh.Initialize = function(self)
     checkToys();
 
     self:CreateDisplays();
-
     self:UpdateDisplays();
 end
 
