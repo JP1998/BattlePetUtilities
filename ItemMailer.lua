@@ -87,7 +87,7 @@ app.Mailer.ResetScanner = function(self)
     self.SentMailCount = 0;
 end
 app.Mailer.CheckCharacterStatus = function(self, character)
-    character = string.trim(character);
+    character = app.stringTrim(character);
 
     if character == nil or character == "" then
         return false;

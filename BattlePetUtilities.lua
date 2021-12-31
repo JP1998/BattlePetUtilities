@@ -40,7 +40,7 @@ app.stringify = function(t)
     elseif type(t) == "number" then
         return "" .. t;
     elseif type(t) == "string" then
-        return string.escape(t);
+        return app.stringEscape(t);
     elseif type(t) == "function" then
         if debug then
             local info = debug.getinfo(t, "S");
@@ -88,10 +88,10 @@ app.GetWindow = function(self, suffix, parent)
     return window;
 end
 
-string.escape = function(s)
-    return string.gsub(string.format("%q", s), "\n", "n");
+app.stringEscape = function(str)
+    return string.gsub(string.format("%q", str), "\n", "n");
 end
-string.trim = function(str)
+app.stringTrim = function(str)
     return (string.gsub(str, "^%s*(.-)%s*$", "%1"));
 end
 
