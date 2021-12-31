@@ -1,9 +1,8 @@
-## Author: Luckyowl-Stormrage (https://www.github.com/JP1998)
+## Author: Luckywolf-Stormrage (https://www.github.com/JP1998)
 ## Interface: 90002
 ## Title: Battle Pet Utilities
-## Name: Battle Pet Utilities
 ## SavedVariables: BattlePetWorldQuestSettings, SquirtDayHelperPersistence
-## Notes: Addon for tracking completion of currently active battle pet world quests on your characters.
+## Notes: Contains multiple utilities regarding battle pets, like an item mailer, squirt day helper and a quest tracker.
 ## Version: 1.0.0
 src/base.lua
 locales/enUS.lua
