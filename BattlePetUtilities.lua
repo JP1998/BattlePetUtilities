@@ -11,11 +11,22 @@ app.debug = false;
 --]]
 
 app.print = function(self, msg, ...)
-    print(string.format("[%s]: %s", L["TITLE"], msg), ...);
+    self:_print("", msg, ...);
 end
 app.log = function(self, msg, ...)
-    if app.debug then
-        print(string.format("DEBUG [%s]: %s", L["TITLE"], msg), ...);
+    if self.debug then
+        self:_print("DEBUG ", msg, ...);
+    end
+end
+app._print = function(self, prefix, msg, ...)
+    local lines = strsplit("\n", type(msg) == "string" and msg or tostring(msg));
+
+    for _,line in ipairs(lines) do
+        print(string.format("%s[%s]: %s", prefix, L["TITLE"], line));
+    end
+
+    if ... and #... > 0 then
+        self:_print(prefix, ...);
     end
 end
 app.stringify = function(t)
