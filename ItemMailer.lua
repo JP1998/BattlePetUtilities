@@ -35,7 +35,7 @@ app.Mailer.SendMail = function(self, last)
             app:print(string.format(L["MAILER_SENT"], self.SentMailCount, "?"));
         end
     else
-
+        app:print(L["MAILER_BROKE"]);
     end
 end
 app.Mailer.ScanBags = function(self)

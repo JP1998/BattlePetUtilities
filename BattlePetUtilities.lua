@@ -143,9 +143,9 @@ local function bpwqt_slashhandler(args, msgbox)
             app.Settings:Open();
         elseif cmd == "help" then
             if #args > 1 and string.lower(args[2]) == "advanced" then
-                -- TODO: Print advanced help; mostly for dev/snoopy noses :^)
+                app:print(L["HELP_ADVANCED"]);
             else
-                -- TODO: Print help
+                app:print(L["HELP"]);
             end
         elseif cmd == "dump" then
             if app.debug then

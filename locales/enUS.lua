@@ -3,6 +3,9 @@ local name, app = ...;
 app.L = {
     ["TITLE"] = "|cFFD13653Battle Pet Utilities|r";
 
+    ["HELP"] = "Use '/bpu' with following arguments:\n - none or 'main': shows or hides the quest tracker window\n - 'options': shows the settings for the addon\n - 'help': shows this help";
+    ["HELP_ADVANCED"] = "Use '/bpu' with following arguments:\n - none or 'main': shows or hides the quest tracker window\n - 'options': shows the settings for the addon\n - 'help': shows this help\n - 'debug': toggles the debug flag\n    This shows debug messages in chat and gives access to following commands:\n - 'dump': Dumps the full addon state in the chat\n    (this is a buttload, so use at own risk)";
+
     ["ERROR_UNKNOWN_COMMAND"] = "Unknown command: '%s'. Type '/bpu help' for some help.";
     ["MESSAGE_GENERAL_DUMP"] = "Here's a dump of the current addon's state:\n%s";
     ["MESSAGE_DEBUG_TOGGLE"] = "Toggled debug state. Current value: %s";
@@ -256,6 +259,7 @@ app.L = {
 
     ["MAILER_SENT"] = "We sent your items away. %s/%s";
     ["MAILER_ABORT"] = "We had to abort sending your items.";
+    ["MAILER_BROKE"] = "We couldn't send your mail, because you can't pay the postage.";
 
     -- World Quest Tracker Strings
     ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "We found a world quest with an unknown item reward: %s.";

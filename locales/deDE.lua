@@ -9,6 +9,9 @@ local L = app.L;
 for key,value in pairs({
     -- ["TITLE"] = "|cFFD13653Battle Pet Utilities|r";
 
+    ["HELP"] = "Du kannst '/bpu' mit folgenden Argumenten benutzen:\n - keines oder 'main': Zeigt oder schließt das Quest Tracker Fenster\n - 'options': Zeigt die Einstellungen des Addons\n - 'help': Zeigt diese Hilfe-Nachricht";
+    ["HELP_ADVANCED"] = "Du kannst '/bpu' mit folgenden Argumenten benutzen:\n - keines oder 'main': Zeigt oder schließt das Quest Tracker Fenster\n - 'options': Zeigt die Einstellungen des Addons\n - 'help': Zeigt diese Hilfe-Nachricht\n - 'debug': Toggelt das Debug-Flag\n     Dies zeigt Debug-Nachrichten im Chat und gibt Zugang zu folgenden Befehlen:\n - 'dump': Zeigt den kompletten Addon-Zutand im Chat an\n    (das ist eine ganze Menge, daher Benutzung auf eigene Gefahr)";
+
     ["ERROR_UNKNOWN_COMMAND"] = "Unbekannter Befehl: '%s'. Gib '/bpu help' ein, um die Hilfe anzuzeigen.";
     ["MESSAGE_GENERAL_DUMP"] = "Hier ist ein Dump von dem Zustand des Addons:\n%s";
     ["MESSAGE_DEBUG_TOGGLE"] = "Debug-Modus wurde getoggelt. Derzeitiger Wert: %s";
@@ -262,6 +265,7 @@ for key,value in pairs({
 
     ["MAILER_SENT"] = "Wir haben deine Artikel verschickt. %s/%s";
     ["MAILER_ABORT"] = "Wir mussten das Senden deiner Artikel abbrechen.";
+    ["MAILER_BROKE"] = "Wir konnten deine Post nicht versenden, da du das Porto nicht bezahlen kannst.";
 
     -- World Quest Tracker Strings
     ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "Wir haben einen Quest mit einer unbekannten Artikel-Belohnung gefunden: %s.";
