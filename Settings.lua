@@ -39,6 +39,9 @@ settings.Open = function(self)
 end
 
 local SettingsBase = {
+    ["Debug"] = {
+        ["Enabled"] = false
+    },
     ["MailerOptions"] = {
         ["Enabled"] = false,
         ["Character"] = {},

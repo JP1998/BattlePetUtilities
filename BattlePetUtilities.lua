@@ -2,8 +2,6 @@
 local app = select(2, ...);
 local L = app.L;
 
-app.debug = false;
-
 --[[
  --
  -- General Utility stuff
@@ -14,7 +12,7 @@ app.print = function(self, msg, ...)
     self:_print("", msg, ...);
 end
 app.log = function(self, msg, ...)
-    if self.debug then
+    if self.Settings:Get("Debug", "Enabled") then
         self:_print("DEBUG ", msg, ...);
     end
 end
@@ -159,14 +157,16 @@ local function bpu_slashhandler(args, msgbox)
                 app:print(L["HELP"]);
             end
         elseif cmd == "dump" then
-            if app.debug then
+            if app.Settings:Get("Debug", "Enabled") then
                 app:log(string.format(L["MESSAGE_GENERAL_DUMP"], app.stringify(app)));
             else
                 app:print(L["MESSAGE_DEBUG_DISABLED"]);
             end
         elseif cmd == "debug" then
-            app.debug = not app.debug;
-            app:print(string.format(L["MESSAGE_DEBUG_TOGGLE"], app.debug));
+            local value = not app.Settings:Get("Debug", "Enabled");
+
+            app.Settings:Set("Debug", "Enabled", value);
+            app:print(string.format(L["MESSAGE_DEBUG_TOGGLE"], value));
         else
             app:print(string.format(L["ERROR_UNKNOWN_COMMAND"], cmd));
         end
@@ -186,4 +186,6 @@ app.events.ADDON_LOADED = function(addon)
     app.Version = GetAddOnMetadata(app:GetName(), "Version");
     app.Settings:Initialize();
     app.SquirtDayHelper:Initialize();
+
+    app:log(L["MESSAGE_DEBUG_GREETING"]);
 end

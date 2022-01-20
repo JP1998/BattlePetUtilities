@@ -10,6 +10,7 @@ app.L = {
     ["MESSAGE_GENERAL_DUMP"] = "Here's a dump of the current addon's state:\n%s";
     ["MESSAGE_DEBUG_TOGGLE"] = "Toggled debug state. Current value: %s";
     ["MESSAGE_DEBUG_DISABLED"] = "This command is only usable with debug mode on.";
+    ["MESSAGE_DEBUG_GREETING"] = "You have debug mode enabled. To disable type '/bpu debug' into chat.";
 
     --[[
         Settings strings

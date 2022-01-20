@@ -16,6 +16,7 @@ for key,value in pairs({
     ["MESSAGE_GENERAL_DUMP"] = "Hier ist ein Dump von dem Zustand des Addons:\n%s";
     ["MESSAGE_DEBUG_TOGGLE"] = "Debug-Modus wurde getoggelt. Derzeitiger Wert: %s";
     ["MESSAGE_DEBUG_DISABLED"] = "Dieser Befehl kann nur genutzt werden, wenn der Debug-Modus eingestellt ist.";
+    ["MESSAGE_DEBUG_GREETING"] = "Sie haben den Debug-Modus aktiv. Um ihn auszuschalten, geben Sie '/bpu debug' in Ihren Chat ein.";
 
     --[[
         Settings strings
