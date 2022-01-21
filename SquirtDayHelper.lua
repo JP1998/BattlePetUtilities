@@ -27,12 +27,56 @@ local auras_zones = {
     },
 };
 local sdr_zones = {
+    ["Class"] = {
+        [ 1] = { -- Warrior
+            695, -- Skyhold (Class Hall)
+        },
+        [ 2] = { -- Paladin
+            -- ????
+        },
+        [ 3] = { -- Hunter
+            739, -- Trueshot Lodge (Class Hall)
+        },
+        [ 4] = { -- Rogue
+            626, -- Dalaran - The Hall of Shadows (Class Hall)
+        },
+        [ 5] = { -- Priest
+            702, -- Netherlight Temple (Class Hall)
+        },
+        [ 6] = { -- Death Knight
+            647, -- Acherus: The Ebon Hold - The Heart of Acherus (Class Hall)
+            648, --     - Hall of Comand (Class Hall)
+        },
+        [ 7] = { -- Shaman
+            725, -- The Maelstrom (Class Hall)
+            726, --     - The Maelstrom (Class Hall)
+        },
+        [ 8] = { -- Mage
+            734, -- Hall of the Guardian (Class Hall)
+            735, --     - The Guardian's Library (Class Hall)
+        },
+        [ 9] = { -- Warlock
+            717, -- Dreadscar Rift (Class Hall)
+            718, -- Dreadscar Rift (Class Hall)
+        },
+        [10] = { -- Monk
+            709, -- The Wandering Isle (Class Hall)
+        },
+        [11] = { -- Druid
+            715, -- Emerald Dreamway (Class Hall ?)
+            747, -- The Dreamgrove (Class Hall)
+        },
+        [12] = { -- Demon Hunter
+            719, -- Mardum, the Shattered Abyss (Class Hall)
+            720, --     - Upper Command Center (Class Hall)
+            721, --     - Lower Command Center (Class Hall)
+        },
+    },
     ["Neutral"] = {
         111, -- Shattrath
         125, -- Dalaran (Northrend)
         126, --     - Underbelly
         627, -- Dalaran (Broken Isles)
-        626, --     - The Hall of Shadows
         628, --     - The Underbelly
         629, --     - Aegwynn's Gallery -- I think that's the mage class hall?
         1670, -- Oribos
@@ -115,16 +159,19 @@ local function createNextSquirt(knownSquirts, currentTime)
     return knownSquirts;
 end
 
-local function checkValidLocation(currentZone, faction, validLocations)
-    return isOneOf(currentZone, validLocations["Neutral"]) or isOneOf(currentZone, validLocations[faction]);
+local function checkValidLocation(currentZone, faction, classId, validLocations)
+    return isOneOf(currentZone, validLocations["Neutral"]) or
+            isOneOf(currentZone, validLocations[faction]) or
+            (validLocations.Class and isOneOf(currentZone, validLocations.Class[classId]));
 end
 
 local function checkLocations()
     local currentZone = C_Map.GetBestMapForUnit("player");
     local faction, _ = UnitFactionGroup("player");
+    local _, _, classId = UnitClass("player");
 
-    sdh.Location.AuraReminders = checkValidLocation(currentZone, faction, auras_zones);
-    sdh.Location.SquirtDayHelper = checkValidLocation(currentZone, faction, sdr_zones);
+    sdh.Location.AuraReminders = checkValidLocation(currentZone, faction, classId, auras_zones);
+    sdh.Location.SquirtDayHelper = checkValidLocation(currentZone, faction, classId, sdr_zones);
 end
 local function playerHasAura(auraId)
     return GetPlayerAuraBySpellID(auraId) ~= nil;
