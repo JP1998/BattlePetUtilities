@@ -2,8 +2,6 @@
 local app = select(2, ...);
 local L = app.L;
 
--- TODO: Put the window into a variable `Frame` and put the actual setting values into a new variable `Values`
-
 app.Settings = {};
 local settings = app.Settings;
 
@@ -650,10 +648,10 @@ end)();
     CharacterEditBox:SetPoint("RIGHT", line, "BOTTOMRIGHT", -4, 0);
     CharacterEditBox:SetMultiLine(false);
     CharacterEditBox.OnRefresh = function(self)
-        self:SetText(settings.Get("MailerOptions", "Character"));
+        self:SetText(settings:Get("MailerOptions", "Character"));
     end;
     CharacterEditBox.SetScript("OnTextChanged", function(self)
-        settings.Set("MailerOptions", "Character", self:GetText());
+        settings:Set("MailerOptions", "Character", self:GetText());
     end);
     CharacterEditBox:Show();
     table.insert(settingsFrame.MostRecentTab.objects, CharacterEditBox);
