@@ -97,6 +97,11 @@ app.Mailer.CheckCharacterStatus = function(self, character)
         return false;
     end
 
+    local playerName, realmName = UnitFullName("player");
+    if chaacter == playerName or character == string.format("%s-%s", playerName, realmName) then
+        return false;
+    end
+
     return true;
 end
 app.Mailer.Enabled = function(self)
