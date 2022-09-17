@@ -260,7 +260,7 @@ sdh.ResolveConditional = function(self, conditionals)
         
         local hour = 60 --[[ mins ]] * 60 --[[ secs ]];
         local offset = 12 * hour;
-                
+
         if SquirtDayHelperPersistence.SquirtDays[region] - offset == today then
             if sdh.Auras.BattlePetEvent then
                 value = conditionals[c.SUPER_SQUIRT_DAY];
@@ -381,31 +381,27 @@ sdh.Initialize = function(self)
     self:UpdateDisplays();
 end
 
-app:RegisterEvent("ZONE_CHANGED");
-app.events.ZONE_CHANGED = function()
+app:RegisterEvent("ZONE_CHANGED", "SquirtDayHelper", function()
     checkLocations();
     sdh:UpdateDisplays();
-end
-app:RegisterEvent("UNIT_AURA");
-app.events.UNIT_AURA = function(targetUnit)
+end);
+app:RegisterEvent("UNIT_AURA", "SquirtDayHelper", function(targetUnit)
     if targetUnit == "player" then
         checkAuras();
         sdh:UpdateDisplays();
     end
-end
-app:RegisterEvent("TOYS_UPDATED");
-app.events.TOYS_UPDATED = function(itemId, isNew, hasFanfare)
+end);
+app:RegisterEvent("TOYS_UPDATED", "SquirtDayHelper", function(itemId, isNew, hasFanfare)
     checkToys();
     sdh:UpdateDisplays();
-end
-app:RegisterEvent("PET_BATTLE_OPENING_START");
-app.events.PET_BATTLE_OPENING_START = function()
+end);
+app:RegisterEvent("PET_BATTLE_OPENING_START", "SquirtDayHelper", function()
+    -- TODO: Delete isSquirtDay until we reset to the actual daily reset time in createDay()
     if isSquirtDayFight() then
         sdh.FightTracker = findUnleveledBattlePets();
     end
-end
-app:RegisterEvent("PET_BATTLE_CLOSE");
-app.event.PET_BATTLE_CLOSE = function()
+end);
+app:RegisterEvent("PET_BATTLE_CLOSE", "SquirtDayHelper", function()
     if sdh.FightTracker ~= nil then
         SquirtDayHelperPersistence.Statistics.Battles = SquirtDayHelperPersistence.Statistics.Battles + 1;
         local amount_levelled = getAmountNewlyLeveled();
@@ -420,8 +416,7 @@ app.event.PET_BATTLE_CLOSE = function()
             app:print(message);
         end
     end
-end
-
+end);
 app:RegisterUpdate("SquirtDayHelper", function(elapsed)
     local UPDATE_THRESHOLD = 20; -- Update threshold in seconds
     local currentTime = GetTime();

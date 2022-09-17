@@ -550,8 +550,7 @@ app.WorldQuestTracker.UpdateWorldQuestDisplay = function(self)
     app:GetWindow("WorldQuestTracker"):Update();
 end
 
-app:RegisterEvent("QUEST_LOG_UPDATE");
-app.events.QUEST_LOG_UPDATE = function(...)
+app:RegisterEvent("QUEST_LOG_UPDATE", "WorldQuestTracker", function(...)
     app:log("Quest log has updated.");
     app.WorldQuestTracker:UpdateWorldQuestDisplay();
-end
+end);

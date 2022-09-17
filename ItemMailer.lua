@@ -111,28 +111,24 @@ app.Mailer.Enabled = function(self)
     return settings.Enabled and self:CheckCharacterStatus(character);
 end
 
-app:RegisterEvent("MAIL_SHOW");
-app:RegisterEvent("SEND_MAIL_SUCCESS");
-app:RegisterEvent("SEND_MAIL_FAILED");
-
-app.events.MAIL_SHOW = function(...)
+app:RegisterEvent("MAIL_SHOW", "ItemMailer", function(...)
     app:log("You opened your mail.");
 
     if app.Mailer:Enabled() then
         app.Mailer:ScanBags();
     end
-end
-app.events.SEND_MAIL_SUCCESS = function(...)
+end);
+app:RegisterEvent("SEND_MAIL_SUCCESS", "ItemMailer", function(...)
     app:log("You successfully sent mail.");
 
     if app.Mailer:Enabled() and app.Mailer.Continuation then
         app.Mailer:ScanBags();
     end
-end
-app.events.SEND_MAIL_FAILED = function(...)
+end);
+app:RegisterEvent("SEND_MAIL_FAILED", "ItemMailer", function(...)
     app:log("You tried to send mail, which failed.");
 
     if app.Mailer:Enabled() then
         app.Mailer:ResetScanner();
     end
-end
+end);

@@ -9,20 +9,49 @@ _G[name] = app;
 local events = {};
 local updates = {};
 local _ = CreateFrame("FRAME", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate");
-_:SetScript("OnEvent", function(self, e, ...) (rawget(events, e) or print)(...); end);
-_:SetScript("OnUpdate", function(self, elapsed) for _,v in pairs(updates) do v(elapsed); end end);
+_:SetScript("OnEvent", function(self, e, ...)
+    local ev_listeners = rawget(events, e);
+
+    if ev_listeners ~= nil and typ(ev_listeners) == "table" then
+        for _,listener in pairs(ev_listeners) do
+            listener(...);
+        end
+    else
+        print(...);
+    end
+end);
+_:SetScript("OnUpdate", function(self, elapsed)
+    for _,v in pairs(updates) do
+        v(elapsed);
+    end
+end);
 _:SetPoint("BOTTOMLEFT", UIParent, "TOPLEFT", 0, 0);
 _:SetSize(1, 1);
 _:Show();
 app._ = _;
-app.events = events;
-app.updates = updates;
-app.refreshDataForce = true;
-app.RegisterEvent = function(self, ...)
-    _:RegisterEvent(...);
+app.RegisterEvent = function(self, event, key, handler)
+    if events[event] == nil then
+        events[event] = {};
+    end
+
+    if events[event][key] ~= nil then
+        error("the event '" .. event .. "' with key '" .. key .. "' was already registered.", 2);
+    end
+
+    events[event][key] = handler;
+    if #events[event] ~= 1 then
+        _:RegisterEvent(event);
+    end
 end
-app.UnregisterEvent = function(self, ...)
-    _:UnregisterEvent(...);
+app.UnregisterEvent = function(self, event, key)
+    if events[event] == nil or events[event][key] == nil then
+        error("the event '" .. event .. "' with key '" .. key .. "' was not registered.", 2);
+    end
+
+    events[event][key] = nil;
+    if #events[event] == 0 then
+        _:UnregisterEvent(...);
+    end
 end
 app.RegisterUpdate = function(self, key, handler)
     updates[key] = handler;

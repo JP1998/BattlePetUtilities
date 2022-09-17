@@ -177,8 +177,7 @@ end
 
 createSlashCommand(bpu_slashhandler, "BattlePetUtilities", "/battlepetutilities", "/battlepetutil", "/bpu");
 
-app:RegisterEvent("ADDON_LOADED");
-app.events.ADDON_LOADED = function(addon)
+app:RegisterEvent("ADDON_LOADED", "BattlePetUtilities", function(addon)
     if addon ~= app:GetName() then
         return;
     end
@@ -188,4 +187,4 @@ app.events.ADDON_LOADED = function(addon)
     app.SquirtDayHelper:Initialize();
 
     app:log(L["MESSAGE_DEBUG_GREETING"]);
-end
+end);
