@@ -242,8 +242,8 @@ end
 local function findUnleveledBattlePets()
     local result = {};
 
-    for pet = 1,C_PetBattles.GetNumPets(2) do
-        if C_PetBattles.GetLevel(2, pet) < 25 then
+    for pet = 1,C_PetBattles.GetNumPets(1) do
+        if C_PetBattles.GetLevel(1, pet) < 25 then
             table.insert(result, pet);
         end
     end
@@ -254,7 +254,7 @@ local function getAmountNewlyLeveled()
     local amount = 0;
 
     for _,pet in ipairs(sdh.FightTracker) do
-        if C_PetBattles.GetLevel(2, pet) == 25 then
+        if C_PetBattles.GetLevel(1, pet) == 25 then
             amount = amount + 1;
         end
     end
