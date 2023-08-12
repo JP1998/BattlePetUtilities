@@ -37,6 +37,11 @@ sdh.Auras.PetHat = Trigger(false); --false;
 sdh.Toys = {};
 sdh.Toys.PetHat = Trigger(false); --false;
 
+local squirt_pets = {
+    1400, -- [1] Deebs
+    1401, -- [2] Tyri
+    1402, -- [3] Puzzle
+};
 local auras_zones = {
     ["Alliance"] = {
         582, -- Lunarfall
@@ -217,7 +222,11 @@ local function isSquirtDay()
     });
 end
 local function isSquirtDayFight()
-    return C_PetBattles.IsInBattle();
+    return C_PetBattles.IsInBattle() and C_PetBattles.IsPlayerNPC(1) and
+            C_PetBattles.GetNumPets(2) == 3 and
+            isOneOf(C_PetBattles.GetPetSpeciesID(2, 1), squirt_pets) and
+            isOneOf(C_PetBattles.GetPetSpeciesID(2, 2), squirt_pets) and
+            isOneOf(C_PetBattles.GetPetSpeciesID(2, 3), squirt_pets);
 end
 local function findUnleveledBattlePets()
     local result = {};
