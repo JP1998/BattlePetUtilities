@@ -195,6 +195,8 @@ local function checkLocations()
     local faction, _ = UnitFactionGroup("player");
     local _, _, classId = UnitClass("player");
 
+    app:log("Checking location. Currently in zone " .. currentZone .. " as faction " .. faction .. " with class " .. classId);
+
     sdh.Location.AuraReminders.CurrentValue = checkValidLocation(currentZone, faction, classId, auras_zones);
     sdh.Location.SquirtDayHelper.CurrentValue = checkValidLocation(currentZone, faction, classId, sdr_zones);
 end
@@ -222,6 +224,15 @@ local function isSquirtDay()
     });
 end
 local function isSquirtDayFight()
+    app:log("Checking for squirt fight.");
+    app:log("C_PetBattles.IsInBattle(): " .. C_PetBattles.IsInBattle());
+    app:log("C_PetBattles.IsPlayerNPC(1): " .. C_PetBattles.IsPlayerNPC(2));
+    app:log("C_PetBattles.GetNumPets(2): " .. C_PetBattles.GetNumPets(2));
+    for pet=1,C_PetBattles.GetNumPets(2) do
+        speciesName, _, petType, _, _, _, _, _, _, _, _, creatureDisplayID = C_PetJournal.GetPetInfoBySpeciesID(C_PetBattles.GetDisplayID(2, pet));
+        app:log("Pet '" .. speciesName .. "' (ID: " .. creatureDisplayID .. ") has pet type " .. petType);
+    end
+
     return C_PetBattles.IsInBattle() and C_PetBattles.IsPlayerNPC(1) and
             C_PetBattles.GetNumPets(2) == 3 and
             isOneOf(C_PetBattles.GetPetSpeciesID(2, 1), squirt_pets) and
