@@ -5,35 +5,24 @@ local L = app.L;
 app.Settings = {};
 local settings = app.Settings;
 
-local settingsFrame = CreateFrame("FRAME", app:GetName() .. "-Settings", UIParent, BackdropTemplateMixin and "BackdropTemplate");
+local settingsFrame = CreateFrame("FRAME", app:GetName() .. "-Settings", UIParent);
 settings.Frame = settingsFrame;
 
 settingsFrame.name = app:GetName();
 settingsFrame.MostRecentTab = nil;
 settingsFrame.Tabs = {};
 settingsFrame.ModifierKeys = { "None", "Shift", "Ctrl", "Alt" };
-settingsFrame:SetBackdrop({
-    bgFile = "Interface/RAIDFRAME/UI-RaidFrame-GroupBg",
-    edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-    tile = false,
-    edgeSize = 16,
-    insets = {
-        left = 4,
-        right = 4,
-        top = 4,
-        bottom = 4
-    }
-});
-settingsFrame:SetBackdropColor(0, 0, 0, 1);
 InterfaceOptions_AddCategory(settingsFrame);
 settings.Open = function(self)
     -- Open the Options menu.
-    if InterfaceOptionsFrame:IsVisible() then
-        InterfaceOptionsFrame_Show();
-    else
-        InterfaceOptionsFrame_OpenToCategory(self.Frame.name);
-        InterfaceOptionsFrame_OpenToCategory(self.Frame.name);
+    if not SettingsPanel:IsVisible() then
+        SettingsPanel:Show();
     end
+    
+    -- Twice, because sometimes (if the addon's settings is not shown
+    -- in the sidebar) it does not open on the first try
+    InterfaceOptionsFrame_OpenToCategory(app:GetName());
+    InterfaceOptionsFrame_OpenToCategory(app:GetName());
 end
 
 local SettingsBase = {
@@ -141,8 +130,9 @@ local SettingsBase = {
 local OnClickForTab = function(self)
     local id = self:GetID();
     local parent = self:GetParent();
+    
     PanelTemplates_SetTab(parent, id);
-    -- print("CLICKED TAB", id, self:GetText());
+    
     for i,tab in ipairs(parent.Tabs) do
         if i == id then
             for j,o in ipairs(tab.objects) do
@@ -164,7 +154,6 @@ settings.Initialize = function(self)
 
     settings.Data = BattlePetWorldQuestSettings;
 
-    OnClickForTab(self.Frame.Tabs[1]);
     self.Frame:Refresh();
 end
 settings.Get = function(self, category, option)
@@ -241,68 +230,96 @@ settingsFrame.Refresh = function(self)
         end
     end
 end
-settingsFrame.CreateCheckBox = function(self, text, OnRefresh, OnClick)
-    local cb = CreateFrame("CheckButton", self:GetName() .. "-" .. text, self, "InterfaceOptionsCheckButtonTemplate");
+settingsFrame.CreateCheckBox = function(self, parent, text, OnRefresh, OnClick)
+    local cb = CreateFrame("CheckButton", self:GetName() .. "-" .. text, parent, "InterfaceOptionsCheckButtonTemplate");
 
-    table.insert(self.MostRecentTab.objects, cb);
+    self.MostRecentTab:AddObject(cb);
 
     cb:SetScript("OnClick", OnClick);
     cb.OnRefresh = OnRefresh;
     cb.Text:SetText(text);
     cb:SetHitRectInsets(0,0 - cb.Text:GetWidth(),0,0);
+    cb:Show();
 
     return cb;
 end
-settingsFrame.CreateTab = function(self, text)
+settingsFrame.CreateTab = function(self, text, scroll)
     local id = #self.Tabs + 1;
-    local tab = CreateFrame("Button", self:GetName() .. "-Tab" .. id, self, "OptionsFrameTabButtonTemplate");
 
-    if id > 1 then
-        tab:SetPoint("TOPLEFT", self.Tabs[id - 1], "TOPRIGHT", 0, 0);
+    local settingsPanel;
+    local subcategory;
+
+    if scroll then
+        local scrollFrame = CreateFrame("ScrollFrame", self:GetName() .. "-Tab" .. id .. "-Scroll", self, "ScrollFrameTemplate");
+        settingsPanel = CreateFrame("Frame", self:GetName() .. "-Tab" .. id);
+        
+        scrollFrame:SetScrollChild(settingsPanel);
+        settingsPanel:SetID(id);
+        settingsPanel:SetWidth(1);    -- This is automatically defined, so long as the attribute exists at all
+        settingsPanel:SetHeight(1);   -- This is automatically defined, so long as the attribute exists at all
+
+        -- Move the scrollbar to its proper position (only needed for subcategories)
+        scrollFrame.ScrollBar:ClearPoint("RIGHT")
+        scrollFrame.ScrollBar:SetPoint("RIGHT", -36, 0)
+
+        -- Create the nested subcategory
+        subcategory = scrollFrame;
+    else
+        settingsPanel = CreateFrame("Frame", self:GetName() .. "-Tab" .. id);
+        
+        settingsPanel:SetID(id);
+
+        subcategory = settingsPanel;
     end
 
-    table.insert(self.Tabs, tab);
-    self.MostRecentTab = tab;
+    subcategory.name = text;
+    subcategory.parent = app:GetName();
+    InterfaceOptions_AddCategory(subcategory);
 
-    tab.objects = {};
-    tab:SetID(id);
-    tab:SetText(text);
+    table.insert(self.Tabs, settingsPanel);
+    self.MostRecentTab = settingsPanel;
 
-    PanelTemplates_TabResize(tab, 0);
-    tab:SetScript("OnClick", OnClickForTab);
+    settingsPanel.AddObject = function(self, obj)
+        if not self.objects then
+            self.objects = {};
+        end
 
-    return tab;
+        table.insert(self.objects, obj);
+    end
+
+    return settingsPanel
 end
-settingsFrame.CreateItemGroupings = function(self, relativeTo, labelOffset, checkBoxOffset, horizontalOffset, data, Setter, Getter)
+settingsFrame.CreateItemGroupings = function(self, parent, relativeTo, labelOffset, checkBoxOffset, horizontalOffset, data, Setter, Getter)
     local y = 0;
     local nextY = 0;
 
     for group=1,#data do
-        local label = self:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
-        label:SetPoint("TOPLEFT", relativeTo, "BOTTOMLEFT", 0, y + labelOffset);
+        local label = parent:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
+        label:SetPoint("TOPLEFT", relativeTo, "BOTTOMLEFT", 0, y - labelOffset);
         label:SetJustifyH("LEFT");
         label:SetText(data[group]["Title"]);
         label:Show();
-        table.insert(self.MostRecentTab.objects, label);
+        self.MostRecentTab:AddObject(label);
 
-        y = y + label:GetHeight() + labelOffset;
+        y = y - label:GetHeight() - labelOffset;
 
         for item=1,#data[group]["Items"] do
             local checkbox = self:CreateCheckBox(
+                parent,
                 data[group]["Items"][item]["Name"],
                 (function(Set, Get, itemId)
                     return function(self) -- OnRefresh
-                            self:SetChecked(Get(settings, itemId));
-                        end,
-                        function(self) -- OnClick
-                            Set(settings, itemId, self:GetChecked());
-                        end
-                end)(Setter, Getter, data[group]["Item"][item]["ItemId"])
+                        self:SetChecked(Get(settings, itemId));
+                    end,
+                    function(self) -- OnClick
+                        Set(settings, itemId, self:GetChecked());
+                    end
+                end)(Setter, Getter, data[group]["Items"][item]["ItemId"])
             );
 
             if item % 2 == 1 then
                 checkbox:SetPoint("TOPLEFT", relativeTo, "BOTTOMLEFT", 0, y + checkBoxOffset);
-                nextY = y + checkbox:GetHeight() + checkBoxOffset;
+                nextY = y - checkbox:GetHeight() - checkBoxOffset;
             else
                 checkbox:SetPoint("TOPLEFT", relativeTo, "BOTTOMLEFT", horizontalOffset, y + checkBoxOffset);
                 y = nextY;
@@ -548,58 +565,53 @@ settingsFrame.version = f;
 ]]
 local line;
 (function()
-    local tab = settingsFrame:CreateTab(L["OPTIONS_WORLDQUESTTRACKER_HEADER"]);
-    tab:SetPoint("TOPLEFT", settingsFrame.title, "BOTTOMLEFT", 16, -8);
+    local tab = settingsFrame:CreateTab(L["OPTIONS_WORLDQUESTTRACKER_HEADER"], true);
 
-    line = settingsFrame:CreateTexture(nil, "ARTWORK");
-    line:SetPoint("LEFT", settingsFrame, "LEFT", 4, 0);
-    line:SetPoint("RIGHT", settingsFrame, "RIGHT", -4, 0);
-    line:SetPoint("TOP", settingsFrame.Tabs[1], "BOTTOM", 0, 0);
-    line:SetColorTexture(1, 1, 1, 0.4);
-    line:SetHeight(2);
-
-    local HeaderLabel = settingsFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
-    HeaderLabel:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 8, -8);
+    local HeaderLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    HeaderLabel:SetPoint("TOPLEFT", tab, "BOTTOMLEFT", 0, -8);
     HeaderLabel:SetJustifyH("LEFT");
-    HeaderLabel:Show();
     HeaderLabel:SetText(L["OPTIONS_WORLDQUESTTRACKER_HEADER"]);
-    table.insert(settingsFrame.MostRecentTab.objects, HeaderLabel);
+    settingsFrame.MostRecentTab:AddObject(HeaderLabel);
+    HeaderLabel:Show();
 
-    local ShowNoItemCheckBox = settingsFrame:CreateCheckBox(L["OPTIONS_WORLDQUESTTRACKER_SHOW_NO_ITEM"],
+    local ShowNoItemCheckBox = settingsFrame:CreateCheckBox(tab, L["OPTIONS_WORLDQUESTTRACKER_SHOW_NO_ITEM"],
     function(self) -- OnRefresh
         self:SetChecked(settings:Get("WorldQuestTrackerOptions", "ShowNoItem"));
     end,
     function(self) -- OnClick
         settings:Set("WorldQuestTrackerOptions", "ShowNoItem", self:GetChecked());
     end);
-    ShowNoItemCheckBox:SetPoint("TOPLEFT", HeaderLabel, "BOTTOMLEFT", 0, -1);
+    ShowNoItemCheckBox:SetPoint("TOPLEFT", HeaderLabel, "BOTTOMLEFT", 0, 0);
+    ShowNoItemCheckBox:Show();
 
-    local ShowUnknownItemCheckBox = settingsFrame:CreateCheckBox(L["OPTIONS_WORLDQUESTTRACKER_SHOW_UNKNOWN_ITEM"],
+    local ShowUnknownItemCheckBox = settingsFrame:CreateCheckBox(tab, L["OPTIONS_WORLDQUESTTRACKER_SHOW_UNKNOWN_ITEM"],
     function(self) -- OnRefresh
         self:SetChecked(settings:Get("WorldQuestTrackerOptions", "ShowUnknownItem"));
     end,
     function(self) -- OnClick
         settings:Set("WorldQuestTrackerOptions", "ShowUnknownItem", self:GetChecked());
     end);
-    ShowUnknownItemCheckBox:SetPoint("TOPLEFT", ShowNoItemCheckBox, "BOTTOMLEFT", 0, 4);
+    ShowUnknownItemCheckBox:SetPoint("TOPLEFT", ShowNoItemCheckBox, "BOTTOMLEFT", 0, 0);
+    ShowUnknownItemCheckBox:Show();
 
-    local PrintUnknownItemCheckBox = settingsFrame:CreateCheckBox(L["OPTIONS_WORLDQUESTTRACKER_PRINT_UNKNOWN_ITEM"],
+    local PrintUnknownItemCheckBox = settingsFrame:CreateCheckBox(tab, L["OPTIONS_WORLDQUESTTRACKER_PRINT_UNKNOWN_ITEM"],
     function(self) -- OnRefresh
         self:SetChecked(settings:Get("WorldQuestTrackerOptions", "PrintUnknownItem"));
     end,
     function(self) -- OnClick
         settings:Set("WorldQuestTrackerOptions", "PrintUnknownItem", self:GetChecked());
     end);
-    PrintUnknownItemCheckBox:SetPoint("TOPLEFT", ShowUnknownItemCheckBox, "BOTTOMLEFT", 0, 4);
+    PrintUnknownItemCheckBox:SetPoint("TOPLEFT", ShowUnknownItemCheckBox, "BOTTOMLEFT", 0, 0);
+    PrintUnknownItemCheckBox:Show();
 
-    local ItemLabel = settingsFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
-    ItemLabel:SetPoint("TOPLEFT", PrintUnknownItemCheckBox, "BOTTOMLEFT", 0, -6);
+    local ItemLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    ItemLabel:SetPoint("TOPLEFT", PrintUnknownItemCheckBox, "BOTTOMLEFT", 0, 0);
     ItemLabel:SetJustifyH("LEFT");
     ItemLabel:SetText(L["OPTIONS_WORLDQUESTTRACKER_ITEMS_HEADER"]);
+    settingsFrame.MostRecentTab:AddObject(ItemLabel);
     ItemLabel:Show();
-    table.insert(settingsFrame.MostRecentTab.objects, ItemLabel);
     
-    settingsFrame:CreateItemGroupings(ItemLabel, -6, 4, 220, {
+    settingsFrame:CreateItemGroupings(tab, ItemLabel, 8, 0, 360, {
         ITEMS_GENERAL,
         ITEMS_PET_CHARMS,
         ITEMS_GENERAL_BS,
@@ -608,26 +620,28 @@ local line;
         ITEMS_PET_SUPPLIES
     }, settings.SetWorldQuestTrackerItem, settings.GetWorldQuestTrackerItem);
 end)();
-
+--[[
 (function()
     local tab = settingsFrame:CreateTab(L["OPTIONS_MAILER_HEADER"]);
 
-    local HeaderLabel = settingsFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
-    HeaderLabel:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 8, -8);
+    local HeaderLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    HeaderLabel:SetPoint("TOPLEFT", tab, "BOTTOMLEFT", 8, -8);
     HeaderLabel:SetJustifyH("LEFT");
-    HeaderLabel:Show();
     HeaderLabel:SetText(L["OPTIONS_MAILER_HEADER"]);
-    table.insert(settingsFrame.MostRecentTab.objects, HeaderLabel);
+    -- table.insert(settingsFrame.MostRecentTab.objects, HeaderLabel);
+    settingsFrame.MostRecentTab:AddObject(HeaderLabel);
+    HeaderLabel:Show();
 
-    local DescriptionLabel = settingsFrame:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
+    local DescriptionLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
     DescriptionLabel:SetPoint("TOPLEFT", HeaderLabel, "BOTTOMLEFT", 0, -8);
     DescriptionLabel:SetPoint("RIGHT", line, "BOTTOMRIGHT", -8, 0);
     DescriptionLabel:SetJustifyH("LEFT");
     DescriptionLabel:SetText(L["OPTIONS_MAILER_DESCRIPTION"]);
+    -- table.insert(settingsFrame.MostRecentTab.objects, DescriptionLabel);
+    settingsFrame.MostRecentTab:AddObject(DescriptionLabel);
     DescriptionLabel:Show();
-    table.insert(settingsFrame.MostRecentTab.objects, DescriptionLabel);
 
-    local EnabledCheckBox = settingsFrame:CreateCheckBox(L["OPTIONS_MAILER_ENABLED_DESCRIPTION"],
+    local EnabledCheckBox = settingsFrame:CreateCheckBox(tab, L["OPTIONS_MAILER_ENABLED_DESCRIPTION"],
     function(self) -- OnRefresh
         self:SetChecked(settings:Get("MailerOptions", "Enabled"));
     end,
@@ -635,59 +649,66 @@ end)();
         settings:Set("MailerOptions", "Enabled", self:GetChecked());
     end);
     EnabledCheckBox:SetPoint("TOPLEFT", DescriptionLabel, "BOTTOMLEFT", 0, -1);
+    EnabledCheckBox:Show();
 
-    local CharacterLabel = settingsFrame:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
+    local CharacterLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
     CharacterLabel:SetPoint("TOPLEFT", EnabledCheckBox, "BOTTOMLEFT", 0, -8);
     CharacterLabel:SetJustifyH("LEFT");
     CharacterLabel:SetText(L["OPTIONS_MAILER_CHARACTER_DESCRIPTION"]);
     CharacterLabel:Show();
-    table.insert(settingsFrame.MostRecentTab.objects, CharacterLabel);
+    -- table.insert(settingsFrame.MostRecentTab.objects, CharacterLabel);
+    settingsFrame.MostRecentTab:AddObject(CharacterLabel);
+    CharacterLabel:Show();
 
-    local CharacterEditBox = settingsFrame:CreateFrame("EditBox", "Character-EditBox", settingsFrame);
+    local CharacterEditBox = CreateFrame("EditBox", "Character-EditBox", tab);
     CharacterEditBox:SetPoint("TOPLEFT", CharacterLabel, "TOPRIGHT", 4, 4);
     CharacterEditBox:SetPoint("RIGHT", line, "BOTTOMRIGHT", -4, 0);
     CharacterEditBox:SetMultiLine(false);
     CharacterEditBox.OnRefresh = function(self)
         self:SetText(settings:Get("MailerOptions", "Character"));
     end;
-    CharacterEditBox.SetScript("OnTextChanged", function(self)
+    CharacterEditBox:SetScript("OnTextChanged", function(self)
         settings:Set("MailerOptions", "Character", self:GetText());
     end);
+    -- table.insert(settingsFrame.MostRecentTab.objects, CharacterEditBox);
+    settingsFrame.MostRecentTab:AddObject(CharacterEditBox);
     CharacterEditBox:Show();
-    table.insert(settingsFrame.MostRecentTab.objects, CharacterEditBox);
 
-    local ItemLabel = settingsFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    local ItemLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
     ItemLabel:SetPoint("TOPLEFT", CharacterLabel, "BOTTOMLEFT", 0, -6);
     ItemLabel:SetJustifyH("LEFT");
     ItemLabel:SetText(L["OPTIONS_MAILER_ITEMS_HEADER"]);
+    -- table.insert(settingsFrame.MostRecentTab.objects, ItemLabel);
+    settingsFrame.MostRecentTab:AddObject(ItemLabel);
     ItemLabel:Show();
-    table.insert(settingsFrame.MostRecentTab.objects, ItemLabel);
 
-    settingsFrame:CreateItemGroupings(ItemLabel, -6, 4, 220, {
+    settingsFrame:CreateItemGroupings(tab, ItemLabel, -6, 4, 220, {
         ITEMS_GENERAL,
         ITEMS_PET_CHARMS,
         ITEMS_GENERAL_BS,
         ITEMS_FAMILY_BS
     }, settings.SetMailerItem, settings.GetMailerItem);
 end)();
-
+--]]
 (function()
-    local tab = settingsFrame:CreateTab(L["OPTIONS_SQUIRTDAYHELPER_HEADER"]);
+    local tab = settingsFrame:CreateTab(L["OPTIONS_SQUIRTDAYHELPER_HEADER"], false);
 
-    local HeaderLabel = settingsFrame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
-    HeaderLabel:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 8, -8);
+    local HeaderLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+    HeaderLabel:SetPoint("TOPLEFT", tab, "TOPLEFT", 0, -8);
     HeaderLabel:SetJustifyH("LEFT");
-    HeaderLabel:Show();
     HeaderLabel:SetText(L["OPTIONS_SQUIRTDAYHELPER_HEADER"]);
-    table.insert(settingsFrame.MostRecentTab.objects, HeaderLabel);
+    settingsFrame.MostRecentTab:AddObject(HeaderLabel);
+    HeaderLabel:Show();
 
-    local EnabledCheckBox = settingsFrame:CreateCheckBox(L["OPTIONS_SQUIRTDAYHELPER_ENABLED_DESCRIPTION"],
-            function(self) -- OnRefresh
-                self:SetChecked(settings:Get("SquirtDayHelper", "Enabled"));
-                app.SquirtDayHelper:UpdateDisplays();
-            end,
-            function(self) -- OnClick
-                settings:Set("SquirtDayHelper", "Enabled", self:GetChecked());
-            end);
-    EnabledCheckBox:SetPoint("TOPLEFT", HeaderLabel, "BOTTOMLEFT", 0, -8);
+    local EnabledCheckBox = settingsFrame:CreateCheckBox(tab, L["OPTIONS_SQUIRTDAYHELPER_ENABLED_DESCRIPTION"],
+    function(self) -- OnRefresh
+        self:SetChecked(settings:Get("SquirtDayHelper", "Enabled"));
+    end,
+    function(self) -- OnClick
+        settings:Set("SquirtDayHelper", "Enabled", self:GetChecked());
+        app.SquirtDayHelper:UpdateDisplays();
+    end);
+    EnabledCheckBox:SetPoint("TOPLEFT", HeaderLabel, "BOTTOMLEFT", 0, 0);
+    EnabledCheckBox:Show();
 end)();
+
