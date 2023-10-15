@@ -12,7 +12,7 @@ local _ = CreateFrame("FRAME", nil, UIParent, BackdropTemplateMixin and "Backdro
 _:SetScript("OnEvent", function(self, e, ...)
     local ev_listeners = rawget(events, e);
 
-    if ev_listeners ~= nil and typ(ev_listeners) == "table" then
+    if ev_listeners ~= nil and type(ev_listeners) == "table" then
         for _,listener in pairs(ev_listeners) do
             listener(...);
         end
@@ -50,7 +50,7 @@ app.UnregisterEvent = function(self, event, key)
 
     events[event][key] = nil;
     if #events[event] == 0 then
-        _:UnregisterEvent(...);
+        _:UnregisterEvent(event);
     end
 end
 app.RegisterUpdate = function(self, key, handler)

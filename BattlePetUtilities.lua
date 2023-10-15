@@ -17,7 +17,7 @@ app.log = function(self, msg, ...)
     end
 end
 app._print = function(self, prefix, msg, ...)
-    local lines = strsplit("\n", type(msg) == "string" and msg or tostring(msg));
+    local lines = { strsplit("\n", type(msg) == "string" and msg or tostring(msg)) };
 
     for _,line in ipairs(lines) do
         print(string.format("%s[%s]: %s", prefix, L["TITLE"], line));
@@ -38,7 +38,7 @@ app.stringify = function(t)
             end
 
             first = false;
-            text = text .. string.format("[%s] = %s", app.stringify(k), app.stringify(v));
+            text = text .. string.format("[%s] = %s", app:stringify(k), app:stringify(v));
         end
 
         text = text .. " }";
@@ -118,7 +118,7 @@ local createSlashCommand = (function()
         return result;
     end
     local function parseSlashCommandArgs(cmd)
-        return eliminateEmptyStrings(strsplit(" ", cmd));
+        return eliminateEmptyStrings({ strsplit(" ", cmd) });
     end
 
     return function(func, id, ...)
@@ -166,7 +166,7 @@ local function bpu_slashhandler(args, msgbox)
             local value = not app.Settings:Get("Debug", "Enabled");
 
             app.Settings:Set("Debug", "Enabled", value);
-            app:print(string.format(L["MESSAGE_DEBUG_TOGGLE"], value));
+            app:print(string.format(L["MESSAGE_DEBUG_TOGGLE"], tostring(value)));
         else
             app:print(string.format(L["ERROR_UNKNOWN_COMMAND"], cmd));
         end

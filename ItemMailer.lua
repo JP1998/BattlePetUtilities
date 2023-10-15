@@ -118,14 +118,14 @@ app:RegisterEvent("MAIL_SHOW", "ItemMailer", function(...)
         app.Mailer:ScanBags();
     end
 end);
-app:RegisterEvent("SEND_MAIL_SUCCESS", "ItemMailer", function(...)
+app:RegisterEvent("MAIL_SEND_SUCCESS", "ItemMailer", function(...)
     app:log("You successfully sent mail.");
 
     if app.Mailer:Enabled() and app.Mailer.Continuation then
         app.Mailer:ScanBags();
     end
 end);
-app:RegisterEvent("SEND_MAIL_FAILED", "ItemMailer", function(...)
+app:RegisterEvent("MAIL_FAILED", "ItemMailer", function(...)
     app:log("You tried to send mail, which failed.");
 
     if app.Mailer:Enabled() then
