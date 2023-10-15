@@ -496,47 +496,47 @@ local ITEMS_PET_SUPPLIES = {
         }, -- [1]
         {
             ["Name"] = L["OPTIONS_ITEM_DARKMOON_PET_SUPPLIES"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 91086
         }, -- [2]
         {
             ["Name"] = L["OPTIONS_ITEM_PSPS_BURNING"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 93146
         }, -- [3]
         {
             ["Name"] = L["OPTIONS_ITEM_PSPS_FLOWING"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 93147
         }, -- [4]
         {
             ["Name"] = L["OPTIONS_ITEM_PSPS_WHISPERING"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 93148
         }, -- [5]
         {
             ["Name"] = L["OPTIONS_ITEM_PSPS_THUNDERING"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 93149
         }, -- [6]
         {
             ["Name"] = L["OPTIONS_ITEM_SACK_OF_PET_SUPPLIES"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 89125
         }, -- [7]
         {
             ["Name"] = L["OPTIONS_ITEM_BIG_BAG_OF_PET_SUPPLIES"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 118697
         }, -- [8]
         {
             ["Name"] = L["OPTIONS_ITEM_TRAVELERS_PET_SUPPLIES"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 122535
         }, -- [9]
         {
             ["Name"] = L["OPTIONS_ITEM_LEPROUS_SACK_OF_PET_SUPPLIES"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 151638
         }, -- [10]
         {
             ["Name"] = L["OPTIONS_ITEM_TORN_SACK_OF_PET_SUPPLIES"],
-            ["ItemId"] = 163036
+            ["ItemId"] = 142447
         }, -- [11]
         {
             ["Name"] = L["OPTIONS_ITEM_FABLED_PANDAREN_PET_SUPPLIES"],
-            ["ItemId"] = 116415
+            ["ItemId"] = 94207
         }, -- [12]
         {
             ["Name"] = L["OPTIONS_ITEM_GRUMMLEPOUCH"],
