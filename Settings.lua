@@ -205,7 +205,7 @@ settings.Set = function(self, category, option, value)
     end
 
     self.Frame:Refresh();
-    app.WorldQuestTracker:UpdateWorldQuestDisplay();
+    -- app.WorldQuestTracker:UpdateWorldQuestDisplay(); TODO:
 end
 settings.SetMailerItem = function(self, itemId, value)
     BattlePetWorldQuestSettings["MailerOptions"]["Items"][itemId] = value;
@@ -215,7 +215,7 @@ settings.SetWorldQuestTrackerItem = function(self, itemId, value)
     BattlePetWorldQuestSettings["WorldQuestTrackerOptions"]["Items"][itemId] = value;
 
     self.Frame:Refresh();
-    app.WorldQuestTracker:UpdateWorldQuestDisplay();
+    -- app.WorldQuestTracker:UpdateWorldQuestDisplay(); TODO:
 end
 settingsFrame.Refresh = function(self)
     for i,tab in ipairs(self.Tabs) do
