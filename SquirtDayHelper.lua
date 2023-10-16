@@ -6,36 +6,19 @@ app.SquirtDayHelper = {};
 
 local sdh = app.SquirtDayHelper;
 
-local function Trigger_IsTriggered(self)
-    if type(self) ~= "table" then
-        error("Cannot apply function 'Trigger:IsTriggered' to value of type '" .. type(self) .. "'.", 2);
-    elseif self.CurrentValue == nil or self.TriggerSave == nil then
-        error("Cannot apply function 'Trigger:IsTriggered' to value without trigger properties.", 2);
-    end
 
-    local value = self.CurrentValue ~= self.TriggerSave;
-    self.TriggerSave = self.CurrentValue;
-
-    return value;
-end
-local function Trigger(initial_value)
-    return {
-        ["TriggerSave"] = not initial_value;
-        ["CurrentValue"] = initial_value;
-        ["IsTriggered"] = Trigger_IsTriggered;
-    }
-end
+sdh.Initialized = false;
 sdh.Location = {};
-sdh.Location.SquirtDayHelper = Trigger(false); --false;
-sdh.Location.AuraReminders = Trigger(false); --false;
+sdh.Location.SquirtDayHelper = false;
+sdh.Location.AuraReminders = false;
 
 sdh.Auras = {};
-sdh.Auras.BattlePetEvent = Trigger(false); --false;
-sdh.Auras.PetTreats = Trigger(false); --false;
-sdh.Auras.PetHat = Trigger(false); --false;
+sdh.Auras.BattlePetEvent = false;
+sdh.Auras.PetTreats = false;
+sdh.Auras.PetHat = false;
 
 sdh.Toys = {};
-sdh.Toys.PetHat = Trigger(false); --false;
+sdh.Toys.PetHat = false;
 
 local squirt_pets = {
     1400, -- [1] Deebs
@@ -197,19 +180,19 @@ local function checkLocations()
 
     app:log("Checking location. Currently in zone " .. tostring(currentZone) .. " as faction " .. tostring(faction) .. " with class " .. tostring(classId));
 
-    sdh.Location.AuraReminders.CurrentValue = checkValidLocation(currentZone, faction, classId, auras_zones);
-    sdh.Location.SquirtDayHelper.CurrentValue = checkValidLocation(currentZone, faction, classId, sdr_zones);
+    sdh.Location.AuraReminders = checkValidLocation(currentZone, faction, classId, auras_zones);
+    sdh.Location.SquirtDayHelper = checkValidLocation(currentZone, faction, classId, sdr_zones);
 end
 local function playerHasAura(auraId)
     return C_UnitAuras.GetPlayerAuraBySpellID(auraId) ~= nil;
 end
 local function checkAuras()
-    sdh.Auras.BattlePetEvent.CurrentValue = playerHasAura(186406);
-    sdh.Auras.PetTreats.CurrentValue = playerHasAura(142204) or playerHasAura(142205);
-    sdh.Auras.PetHat.CurrentValue = playerHasAura(158486);
+    sdh.Auras.BattlePetEvent = playerHasAura(186406);
+    sdh.Auras.PetTreats = playerHasAura(142204) or playerHasAura(142205);
+    sdh.Auras.PetHat = playerHasAura(158486);
 end
 local function checkToys()
-    sdh.Toys.PetHat.CurrentValue = PlayerHasToy(92738);
+    sdh.Toys.PetHat = PlayerHasToy(92738);
 end
 local function createColorString(color)
     return string.format("%02X%02X%02X%02X", color[4], color[1], color[2], color[3]);
@@ -302,7 +285,7 @@ sdh.ResolveConditional = function(self, conditionals)
         local offset = 12 * hour;
 
         if SquirtDayHelperPersistence.SquirtDays[region] - offset == today then
-            if sdh.Auras.BattlePetEvent.CurrentValue then
+            if sdh.Auras.BattlePetEvent then
                 value = conditionals[c.SUPER_SQUIRT_DAY];
             else
                 value = conditionals[c.SQUIRT_DAY];
@@ -336,30 +319,24 @@ sdh.UpdateDisplays = function(self)
     local settings = app.Settings:Get("SquirtDayHelper");
 
     if settings.Enabled then
-        if sdh.Location.SquirtDayHelper:IsTriggered() then
-            if sdh.Location.SquirtDayHelper.CurrentValue then
-                sdh.Displays.SquirtDayHelper:SetText(createReminderText());
-                AssureShown(sdh.Displays.SquirtDayHelper);
-            else
-                AssureHidden(sdh.Displays.SquirtDayHelper);
-            end
+        if sdh.Location.SquirtDayHelper then
+            sdh.Displays.SquirtDayHelper:SetText(createReminderText());
+            AssureShown(sdh.Displays.SquirtDayHelper);
+        else
+            AssureHidden(sdh.Displays.SquirtDayHelper);
         end
 
-        if sdh.Location.AuraReminders.CurrentValue and isSquirtDay() then
-            if sdh.Auras.PetTreats:IsTriggered() then
-                if sdh.Auras.PetTreats.CurrentValue then
-                    AssureShown(sdh.Displays.PetTreats);
-                else
-                    AssureHidden(sdh.Displays.PetTreats);
-                end
+        if sdh.Location.AuraReminders and isSquirtDay() then
+            if not sdh.Auras.PetTreats then
+                AssureShown(sdh.Displays.PetTreats);
+            else
+                AssureHidden(sdh.Displays.PetTreats);
             end
 
-            if sdh.Auras.PetHat:IsTriggered() then
-                if sdh.Toys.PetHat.CurrentValue and not sdh.Auras.PetHat.CurrentValue then
-                    AssureShown(sdh.Displays.PetHat);
-                else
-                    AssureHidden(sdh.Displays.PetHat);
-                end
+            if sdh.Toys.PetHat and not sdh.Auras.PetHat then
+                AssureShown(sdh.Displays.PetHat);
+            else
+                AssureHidden(sdh.Displays.PetHat);
             end
         else
             AssureAurasHidden(sdh.Displays);
