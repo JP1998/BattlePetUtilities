@@ -385,9 +385,9 @@ sdh.Initialize = function(self)
     if not SquirtDayHelperPersistence then
         SquirtDayHelperPersistence = {
             ["SquirtDays"] = createNextSquirt({
-                [1] = time({ year=2020, month=12, day=14 }), -- US
+                [1] = time({ year=2023, month=10, day=30 }), -- US
                 [2] = nil, -- KR
-                [3] = time({ year=2020, month=12, day=23 }), -- EU
+                [3] = time({ year=2023, month=10, day=24 }), -- EU
                 [4] = nil, -- TW
                 [5] = nil, -- CN
             }, GetServerTime());
@@ -397,6 +397,18 @@ sdh.Initialize = function(self)
             };
         };
     end
+
+    if not SquirtDayHelperPersistence.SquirtDays or #SquirtDayHelperPersistence.SquirtDays == 0 then
+        SquirtDayHelperPersistence.SquirtDays = createNextSquirt({
+                [1] = time({ year=2023, month=10, day=30 }), -- US
+                [2] = nil, -- KR
+                [3] = time({ year=2023, month=10, day=24 }), -- EU
+                [4] = nil, -- TW
+                [5] = nil, -- CN
+            }, GetServerTime());
+    end
+
+    app:log("Initialized Squirt Day Helper.");
 
     checkLocations();
     checkAuras();
