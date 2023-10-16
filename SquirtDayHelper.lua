@@ -37,6 +37,7 @@ local sdr_zones = {
     ["Class"] = {
         [ 1] = { -- Warrior
             695, -- Skyhold (Class Hall)
+            -- 1971, -- Skyhold (9.1.0?)
         },
         [ 2] = { -- Paladin
             -- ????
@@ -57,6 +58,9 @@ local sdr_zones = {
         [ 7] = { -- Shaman
             725, -- The Maelstrom (Class Hall)
             726, --     - The Maelstrom (Class Hall)
+            -- 839, -- The Maelstrom (?)
+            -- 948, -- The Maelstrom (continent; ?)
+            -- 1474, -- The Maelstrom - Heart of Azeroth (8.2.0; ?)
         },
         [ 8] = { -- Mage
             734, -- Hall of the Guardian (Class Hall)
@@ -72,6 +76,9 @@ local sdr_zones = {
         [11] = { -- Druid
             715, -- Emerald Dreamway (Class Hall ?)
             747, -- The Dreamgrove (Class Hall)
+            -- 1468, -- The Dreamgrove (8.2.5; ?)
+            -- 1471, -- Emerald Dreamway (8.2.0; ?)
+            -- 1475, -- The Emerald Dream (8.2.0; ?)
         },
         [12] = { -- Demon Hunter
             719, -- Mardum, the Shattered Abyss (Class Hall)
@@ -90,6 +97,8 @@ local sdr_zones = {
         1671, --     - Ring of Transference
         1672, --     - The Broker's Den
         1673, --     - The Crucible
+        -- TODO: Add covenant check? idk what changes were made in 9.1/.2
+        --       so it could be that you can hang out in other covenant sanctums now
         1698, -- Seat of the Primus (Necrolord Covenant Sanctum)
         1699, -- Sinfall Reaches
         1700, -- Sinfall Depths
@@ -254,6 +263,8 @@ local function createReminderText()
             [sdh.Conditionals.SQUIRT_DAY]           = "SDH_SQUIRT_DAY",
             [sdh.Conditionals.SUPER_SQUIRT_DAY]     = "SDH_SUPER_SQUIRT_DAY",
         })],
+        -- TODO: Create settings for those colors
+        --       Using ColorSelect-FrameType :)
         createColorString({ 255, 255, 255, 255 }), -- text color
         createColorString({ 255,   0,   0, 255 }) -- date color
     )
@@ -457,6 +468,7 @@ app:RegisterEvent("PET_BATTLE_CLOSE", "SquirtDayHelper", function()
     end
 end);
 app:RegisterUpdate("SquirtDayHelper", function(elapsed)
+    -- TODO: Increase threshold
     local UPDATE_THRESHOLD = 20; -- Update threshold in seconds
     local currentTime = GetTime();
 

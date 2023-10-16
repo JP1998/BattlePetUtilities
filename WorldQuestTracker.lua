@@ -552,5 +552,6 @@ end
 
 app:RegisterEvent("QUEST_LOG_UPDATE", "WorldQuestTracker", function(...)
     app:log("Quest log has updated.");
+    print("Quest log has updated.");
     app.WorldQuestTracker:UpdateWorldQuestDisplay();
 end);

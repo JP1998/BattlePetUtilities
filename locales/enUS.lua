@@ -2,10 +2,8 @@
 local name, app = ...;
 app.L = {
     ["TITLE"] = "|cFFD13653Battle Pet Utilities|r";
-
     ["HELP"] = "Use '/bpu' with following arguments:\n - none or 'main': shows or hides the quest tracker window\n - 'options': shows the settings for the addon\n - 'help': shows this help";
     ["HELP_ADVANCED"] = "Use '/bpu' with following arguments:\n - none or 'main': shows or hides the quest tracker window\n - 'options': shows the settings for the addon\n - 'help': shows this help\n - 'debug': toggles the debug flag\n    This shows debug messages in chat and gives access to following commands:\n - 'dump': Dumps the full addon state in the chat\n    (this is a buttload, so use at own risk)";
-
     ["ERROR_UNKNOWN_COMMAND"] = "Unknown command: '%s'. Type '/bpu help' for some help.";
     ["MESSAGE_GENERAL_DUMP"] = "Here's a dump of the current addon's state:\n%s";
     ["MESSAGE_DEBUG_TOGGLE"] = "Toggled debug state. Current value: %s";
@@ -96,6 +94,7 @@ app.L = {
     --[[
         Quest Data Strings
     ]]
+
     -- Quest Givers
     ["QUESTDATA_QUESTGIVERS_MASTER_LI"] = "Master Li";
     ["QUESTDATA_QUESTGIVERS_MUYANI"] = "Muyani";
@@ -266,45 +265,31 @@ app.L = {
     ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "We found a world quest with an unknown item reward: %s.";
     ["WORLDQUESTTRACKER_DEFAULT_ICON"] = "Interface\\Icons\\PetJournalPortrait";
     ["WORLDQUESTTRACKER_ROOT_ICON"] = "Interface\\Icons\\Inv_Pet_Frostwolfpup";
-
-    ["WORLDQUESTTRACKER_FACTION_ICON"] = "|TInterface\\FriendsFrame\\PlusManz-%s:0|t %s"; -- TODO: Possibly use Interface\\COMMON\\icon-%s (?)
-
+    ["WORLDQUESTTRACKER_FACTION_ICON"] = "|TInterface\\FriendsFrame\\PlusManz-%s:0|t %s"; -- TODO: Probably use Interface\\COMMON\\icon-%s (?)
     ["WORLDQUESTTRACKER_WORLDQUEST_TITLE"] = "World Quests";
     ["WORLDQUESTTRACKER_WORLDQUEST_ICON"] = "Interface\\BUTTONS\\AdventureGuideMicrobuttonAlert";
-
     ["WORLDQUESTTRACKER_REPEATABLEQUEST_TITLE"] = "Repeatable Quests";
     ["WORLDQUESTTRACKER_REPEATABLEQUEST_ICON"] = "Interface\\GossipFrame\\DailyActiveQuestIcon";
-
     ["WORLDQUESTTRACKER_DUNGEONS_TITLE"] = "Battle Pet Dungeons";
     ["WORLDQUESTTRACKER_DUNGEONS_ICON"] = "Interface\\MINIMAP\\Dungeon";
-
     ["WORLDQUESTTRACKER_DARKMOONFAIRE_TITLE"] = "Darkmoon Faire";
     ["WORLDQUESTTRACKER_DARKMOONFAIRE_ICON"] = "Interface\\ICONS\\INV_MISC_Cape_DarkmoonFaire_C_01";
-
     ["WORLDQUESTTRACKER_SHADOWLANDS_TITLE"] = "Shadowlands";
     ["WORLDQUESTTRACKER_SHADOWLANDS_ICON"] = "assets\\expansion-9-shadowlands";
-
     ["WORLDQUESTTRACKER_BATTLEFORAZEROTH_TITLE"] = "Battle for Azeroth";
     ["WORLDQUESTTRACKER_BATTLEFORAZEROTH_ICON"] = "assets\\expansion-8-battleforazeroth";
-
     ["WORLDQUESTTRACKER_LEGION_TITLE"] = "Legion";
     ["WORLDQUESTTRACKER_LEGION_ICON"] = "assets\\expansion-7-legion";
-
     ["WORLDQUESTTRACKER_WARLORDSOFDRAENOR_TITLE"] = "Warlords of Draenor";
     ["WORLDQUESTTRACKER_WARLORDSOFDRAENOR_ICON"] = "assets\\expansion-6-warlordsofdraenor";
-
     ["WORLDQUESTTRACKER_MISTSOFPANDARIA_TITLE"] = "Mists of Pandaria";
     ["WORLDQUESTTRACKER_MISTSOFPANDARIA_ICON"] = "assets\\expansion-5-mistsofpandaria";
-
     ["WORLDQUESTTRACKER_CATACLYSM_TITLE"] = "Cataclysm";
     ["WORLDQUESTTRACKER_CATACLYSM_ICON"] = "assets\\expansion-4-cataclysm";
-
     ["WORLDQUESTTRACKER_WRATHOFTHELICHKING_TITLE"] = "Wrath of the Lich King";
     ["WORLDQUESTTRACKER_WRATHOFTHELICHKING_ICON"] = "assets\\expansion-3-wrathofthelichking";
-
     ["WORLDQUESTTRACKER_THEBURNINGCRUSADE_TITLE"] = "The Burning Crusade";
     ["WORLDQUESTTRACKER_THEBURNINGCRUSADE_ICON"] = "assets\\expansion-2-theburningcrusade";
-
     ["WORLDQUESTTRACKER_CLASSIC_TITLE"] = "Classic";
     ["WORLDQUESTTRACKER_CLASSIC_ICON"] = "assets\\expansion-1-classic";
 
@@ -313,12 +298,11 @@ app.L = {
     ["SDH_SQUIRT_DAY"] = "|c%s|c%sToday|r is squirt day!|r";
     ["SDH_NEXT_SQUIRT"] = "|c%sNext squirt day is on |c%s{weekday}, {day}. {month}|r.|r";
     ["SDH_NOT_SUPPORTED"] = "|c%sYour region is sadly not supported.|r";
-
     ["SDH_PET_TREAT"] = "Give your pets some treats!!";
     ["SDH_PET_HAT"] = "Put on your hat!!";
-
     ["SDH_STATISTICS"] = "Squirt Day Helper: So far you have levelled {pets} pets in {battles} battles.";
 
+    -- Date Strings
     ["WEEKDAY_2"] = "Monday";
     ["WEEKDAY_3"] = "Tuesday";
     ["WEEKDAY_4"] = "Wednesday";
@@ -326,7 +310,6 @@ app.L = {
     ["WEEKDAY_6"] = "Friday";
     ["WEEKDAY_7"] = "Saturday";
     ["WEEKDAY_1"] = "Sunday";
-    
     ["MONTH_1"] = "January";
     ["MONTH_2"] = "February";
     ["MONTH_3"] = "March";
