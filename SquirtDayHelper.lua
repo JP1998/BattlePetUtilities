@@ -404,6 +404,8 @@ sdh.Initialize = function(self)
 
     self:CreateDisplays();
     self:UpdateDisplays();
+
+    self.Initialized = true;
 end
 
 app:RegisterEvent("ZONE_CHANGED", "SquirtDayHelper", function()
@@ -446,7 +448,7 @@ app:RegisterUpdate("SquirtDayHelper", function(elapsed)
     local UPDATE_THRESHOLD = 20; -- Update threshold in seconds
     local currentTime = GetTime();
 
-    if not sdh.LastUpdate or sdh.LastUpdate >= currentTime - UPDATE_THRESHOLD then
+    if sdh.Initialized and (not sdh.LastUpdate or sdh.LastUpdate <= currentTime - UPDATE_THRESHOLD) then
         sdh:UpdateDisplays();
     end
 end);
