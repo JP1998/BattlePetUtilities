@@ -408,7 +408,7 @@ sdh.Initialize = function(self)
     self.Initialized = true;
 end
 
-app:RegisterEvent("ZONE_CHANGED", "SquirtDayHelper", function()
+app:RegisterEvent("ZONE_CHANGED_NEW_AREA", "SquirtDayHelper", function()
     checkLocations();
     sdh:UpdateDisplays();
 end);
