@@ -187,4 +187,7 @@ app:RegisterEvent("ADDON_LOADED", "BattlePetUtilities", function(addon)
     app.SquirtDayHelper:Initialize();
 
     app:log(L["MESSAGE_DEBUG_GREETING"]);
+
+    app:UnregisterEvent("ADDON_LOADED", "BattlePetUtilities");
 end);
+
