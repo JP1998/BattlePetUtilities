@@ -4,6 +4,7 @@
 ## SavedVariables: BattlePetWorldQuestSettings, SquirtDayHelperPersistence
 ## Notes: Contains multiple utilities regarding battle pets, like an item mailer, squirt day helper and a quest tracker.
 ## Version: 1.0.0
+## X-Wago-ID: mNwQzXKo
 src/base.lua
 locales/enUS.lua
 locales/enGB.lua
