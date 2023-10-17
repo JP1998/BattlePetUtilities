@@ -1,7 +1,9 @@
 .git/
 .github/
 .idea/
+assets/Readme/
 .gitignore
 .buildignore
 *.sh
 *.conf
+*.md
