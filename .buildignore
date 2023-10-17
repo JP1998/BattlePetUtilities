@@ -1,0 +1,7 @@
+.git/
+.github/
+.idea/
+.gitignore
+.buildignore
+*.sh
+*.conf
