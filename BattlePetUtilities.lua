@@ -71,6 +71,9 @@ end
 app.createItemLink = function(quality, id, name)
     return ITEM_QUALITY_COLORS[quality].hex .. "|Hitem:" .. id .. ":::::::::::::::|h[" .. name .. "]|h|r";
 end
+app.createItemLinkById = function(id)
+    return app.createItemLink(C_Item.GetItemQualityByID(id), id, C_Item.GetItemNameByID(id));
+end
 
 app.Windows = {};
 app.RegisterWindow = function(self, suffix, window)
