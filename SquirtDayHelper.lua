@@ -14,7 +14,8 @@ sdh.Location.AuraReminders = false;
 
 sdh.Auras = {};
 sdh.Auras.BattlePetEvent = false;
-sdh.Auras.PetTreats = false;
+sdh.Auras.LesserPetTreat = false;
+sdh.Auras.PetTreat = false;
 sdh.Auras.PetHat = false;
 
 sdh.Toys = {};
@@ -197,7 +198,8 @@ local function playerHasAura(auraId)
 end
 local function checkAuras()
     sdh.Auras.BattlePetEvent = playerHasAura(186406);
-    sdh.Auras.PetTreats = playerHasAura(142204) or playerHasAura(142205);
+    sdh.Auras.LesserPetTreat = playerHasAura(142204);
+    sdh.Auras.PetTreat = playerHasAura(142205);
     sdh.Auras.PetHat = playerHasAura(158486);
 end
 local function checkToys()
@@ -322,7 +324,8 @@ local function AssureHidden(display)
     end
 end
 local function AssureAurasHidden(group)
-    AssureHidden(group.PetTreats);
+    AssureHidden(group.LesserPetTreat);
+    AssureHidden(group.PetTreat);
     AssureHidden(group.PetHat);
 end
 
@@ -338,10 +341,16 @@ sdh.UpdateDisplays = function(self)
         end
 
         if sdh.Location.AuraReminders and isSquirtDay() then
-            if not sdh.Auras.PetTreats then
-                AssureShown(sdh.Displays.PetTreats);
+            if not sdh.Auras.PetTreat then
+                AssureShown(sdh.Displays.PetTreat);
             else
-                AssureHidden(sdh.Displays.PetTreats);
+                AssureHidden(sdh.Displays.PetTreat);
+            end
+
+            if not sdh.Auras.LesserPetTreat then
+                AssureShown(sdh.Displays.LesserPetTreat);
+            else
+                AssureHidden(sdh.Displays.LesserPetTreat);
             end
 
             if sdh.Toys.PetHat and not sdh.Auras.PetHat then
@@ -370,22 +379,28 @@ sdh.CreateDisplays = function(self)
     self.Displays.Frame:SetPoint("TOP", UIParent, "TOP", 0, 0);
     self.Displays.Frame:SetSize(500, 100);
 
-    -- TODO: Make font, size and position customizable through settings
     self.Displays.SquirtDayHelper = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
     self.Displays.SquirtDayHelper:SetFont("Fonts/FRIZQT__.TTF", 24, "THICKOUTLINE");
     self.Displays.SquirtDayHelper:SetPoint("CENTER", self.Displays.Frame, "CENTER", 0, 0);
     self.Displays.SquirtDayHelper:SetTextColor(1, 1, 1);
     self.Displays.SquirtDayHelper:SetShadowColor(0, 0, 0);
 
-    self.Displays.PetTreats = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
-    self.Displays.PetTreats:SetPoint("CENTER", self.Displays.Frame, "CENTER", 0, -420);
-    self.Displays.PetTreats:SetFont("Fonts/FRIZQT__.TTF", 18, "THICKOUTLINE");
-    self.Displays.PetTreats:SetText(L["SDH_PET_TREAT"]);
-    self.Displays.PetTreats:SetTextColor(1, 1, 1);
-    self.Displays.PetTreats:SetShadowColor(0, 0, 0);
+    self.Displays.PetTreat = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
+    self.Displays.PetTreat:SetPoint("CENTER", self.Displays.Frame, "CENTER", 0, -420);
+    self.Displays.PetTreat:SetFont("Fonts/FRIZQT__.TTF", 18, "THICKOUTLINE");
+    self.Displays.PetTreat:SetText(L["SDH_PET_TREAT"]:format(app.createItemLinkById(98114)));
+    self.Displays.PetTreat:SetTextColor(1, 1, 1);
+    self.Displays.PetTreat:SetShadowColor(0, 0, 0);
+
+    self.Displays.LesserPetTreat = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
+    self.Displays.LesserPetTreat:SetPoint("CENTER", self.Displays.PetTreat, "CENTER", 0, -20);
+    self.Displays.LesserPetTreat:SetFont("Fonts/FRIZQT__.TTF", 18, "THICKOUTLINE");
+    self.Displays.LesserPetTreat:SetText(L["SDH_PET_TREAT"]:format(app.createItemLinkById(98112)));
+    self.Displays.LesserPetTreat:SetTextColor(1, 1, 1);
+    self.Displays.LesserPetTreat:SetShadowColor(0, 0, 0);
 
     self.Displays.PetHat = self.Displays.Frame:CreateFontString(nil, "OVERLAY");
-    self.Displays.PetHat:SetPoint("CENTER", self.Displays.Frame, "CENTER", 0, -438);
+    self.Displays.PetHat:SetPoint("CENTER", self.Displays.LesserPetTreat, "CENTER", 0, -20);
     self.Displays.PetHat:SetFont("Fonts/FRIZQT__.TTF", 18, "THICKOUTLINE");
     self.Displays.PetHat:SetText(L["SDH_PET_HAT"]);
     self.Displays.PetHat:SetTextColor(1, 1, 1);

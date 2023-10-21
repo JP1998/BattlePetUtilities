@@ -298,7 +298,7 @@ app.L = {
     ["SDH_SQUIRT_DAY"] = "|c%s|c%sToday|r is squirt day!|r";
     ["SDH_NEXT_SQUIRT"] = "|c%sNext squirt day is on |c%s{weekday}, {day}. {month}|r.|r";
     ["SDH_NOT_SUPPORTED"] = "|c%sYour region is sadly not supported.|r";
-    ["SDH_PET_TREAT"] = "Give your pets some treats!!";
+    ["SDH_PET_TREAT"] = "You're missing the %s buff!";
     ["SDH_PET_HAT"] = "Put on your hat!!";
     ["SDH_STATISTICS"] = "Squirt Day Helper: So far you have levelled {pets} pets in {battles} battles.";
 
