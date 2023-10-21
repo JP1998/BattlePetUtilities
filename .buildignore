@@ -4,6 +4,7 @@
 assets/Readme/
 .gitignore
 .buildignore
+.pkgmeta
 *.sh
 *.conf
 *.md
