@@ -69,6 +69,14 @@ app.stringify = function(t)
     end
 end
 app.createItemLink = function(quality, id, name)
+    if quality == nil then
+        quality = 0;
+    end
+
+    if name == nil then
+        name = "Unknown item";
+    end
+
     return ITEM_QUALITY_COLORS[quality].hex .. "|Hitem:" .. id .. ":::::::::::::::|h[" .. name .. "]|h|r";
 end
 app.createItemLinkById = function(id)
