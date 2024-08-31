@@ -109,6 +109,7 @@ local sdr_zones = {
         1707, -- Elysian Hold - Archon's Rise
         1708, -- Elysian Hold - Sanctum of Binding
         2112, -- Valdrakken (maybe 2134; Orphan 2135)
+        2339, -- Dornogal
     },
     ["Alliance"] = {
         84, -- Stormwind
