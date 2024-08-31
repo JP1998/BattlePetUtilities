@@ -569,6 +569,7 @@ settingsFrame.version = f;
     The World Quest Tracker Tab
 ]]
 local line;
+--[[
 (function()
     local tab = settingsFrame:CreateTab(L["OPTIONS_WORLDQUESTTRACKER_HEADER"], true);
 
@@ -625,9 +626,10 @@ local line;
         ITEMS_PET_SUPPLIES
     }, settings.SetWorldQuestTrackerItem, settings.GetWorldQuestTrackerItem);
 end)();
---[[
+--]]
 (function()
-    local tab = settingsFrame:CreateTab(L["OPTIONS_MAILER_HEADER"]);
+    local scroll = settingsFrame:CreateTab(L["OPTIONS_MAILER_HEADER"], true);
+    local tab = scroll.Content;
 
     local HeaderLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
     HeaderLabel:SetPoint("TOPLEFT", tab, "BOTTOMLEFT", 8, -8);
@@ -638,8 +640,9 @@ end)();
     HeaderLabel:Show();
 
     local DescriptionLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
-    DescriptionLabel:SetPoint("TOPLEFT", HeaderLabel, "BOTTOMLEFT", 0, -8);
-    DescriptionLabel:SetPoint("RIGHT", line, "BOTTOMRIGHT", -8, 0);
+    DescriptionLabel:SetPoint("TOPLEFT", HeaderLabel, "BOTTOMLEFT", 8, -8);
+    --DescriptionLabel:SetPoint("RIGHT", tab.parent, "TOPRIGHT", -800, 0);
+    DescriptionLabel:SetPoint("RIGHT", scroll, "TOPRIGHT", -32, 0);
     DescriptionLabel:SetJustifyH("LEFT");
     DescriptionLabel:SetText(L["OPTIONS_MAILER_DESCRIPTION"]);
     -- table.insert(settingsFrame.MostRecentTab.objects, DescriptionLabel);
@@ -647,27 +650,29 @@ end)();
     DescriptionLabel:Show();
 
     local EnabledCheckBox = settingsFrame:CreateCheckBox(tab, L["OPTIONS_MAILER_ENABLED_DESCRIPTION"],
-    function(self) -- OnRefresh
-        self:SetChecked(settings:Get("MailerOptions", "Enabled"));
-    end,
-    function(self) -- OnClick
-        settings:Set("MailerOptions", "Enabled", self:GetChecked());
-    end);
-    EnabledCheckBox:SetPoint("TOPLEFT", DescriptionLabel, "BOTTOMLEFT", 0, -1);
+function(self) -- OnRefresh
+            self:SetChecked(settings:Get("MailerOptions", "Enabled"));
+        end,
+function(self) -- OnClick
+            settings:Set("MailerOptions", "Enabled", self:GetChecked());
+        end);
+    EnabledCheckBox:SetPoint("TOPLEFT", DescriptionLabel, "BOTTOMLEFT", 0, -8);
     EnabledCheckBox:Show();
 
-    local CharacterLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontWhiteSmall");
+    local CharacterLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontWhite");
     CharacterLabel:SetPoint("TOPLEFT", EnabledCheckBox, "BOTTOMLEFT", 0, -8);
     CharacterLabel:SetJustifyH("LEFT");
     CharacterLabel:SetText(L["OPTIONS_MAILER_CHARACTER_DESCRIPTION"]);
-    CharacterLabel:Show();
     -- table.insert(settingsFrame.MostRecentTab.objects, CharacterLabel);
     settingsFrame.MostRecentTab:AddObject(CharacterLabel);
     CharacterLabel:Show();
 
-    local CharacterEditBox = CreateFrame("EditBox", "Character-EditBox", tab);
-    CharacterEditBox:SetPoint("TOPLEFT", CharacterLabel, "TOPRIGHT", 4, 4);
-    CharacterEditBox:SetPoint("RIGHT", line, "BOTTOMRIGHT", -4, 0);
+    local CharacterEditBox = CreateFrame("EditBox", "Character-EditBox", tab, "InputBoxTemplate");
+    CharacterEditBox:SetFontObject("GameFontWhite");
+    CharacterEditBox:SetPoint("TOPLEFT", CharacterLabel, "TOPRIGHT", 16, 4);
+    CharacterEditBox:SetPoint("TOPRIGHT", scroll, "RIGHT", -32, 0);
+    CharacterEditBox:SetHeight(18);
+    CharacterEditBox:SetAutoFocus(false);
     CharacterEditBox:SetMultiLine(false);
     CharacterEditBox.OnRefresh = function(self)
         self:SetText(settings:Get("MailerOptions", "Character"));
@@ -675,26 +680,23 @@ end)();
     CharacterEditBox:SetScript("OnTextChanged", function(self)
         settings:Set("MailerOptions", "Character", self:GetText());
     end);
-    -- table.insert(settingsFrame.MostRecentTab.objects, CharacterEditBox);
     settingsFrame.MostRecentTab:AddObject(CharacterEditBox);
     CharacterEditBox:Show();
 
     local ItemLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
-    ItemLabel:SetPoint("TOPLEFT", CharacterLabel, "BOTTOMLEFT", 0, -6);
+    ItemLabel:SetPoint("TOPLEFT", CharacterLabel, "BOTTOMLEFT", 0, -12);
     ItemLabel:SetJustifyH("LEFT");
     ItemLabel:SetText(L["OPTIONS_MAILER_ITEMS_HEADER"]);
-    -- table.insert(settingsFrame.MostRecentTab.objects, ItemLabel);
     settingsFrame.MostRecentTab:AddObject(ItemLabel);
     ItemLabel:Show();
 
-    settingsFrame:CreateItemGroupings(tab, ItemLabel, -6, 4, 220, {
+    settingsFrame:CreateItemGroupings(tab, ItemLabel, 8, 0, 360, {
         ITEMS_GENERAL,
         ITEMS_PET_CHARMS,
         ITEMS_GENERAL_BS,
         ITEMS_FAMILY_BS
     }, settings.SetMailerItem, settings.GetMailerItem);
 end)();
---]]
 (function()
     local tab = settingsFrame:CreateTab(L["OPTIONS_SQUIRTDAYHELPER_HEADER"], false);
 
