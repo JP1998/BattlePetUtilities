@@ -12,17 +12,19 @@ settingsFrame.name = app:GetName();
 settingsFrame.MostRecentTab = nil;
 settingsFrame.Tabs = {};
 settingsFrame.ModifierKeys = { "None", "Shift", "Ctrl", "Alt" };
-InterfaceOptions_AddCategory(settingsFrame);
+
+local mainCategory = Settings.RegisterCanvasLayoutCategory(settingsFrame, settingsFrame.name, settingsFrame.name);
+mainCategory.ID = settingsFrame.name;
+Settings.RegisterAddOnCategory(mainCategory);
+
+
 settings.Open = function(self)
     -- Open the Options menu.
     if not SettingsPanel:IsVisible() then
         SettingsPanel:Show();
     end
-    
-    -- Twice, because sometimes (if the addon's settings is not shown
-    -- in the sidebar) it does not open on the first try
-    InterfaceOptionsFrame_OpenToCategory(app:GetName());
-    InterfaceOptionsFrame_OpenToCategory(app:GetName());
+
+    Settings.OpenToCategory(app:GetName());
 end
 
 local SettingsBase = {
@@ -247,7 +249,7 @@ settingsFrame.CreateTab = function(self, text, scroll)
     local id = #self.Tabs + 1;
 
     local settingsPanel;
-    local subcategory;
+    local subcategoryPanel;
 
     if scroll then
         local scrollFrame = CreateFrame("ScrollFrame", self:GetName() .. "-Tab" .. id .. "-Scroll", self, "ScrollFrameTemplate");
@@ -259,22 +261,25 @@ settingsFrame.CreateTab = function(self, text, scroll)
         settingsPanel:SetHeight(1);   -- This is automatically defined, so long as the attribute exists at all
 
         -- Move the scrollbar to its proper position (only needed for subcategories)
-        scrollFrame.ScrollBar:ClearPoint("RIGHT")
-        scrollFrame.ScrollBar:SetPoint("RIGHT", -36, 0)
+        scrollFrame.ScrollBar:ClearPoint("RIGHT");
+        scrollFrame.ScrollBar:SetPoint("RIGHT", -36, 0);
+
+        scrollFrame.Content = settingsPanel;
 
         -- Create the nested subcategory
-        subcategory = scrollFrame;
+        subcategoryPanel = scrollFrame;
     else
         settingsPanel = CreateFrame("Frame", self:GetName() .. "-Tab" .. id);
         
         settingsPanel:SetID(id);
 
-        subcategory = settingsPanel;
+        subcategoryPanel = settingsPanel;
     end
 
-    subcategory.name = text;
-    subcategory.parent = app:GetName();
-    InterfaceOptions_AddCategory(subcategory);
+    subcategoryPanel.name = text;
+    subcategoryPanel.parent = app:GetName();
+
+    local subcategory = Settings.RegisterCanvasLayoutSubcategory(mainCategory, subcategoryPanel, text)
 
     table.insert(self.Tabs, settingsPanel);
     self.MostRecentTab = settingsPanel;
@@ -287,7 +292,7 @@ settingsFrame.CreateTab = function(self, text, scroll)
         table.insert(self.objects, obj);
     end
 
-    return settingsPanel
+    return subcategoryPanel;
 end
 settingsFrame.CreateItemGroupings = function(self, parent, relativeTo, labelOffset, checkBoxOffset, horizontalOffset, data, Setter, Getter)
     local y = 0;
