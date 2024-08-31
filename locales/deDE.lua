@@ -320,7 +320,7 @@ for key,value in pairs({
     ["SDH_NEXT_SQUIRT"] = "|c%sDer nächste squirt day ist am |c%s{weekday}, {day}. {month}|r.|r";
     ["SDH_NOT_SUPPORTED"] = "|c%sDeine Region ist leider nicht unterstützt.|r";
 
-    ["SDH_PET_TREAT"] = "Gib deinen Haustieren ein paar Leckerli!!";
+    ["SDH_PET_TREAT"] = "Gib' deinem Haustier ein %s!";
     ["SDH_PET_HAT"] = "Zieh deinen Hut auf!!";
 
     ["SDH_STATISTICS"] = "Squirt Day Helfer: Bis jetzt hast du {pets} Haustiere in {battles} Kämpfen gelevelt.";
