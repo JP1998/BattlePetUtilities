@@ -185,7 +185,7 @@ app:RegisterEvent("ADDON_LOADED", "BattlePetUtilities", function(addon)
         return;
     end
 
-    app.Version = GetAddOnMetadata(app:GetName(), "Version");
+    app.Version = C_AddOns.GetAddOnMetadata(app:GetName(), "Version");
     app.Settings:Initialize();
     app.SquirtDayHelper:Initialize();
 
