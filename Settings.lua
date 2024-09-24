@@ -33,7 +33,7 @@ local SettingsBase = {
     },
     ["MailerOptions"] = {
         ["Enabled"] = false,
-        ["Character"] = {},
+        ["Character"] = "",
         ["Items"] = {
             [86143]  = true, -- Battle Pet Bandage
 
@@ -163,23 +163,6 @@ settings.Get = function(self, category, option)
         return BattlePetWorldQuestSettings;
     elseif option == nil then
         return BattlePetWorldQuestSettings and BattlePetWorldQuestSettings[category];
-    elseif category == "MailerOptions" and option == "Character" then
-        local _, realm = UnitFullName("player");
-        local faction, _ = UnitFactionGroup("player");
-
-        if BattlePetWorldQuestSettings then
-            if not BattlePetWorldQuestSettings[category][option][realm] then
-                BattlePetWorldQuestSettings[category][option][realm] = {};
-            end
-
-            local character = BattlePetWorldQuestSettings[category][option][realm][faction] or "";
-
-            BattlePetWorldQuestSettings[category][option][realm][faction] = character;
-
-            return character;
-        else
-            return nil;
-        end
     else
         return BattlePetWorldQuestSettings and BattlePetWorldQuestSettings[category][option];
     end
@@ -191,20 +174,7 @@ settings.GetWorldQuestTrackerItem = function(self, itemId)
     return BattlePetWorldQuestSettings and BattlePetWorldQuestSettings["WorldQuestTrackerOptions"]["Items"][itemId];
 end
 settings.Set = function(self, category, option, value)
-    if category == "MailerOptions" and option == "Character" then
-        local _, realm = UnitFullName("player");
-        local faction, _ = UnitFactionGroup("player");
-
-        if BattlePetWorldQuestSettings then
-            if not BattlePetWorldQuestSettings[category][option][realm] then
-                BattlePetWorldQuestSettings[category][option][realm] = {};
-            end
-
-            BattlePetWorldQuestSettings[category][option][realm][faction] = value;
-        end
-    else
-        BattlePetWorldQuestSettings[category][option] = value;
-    end
+    BattlePetWorldQuestSettings[category][option] = value;
 
     self.Frame:Refresh();
     -- app.WorldQuestTracker:UpdateWorldQuestDisplay(); TODO:
