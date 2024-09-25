@@ -38,7 +38,7 @@ app.stringify = function(t)
             end
 
             first = false;
-            text = text .. string.format("[%s] = %s", app:stringify(k), app:stringify(v));
+            text = text .. string.format("[%s] = %s", app.stringify(k), app.stringify(v));
         end
 
         text = text .. " }";
