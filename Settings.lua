@@ -2,6 +2,8 @@
 local app = select(2, ...);
 local L = app.L;
 
+local initialized = false;
+
 app.Settings = {};
 local settings = app.Settings;
 
@@ -157,6 +159,8 @@ settings.Initialize = function(self)
     settings.Data = BattlePetWorldQuestSettings;
 
     self.Frame:Refresh();
+
+    initialized = true;
 end
 settings.Get = function(self, category, option)
     if category == nil then
@@ -535,10 +539,10 @@ f:SetText("v" .. C_AddOns.GetAddOnMetadata(app:GetName(), "Version"));
 f:Show();
 settingsFrame.version = f;
 
---[[
-    The World Quest Tracker Tab
-]]
 local line;
+--[[
+    World Quest Tracker tab
+]]--
 --[[
 (function()
     local tab = settingsFrame:CreateTab(L["OPTIONS_WORLDQUESTTRACKER_HEADER"], true);
@@ -597,6 +601,9 @@ local line;
     }, settings.SetWorldQuestTrackerItem, settings.GetWorldQuestTrackerItem);
 end)();
 --]]
+--[[
+    Mailer Settings tab
+]]--
 (function()
     local scroll = settingsFrame:CreateTab(L["OPTIONS_MAILER_HEADER"], true);
     local tab = scroll.Content;
@@ -640,17 +647,29 @@ function(self) -- OnClick
     local CharacterEditBox = CreateFrame("EditBox", "Character-EditBox", tab, "InputBoxTemplate");
     CharacterEditBox:SetFontObject("GameFontWhite");
     CharacterEditBox:SetPoint("TOPLEFT", CharacterLabel, "TOPRIGHT", 16, 4);
-    CharacterEditBox:SetPoint("TOPRIGHT", scroll, "RIGHT", -32, 0);
+    CharacterEditBox:SetPoint("RIGHT", scroll, "RIGHT", -32, 0);
     CharacterEditBox:SetHeight(18);
     CharacterEditBox:SetAutoFocus(false);
     CharacterEditBox:SetMultiLine(false);
     CharacterEditBox.OnRefresh = function(self)
-        self:SetText(settings:Get("MailerOptions", "Character"));
+        local characterstring = settings:Get("MailerOptions", "Character");
+
+        if characterstring ~= nil and type(characterstring) == "string" then
+            self:SetText(characterstring);
+
+            if not CharacterEditBox.Initialized then
+                CharacterEditBox:SetCursorPosition(0);
+                CharacterEditBox.Initialized = true;
+            end
+        end
     end;
     CharacterEditBox:SetScript("OnTextChanged", function(self)
-        settings:Set("MailerOptions", "Character", self:GetText());
+        if initialized then
+            settings:Set("MailerOptions", "Character", self:GetText());
+        end
     end);
     settingsFrame.MostRecentTab:AddObject(CharacterEditBox);
+    CharacterEditBox:OnRefresh();
     CharacterEditBox:Show();
 
     local ItemLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
@@ -667,6 +686,9 @@ function(self) -- OnClick
         ITEMS_FAMILY_BS
     }, settings.SetMailerItem, settings.GetMailerItem);
 end)();
+--[[
+    Squirt Day Helper tab
+]]--
 (function()
     local tab = settingsFrame:CreateTab(L["OPTIONS_SQUIRTDAYHELPER_HEADER"], false);
 
