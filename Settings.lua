@@ -35,6 +35,7 @@ local SettingsBase = {
     },
     ["MailerOptions"] = {
         ["Enabled"] = false,
+        ["UseWarbank"] = true,
         ["Character"] = "",
         ["Items"] = {
             [86143]  = true, -- Battle Pet Bandage
@@ -636,8 +637,18 @@ function(self) -- OnClick
     EnabledCheckBox:SetPoint("TOPLEFT", DescriptionLabel, "BOTTOMLEFT", 0, -8);
     EnabledCheckBox:Show();
 
+    local UseWarbankCheckBox = settingsFrame:CreateCheckBox(tab, L["OPTIONS_MAILER_USEWARBANK_DESCRIPTION"],
+            function(self) -- OnRefresh
+                self:SetChecked(settings:Get("MailerOptions", "UseWarbank"));
+            end,
+            function(self) -- OnClick
+                settings:Set("MailerOptions", "UseWarbank", self:GetChecked());
+            end);
+    UseWarbankCheckBox:SetPoint("TOPLEFT", EnabledCheckBox, "BOTTOMLEFT", 0, -8);
+    UseWarbankCheckBox:Show();
+
     local CharacterLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontWhite");
-    CharacterLabel:SetPoint("TOPLEFT", EnabledCheckBox, "BOTTOMLEFT", 0, -8);
+    CharacterLabel:SetPoint("TOPLEFT", UseWarbankCheckBox, "BOTTOMLEFT", 0, -8);
     CharacterLabel:SetJustifyH("LEFT");
     CharacterLabel:SetText(L["OPTIONS_MAILER_CHARACTER_DESCRIPTION"]);
     -- table.insert(settingsFrame.MostRecentTab.objects, CharacterLabel);

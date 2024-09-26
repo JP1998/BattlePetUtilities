@@ -1,4 +1,5 @@
 
+
 if GetLocale() ~= "deDE" then
     return;
 end
@@ -6,12 +7,10 @@ end
 local _, app = ...;
 local L = app.L;
 
-for key,value in pairs({
+for key, value in pairs({
     -- ["TITLE"] = "|cFFD13653Battle Pet Utilities|r";
-
     ["HELP"] = "Du kannst '/bpu' mit folgenden Argumenten benutzen:\n - keines oder 'main': Zeigt oder schließt das Quest Tracker Fenster\n - 'options': Zeigt die Einstellungen des Addons\n - 'help': Zeigt diese Hilfe-Nachricht";
     ["HELP_ADVANCED"] = "Du kannst '/bpu' mit folgenden Argumenten benutzen:\n - keines oder 'main': Zeigt oder schließt das Quest Tracker Fenster\n - 'options': Zeigt die Einstellungen des Addons\n - 'help': Zeigt diese Hilfe-Nachricht\n - 'debug': Toggelt das Debug-Flag\n     Dies zeigt Debug-Nachrichten im Chat und gibt Zugang zu folgenden Befehlen:\n - 'dump': Zeigt den kompletten Addon-Zutand im Chat an\n    (das ist eine ganze Menge, daher Benutzung auf eigene Gefahr)";
-
     ["ERROR_UNKNOWN_COMMAND"] = "Unbekannter Befehl: '%s'. Gib '/bpu help' ein, um die Hilfe anzuzeigen.";
     ["MESSAGE_GENERAL_DUMP"] = "Hier ist ein Dump von dem Zustand des Addons:\n%s";
     ["MESSAGE_DEBUG_TOGGLE"] = "Debug-Modus wurde getoggelt. Derzeitiger Wert: %s";
@@ -19,13 +18,14 @@ for key,value in pairs({
     ["MESSAGE_DEBUG_GREETING"] = "Sie haben den Debug-Modus aktiv. Um ihn auszuschalten, geben Sie '/bpu debug' in Ihren Chat ein.";
 
     --[[
-        Settings strings
+        Settings Strings
     ]]
 
     -- Item Mailer Options Strings
     ["OPTIONS_MAILER_HEADER"] = "Artikel-Mailer";
     ["OPTIONS_MAILER_DESCRIPTION"] = "Wenn aktiviert, wird diese Funktion, jedes Mal wenn Sie das Postfach öffnen, Kampfhaustier-Artikel an einen Charakter senden. Es werden nur Artikel gesendet, welche Sie bestimmen, und an einen Charakter, den ebenfalls Sie bestimmen müssen. Da Sie Post nur an Charaktere auf Ihrem Server senden können, ist diese Einstellung für jeden Server separat gespeichert.\n\nDiese Funktion ist nicht funktional und wird es (mit hoher Wahrscheinlichkeit) auch niemals sein. Dies ist ein Resultat einer Limitation in WeakAuras, welcher ich sogar teilweise zustimmen muss. Da der Code (mit der Ausnahme des Absenden der Post) funktioniert, kann man sich ein Makro erstellen, welches die Post an Ihren bestimmten Charakter sendet, und diese WA nutzen um die Post mit den Artikeln zu befüllen. Hierzu müssen Sie das Kennzeichen `DISABLED` in dem benutzerdefinierten Auslöser \"Pet Items Auto Mailer\" auf false setzen.\n\nDas erwähnte Makro würde wie folgt aussehen: `/run SendMail(\"<char name>\", \"Your Pet Battle Item Package\", \"\");`";
     ["OPTIONS_MAILER_ENABLED_DESCRIPTION"] = "Aktiviere den Artikel-Mailer";
+    ["OPTIONS_MAILER_USEWARBANK_DESCRIPTION"] = "Nutze die Kriegsmeuten-Bank statt die Items per Post zu senden.";
     ["OPTIONS_MAILER_CHARACTER_DESCRIPTION"] = "Charakter:";
     ["OPTIONS_MAILER_ITEMS_HEADER"] = "Artikel zu Versenden";
 
@@ -43,17 +43,14 @@ for key,value in pairs({
     -- Item descriptions
     ["OPTIONS_ITEM_GENERAL_HEADER"] = "Allgemeine Kampfhaustier-Artikel";
     ["OPTIONS_ITEM_BATTLE_PET_BANDAGE"] = "Kampfhaustierbandage";
-
     ["OPTIONS_ITEM_PETCHARMS_HEADER"] = "Haustierglücksbringer";
     ["OPTIONS_ITEM_POLISHED_PET_CHARM"] = "Polierter Haustierglücksbringer";
     ["OPTIONS_ITEM_SHINY_PET_CHARM"] = "Glänzender Haustierglücksbringer";
-
     ["OPTIONS_ITEM_GENERAL_BATTLESTONES_HEADER"] = "Allgemeine Kampfsteine";
     ["OPTIONS_ITEM_ULTIMATE_BATTLE_TRAINING_STONE"] = "Ultimativer Kampfübungsstein";
     ["OPTIONS_ITEM_MARKED_FLAWLESS_BATTLE_STONE"] = "Gekennzeichneter Makelloser Kampfstein";
     ["OPTIONS_ITEM_FELTOUCHED_BATTLE_TRAINING_STONE"] = "Teufelsberührter Kampfübungsstein";
     ["OPTIONS_ITEM_FLAWLESS_BATTLE_TRAINING_STONE"] = "Makelloser Kampfübungsstein";
-
     ["OPTIONS_ITEM_FAMILY_BATTLESTONES_HEADER"] = "Kampfübungssteine für Haustierarten";
     ["OPTIONS_ITEM_BTS_BEAST"] = "Kampfübungsstein für Wildtiere";
     ["OPTIONS_ITEM_FBS_BEAST"] = "Makelloser Wildtierkampfstein";
@@ -75,7 +72,6 @@ for key,value in pairs({
     ["OPTIONS_ITEM_FBS_UNDEAD"] = "Makelloser Untodkampfstein";
     ["OPTIONS_ITEM_BTS_AQUATIC"] = "Kampfübungsstein für Wasserwesen";
     ["OPTIONS_ITEM_FBS_AQUATIC"] = "Makelloser Aquatikkampfstein";
-
     ["OPTIONS_ITEM_DUNGEON_REWARDS_HEADER"] = "Belohnungen aus Kampfhaustier-Dungeons";
     ["OPTIONS_ITEM_CELESTIAL_COIN"] = "Münze der Erhabenen";
     ["OPTIONS_ITEM_OLD_BOTTLE_CAP"] = "Alter Kronkorken";
@@ -83,7 +79,6 @@ for key,value in pairs({
     ["OPTIONS_ITEM_CLEANSED_REMAINS"] = "Geläuterte Überreste";
     ["OPTIONS_ITEM_SHADOWY_GEMS"] = "Shattenhafter Edelstein";
     ["OPTIONS_ITEM_DAMP_PET_SUPPLIES"] = "Durchnässter Haustierbedarf";
-
     ["OPTIONS_ITEM_PETSUPPLIES_HEADER"] = "Haustierbedarf";
     ["OPTIONS_ITEM_GREATER_DARKMOON_PET_SUPPLIES"] = "Hochwertiger Dunkelmond-Haustierbedarf";
     ["OPTIONS_ITEM_DARKMOON_PET_SUPPLIES"] = "Dunkelmond-Haustierbedarf";
@@ -102,6 +97,7 @@ for key,value in pairs({
     --[[
         Quest Data Strings
     ]]
+
     -- Quest Givers
     ["QUESTDATA_QUESTGIVERS_MASTER_LI"] = "Meister Li";
     -- ["QUESTDATA_QUESTGIVERS_MUYANI"] = "Muyani";
@@ -263,7 +259,6 @@ for key,value in pairs({
     -- Item Mailer Strings
     ["MAILER_SUBJECT"] = "Dein Kampfhaustier-Paket ist angekommen!";
     ["MAILER_BODY"] = "Ich hoffe du hast Spaß damit. :)";
-
     ["MAILER_SENT"] = "Wir haben deine Artikel verschickt. %s/%s";
     ["MAILER_ABORT"] = "Wir mussten das Senden deiner Artikel abbrechen.";
     ["MAILER_BROKE"] = "Wir konnten deine Post nicht versenden, da du das Porto nicht bezahlen kannst.";
@@ -272,59 +267,44 @@ for key,value in pairs({
     ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "Wir haben einen Quest mit einer unbekannten Artikel-Belohnung gefunden: %s.";
     -- ["WORLDQUESTTRACKER_DEFAULT_ICON"] = "Interface\\Icons\\PetJournalPortrait";
     -- ["WORLDQUESTTRACKER_ROOT_ICON"] = "Interface\\Icons\\Inv_Pet_Frostwolfpup";
-
     -- ["WORLDQUESTTRACKER_FACTION_ICON"] = "|TInterface\\FriendsFrame\\PlusManz-%s:0|t %s";
-
     -- ["WORLDQUESTTRACKER_WORLDQUEST_TITLE"] = "World Quests";
     -- ["WORLDQUESTTRACKER_WORLDQUEST_ICON"] = "Interface\\BUTTONS\\AdventureGuideMicrobuttonAlert";
-
     ["WORLDQUESTTRACKER_REPEATABLEQUEST_TITLE"] = "Wiederholbare Quests";
     -- ["WORLDQUESTTRACKER_REPEATABLEQUEST_ICON"] = "Interface\\GossipFrame\\DailyActiveQuestIcon";
-
     -- ["WORLDQUESTTRACKER_DUNGEONS_TITLE"] = "Battle Pet Dungeons";
     -- ["WORLDQUESTTRACKER_DUNGEONS_ICON"] = "Interface\\MINIMAP\\Dungeon";
-    
     -- ["WORLDQUESTTRACKER_DARKMOONFAIRE_TITLE"] = "Darkmoon Faire";
-    -- ["WORLDQUESTTRACKER_DARKMOONFAIRE_ICON"] = "";
-    
+    -- ["WORLDQUESTTRACKER_DARKMOONFAIRE_ICON"] = "Interface\\ICONS\\INV_MISC_Cape_DarkmoonFaire_C_01";
     -- ["WORLDQUESTTRACKER_SHADOWLANDS_TITLE"] = "Shadowlands";
-    -- ["WORLDQUESTTRACKER_SHADOWLANDS_ICON"] = "";
-    
+    -- ["WORLDQUESTTRACKER_SHADOWLANDS_ICON"] = "assets\\expansion-9-shadowlands";
     -- ["WORLDQUESTTRACKER_BATTLEFORAZEROTH_TITLE"] = "Battle for Azeroth";
-    -- ["WORLDQUESTTRACKER_BATTLEFORAZEROTH_ICON"] = "";
-    
+    -- ["WORLDQUESTTRACKER_BATTLEFORAZEROTH_ICON"] = "assets\\expansion-8-battleforazeroth";
     -- ["WORLDQUESTTRACKER_LEGION_TITLE"] = "Legion";
-    -- ["WORLDQUESTTRACKER_LEGION_ICON"] = "";
-    
+    -- ["WORLDQUESTTRACKER_LEGION_ICON"] = "assets\\expansion-7-legion";
     -- ["WORLDQUESTTRACKER_WARLORDSOFDRAENOR_TITLE"] = "Warlords of Draenor";
-    -- ["WORLDQUESTTRACKER_WARLORDSOFDRAENOR_ICON"] = "";
-    
+    -- ["WORLDQUESTTRACKER_WARLORDSOFDRAENOR_ICON"] = "assets\\expansion-6-warlordsofdraenor";
     -- ["WORLDQUESTTRACKER_MISTSOFPANDARIA_TITLE"] = "Mists of Pandaria";
-    -- ["WORLDQUESTTRACKER_MISTSOFPANDARIA_ICON"] = "";
-    
+    -- ["WORLDQUESTTRACKER_MISTSOFPANDARIA_ICON"] = "assets\\expansion-5-mistsofpandaria";
     -- ["WORLDQUESTTRACKER_CATACLYSM_TITLE"] = "Cataclysm";
-    -- ["WORLDQUESTTRACKER_CATACLYSM_ICON"] = "";
-    
+    -- ["WORLDQUESTTRACKER_CATACLYSM_ICON"] = "assets\\expansion-4-cataclysm";
     -- ["WORLDQUESTTRACKER_WRATHOFTHELICHKING_TITLE"] = "Wrath of the Lich King";
-    -- ["WORLDQUESTTRACKER_WRATHOFTHELICHKING_ICON"] = "";
-    
+    -- ["WORLDQUESTTRACKER_WRATHOFTHELICHKING_ICON"] = "assets\\expansion-3-wrathofthelichking";
     -- ["WORLDQUESTTRACKER_THEBURNINGCRUSADE_TITLE"] = "The Burning Crusade";
-    -- ["WORLDQUESTTRACKER_THEBURNINGCRUSADE_ICON"] = "";
-    
+    -- ["WORLDQUESTTRACKER_THEBURNINGCRUSADE_ICON"] = "assets\\expansion-2-theburningcrusade";
     -- ["WORLDQUESTTRACKER_CLASSIC_TITLE"] = "Classic";
-    -- ["WORLDQUESTTRACKER_CLASSIC_ICON"] = "";
+    -- ["WORLDQUESTTRACKER_CLASSIC_ICON"] = "assets\\expansion-1-classic";
 
     -- Squirt Day Helper Strings
     ["SDH_SUPER_SQUIRT_DAY"] = "|c%s|c%sHeute|r ist SUPER SQUIRT DAY!!!|r";
     ["SDH_SQUIRT_DAY"] = "|c%s|c%sHeute|r ist squirt day!|r";
     ["SDH_NEXT_SQUIRT"] = "|c%sDer nächste squirt day ist am |c%s{weekday}, {day}. {month}|r.|r";
     ["SDH_NOT_SUPPORTED"] = "|c%sDeine Region ist leider nicht unterstützt.|r";
-
     ["SDH_PET_TREAT"] = "Gib' deinem Haustier ein %s!";
     ["SDH_PET_HAT"] = "Zieh deinen Hut auf!!";
-
     ["SDH_STATISTICS"] = "Squirt Day Helfer: Bis jetzt hast du {pets} Haustiere in {battles} Kämpfen gelevelt.";
 
+    -- Date Strings
     ["WEEKDAY_2"] = "Montag";
     ["WEEKDAY_3"] = "Dienstag";
     ["WEEKDAY_4"] = "Mittwoch";
@@ -332,18 +312,17 @@ for key,value in pairs({
     ["WEEKDAY_6"] = "Freitag";
     ["WEEKDAY_7"] = "Samstag";
     ["WEEKDAY_1"] = "Sonntag";
-    
     ["MONTH_1"] = "Januar";
     ["MONTH_2"] = "Februar";
     ["MONTH_3"] = "März";
-    ["MONTH_4"] = "April";
+    -- ["MONTH_4"] = "April";
     ["MONTH_5"] = "Mai";
     ["MONTH_6"] = "Juni";
     ["MONTH_7"] = "Juli";
-    ["MONTH_8"] = "August";
-    ["MONTH_9"] = "September";
+    -- ["MONTH_8"] = "August";
+    -- ["MONTH_9"] = "September";
     ["MONTH_10"] = "Oktober";
-    ["MONTH_11"] = "November";
+    -- ["MONTH_11"] = "November";
     ["MONTH_12"] = "Dezember";
 })
 do L[key] = value; end

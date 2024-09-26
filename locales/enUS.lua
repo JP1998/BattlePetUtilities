@@ -11,13 +11,14 @@ app.L = {
     ["MESSAGE_DEBUG_GREETING"] = "You have debug mode enabled. To disable type '/bpu debug' into chat.";
 
     --[[
-        Settings strings
+        Settings Strings
     ]]
 
     -- Item Mailer Options Strings
     ["OPTIONS_MAILER_HEADER"] = "Items Mailer";
     ["OPTIONS_MAILER_DESCRIPTION"] = "If enabled, this feature will send battle pet related items to a character, every time you open the mail window. It will send only items you define to be sent to a character defined by you. Since you can only send mail to characters on your server, this setting is stored for each server separately.\n\nThis feature is not functional and (most likely) never will be. This is the result of a WeakAuras limitation, which I kind of agree with, even. Considering the code itself is working (with the exception of the actual sending of the mail) you can make a macro, which sends the mail to your specified character and use this WA to put all the items into the mail. Therefor you'll need to set the `DISABLED` flag in the custom trigger of \"Pet Items Auto Mailer\" to false.\n\nSaid macro would look like this `/run SendMail(\"<char name>\", \"Your Pet Battle Item Package\", \"\");`";
     ["OPTIONS_MAILER_ENABLED_DESCRIPTION"] = "Enable Items Mailer";
+    ["OPTIONS_MAILER_USEWARBANK_DESCRIPTION"] = "Use the warband bank instead of mailing items.";
     ["OPTIONS_MAILER_CHARACTER_DESCRIPTION"] = "Character:";
     ["OPTIONS_MAILER_ITEMS_HEADER"] = "Items To Mail";
 
@@ -35,17 +36,14 @@ app.L = {
     -- Item descriptions
     ["OPTIONS_ITEM_GENERAL_HEADER"] = "General Battle Pet Items";
     ["OPTIONS_ITEM_BATTLE_PET_BANDAGE"] = "Battle Pet Bandage";
-
     ["OPTIONS_ITEM_PETCHARMS_HEADER"] = "Pet Charms";
     ["OPTIONS_ITEM_POLISHED_PET_CHARM"] = "Polished Pet Charm";
     ["OPTIONS_ITEM_SHINY_PET_CHARM"] = "Shiny Pet Charm";
-
     ["OPTIONS_ITEM_GENERAL_BATTLESTONES_HEADER"] = "General Battle-Stones";
     ["OPTIONS_ITEM_ULTIMATE_BATTLE_TRAINING_STONE"] = "Ultimate Battle-Training Stone";
     ["OPTIONS_ITEM_MARKED_FLAWLESS_BATTLE_STONE"] = "Marked Flawless Battle-Stone";
     ["OPTIONS_ITEM_FELTOUCHED_BATTLE_TRAINING_STONE"] = "Fel-Touched Battle-Training Stone";
     ["OPTIONS_ITEM_FLAWLESS_BATTLE_TRAINING_STONE"] = "Flawless Battle-Training Stone";
-
     ["OPTIONS_ITEM_FAMILY_BATTLESTONES_HEADER"] = "Family Battle-Stones";
     ["OPTIONS_ITEM_BTS_BEAST"] = "Beast Battle-Training Stone";
     ["OPTIONS_ITEM_FBS_BEAST"] = "Flawless Beast Battle-Stone";
@@ -67,7 +65,6 @@ app.L = {
     ["OPTIONS_ITEM_FBS_UNDEAD"] = "Flawless Undead Battle-Stone";
     ["OPTIONS_ITEM_BTS_AQUATIC"] = "Aquatic Battle-Training Stone";
     ["OPTIONS_ITEM_FBS_AQUATIC"] = "Flawless Aquatic Battle-Stone";
-
     ["OPTIONS_ITEM_DUNGEON_REWARDS_HEADER"] = "Battle Pet Dungeon Rewards";
     ["OPTIONS_ITEM_CELESTIAL_COIN"] = "Celestial Coins";
     ["OPTIONS_ITEM_OLD_BOTTLE_CAP"] = "Old Bottle Cap";
@@ -75,7 +72,6 @@ app.L = {
     ["OPTIONS_ITEM_CLEANSED_REMAINS"] = "Cleansed Remains";
     ["OPTIONS_ITEM_SHADOWY_GEMS"] = "Shadowy Gems";
     ["OPTIONS_ITEM_DAMP_PET_SUPPLIES"] = "Damp Pet Supplies";
-
     ["OPTIONS_ITEM_PETSUPPLIES_HEADER"] = "Pet Supply Bags";
     ["OPTIONS_ITEM_GREATER_DARKMOON_PET_SUPPLIES"] = "Greater Darkmoon Pet Supplies";
     ["OPTIONS_ITEM_DARKMOON_PET_SUPPLIES"] = "Darkmoon Pet Supplies";
@@ -256,7 +252,6 @@ app.L = {
     -- Item Mailer Strings
     ["MAILER_SUBJECT"] = "Your Battle Pet Care Package has arrived!";
     ["MAILER_BODY"] = "I hope you will enjoy it. :)";
-
     ["MAILER_SENT"] = "We sent your items away. %s/%s";
     ["MAILER_ABORT"] = "We had to abort sending your items.";
     ["MAILER_BROKE"] = "We couldn't send your mail, because you can't pay the postage.";
@@ -265,7 +260,7 @@ app.L = {
     ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "We found a world quest with an unknown item reward: %s.";
     ["WORLDQUESTTRACKER_DEFAULT_ICON"] = "Interface\\Icons\\PetJournalPortrait";
     ["WORLDQUESTTRACKER_ROOT_ICON"] = "Interface\\Icons\\Inv_Pet_Frostwolfpup";
-    ["WORLDQUESTTRACKER_FACTION_ICON"] = "|TInterface\\FriendsFrame\\PlusManz-%s:0|t %s"; -- TODO: Probably use Interface\\COMMON\\icon-%s (?)
+    ["WORLDQUESTTRACKER_FACTION_ICON"] = "|TInterface\\FriendsFrame\\PlusManz-%s:0|t %s";
     ["WORLDQUESTTRACKER_WORLDQUEST_TITLE"] = "World Quests";
     ["WORLDQUESTTRACKER_WORLDQUEST_ICON"] = "Interface\\BUTTONS\\AdventureGuideMicrobuttonAlert";
     ["WORLDQUESTTRACKER_REPEATABLEQUEST_TITLE"] = "Repeatable Quests";
