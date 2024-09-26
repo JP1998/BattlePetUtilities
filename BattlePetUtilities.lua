@@ -17,14 +17,15 @@ app.log = function(self, msg, ...)
     end
 end
 app._print = function(self, prefix, msg, ...)
+    local args = {...};
     local lines = { strsplit("\n", type(msg) == "string" and msg or tostring(msg)) };
 
     for _,line in ipairs(lines) do
         print(string.format("%s[%s]: %s", prefix, L["TITLE"], line));
     end
 
-    if ... and #... > 0 then
-        self:_print(prefix, ...);
+    if args and #args > 0 then
+        self:_print(prefix, unpack(args));
     end
 end
 app.stringify = function(t)
