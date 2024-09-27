@@ -116,21 +116,21 @@ end
 app.stringTrim = function(str)
     return (string.gsub(str, "^%s*(.-)%s*$", "%1"));
 end
+app.eliminateEmptyStrings = function(list)
+    local result = {};
+
+    for i,s in ipairs(list) do
+        if s ~= "" then
+            table.insert(result, s);
+        end
+    end
+
+    return result;
+end
 
 local createSlashCommand = (function()
-    local function eliminateEmptyStrings(list)
-        local result = {};
-
-        for i,s in ipairs(list) do
-            if s ~= "" then
-                table.insert(result, s);
-            end
-        end
-
-        return result;
-    end
     local function parseSlashCommandArgs(cmd)
-        return eliminateEmptyStrings({ strsplit(" ", cmd) });
+        return app.eliminateEmptyStrings({ strsplit(" ", cmd) });
     end
 
     return function(func, id, ...)
