@@ -706,9 +706,9 @@ function(self) -- OnClick
         if warbanktab ~= nil and type(warbanktab) == "number" then
             self:SetNumber(warbanktab);
 
-            if not CharacterEditBox.Initialized then
-                CharacterEditBox:SetCursorPosition(0);
-                CharacterEditBox.Initialized = true;
+            if not WarbankTabEditBox.Initialized then
+                WarbankTabEditBox:SetCursorPosition(0);
+                WarbankTabEditBox.Initialized = true;
             end
         end
     end;
