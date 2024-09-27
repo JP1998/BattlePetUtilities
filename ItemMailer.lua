@@ -50,8 +50,8 @@ app.Mailer.ScanBags = function(self)
     local items = 0;
 
     for bag = startBag, NUM_BAG_SLOTS do
-        for slot = startSlot, GetContainerNumSlots(bag) do
-            local itemId = GetContainerItemID(bag, slot);
+        for slot = startSlot, C_Container.GetContainerNumSlots(bag) do
+            local itemId = C_Container.GetContainerItemID(bag, slot);
 
             if itemId ~= nil and self:IsItemToBeMailed(itemId) then
                 items = items + 1;
@@ -63,7 +63,7 @@ app.Mailer.ScanBags = function(self)
                         ["StartSlot"] = slot
                     };
                 else
-                    PickupContainerItem(bag, slot);
+                    C_Container.PickupContainerItem(bag, slot);
                     ClickSendMailItemButton(items);
                 end
             end
