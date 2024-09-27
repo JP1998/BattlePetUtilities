@@ -86,23 +86,34 @@ app.Mailer.ResetScanner = function(self)
     self.Continuation = nil;
     self.SentMailCount = 0;
 end
-app.Mailer.CheckCharacterStatus = function(self, character)
-    character = app.stringTrim(character);
+app.Mailer.GetCharacterStrings = function(self)
+    local characters = { strsplit(',', app.Settings:Get("MailerOptions", "Character")) };
 
-    if character == nil or character == "" then
-        return false;
+    for i,v in ipairs(characters) do
+        characters[i] = app.stringTrim(v);
     end
 
-    if string.len(character) < MIN_CHARACTER_NAME_LENGTH then
+    characters = app.eliminateEmptyStrings(characters);
+
+    return characters;
+end
+app.Mailer.CheckPlayerIsInCharacterList = function(self)
+    local characters = app.Mailer:GetCharacterStrings();
+
+    if #characters < 1 then
         return false;
     end
 
     local playerName, realmName = UnitFullName("player");
-    if chaacter == playerName or character == string.format("%s-%s", playerName, realmName) then
-        return false;
+    local fullPlayerName = string.format("%s-%s", playerName, realmName);
+
+    for i,char in ipairs(characters) do
+        if char == playerName or char == fullPlayerName then
+            return true;
+        end
     end
 
-    return true;
+    return false;
 end
 app.Mailer.MailerEnabled = function(self)
     local settings = app.Settings:Get("MailerOptions");
