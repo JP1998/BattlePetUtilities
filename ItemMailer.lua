@@ -27,7 +27,7 @@ app.Mailer.SendMail = function(self, last)
     local characters = app.Mailer:GetCharacterStrings();
 
     if characters < 1 then
-        -- app:print(L[""]); -- TODO: Error message telling you to configure a character to send items to
+        app:print(L["MAILER_CHARACTERNOTSET"]);
         return;
     end
 

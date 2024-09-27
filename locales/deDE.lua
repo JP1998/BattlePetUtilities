@@ -262,6 +262,7 @@ for key, value in pairs({
     ["MAILER_SENT"] = "Wir haben deine Artikel verschickt. %s/%s";
     ["MAILER_ABORT"] = "Wir mussten das Senden deiner Artikel abbrechen.";
     ["MAILER_BROKE"] = "Wir konnten deine Post nicht versenden, da du das Porto nicht bezahlen kannst.";
+    ["MAILER_CHARACTERNOTSET"] = "Du hast nicht angegeben an welchen Charakter du deine Items senden möchtest. Du kannst /bpu options nutzen um die Optionen zu öffnen und deinen Kampfhaustier-Charakter anzugeben.";
 
     -- World Quest Tracker Strings
     ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "Wir haben einen Quest mit einer unbekannten Artikel-Belohnung gefunden: %s.";

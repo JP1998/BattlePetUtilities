@@ -262,6 +262,7 @@ for key, value in pairs({
     -- ["MAILER_SENT"] = "We sent your items away. %s/%s";
     -- ["MAILER_ABORT"] = "We had to abort sending your items.";
     -- ["MAILER_BROKE"] = "We couldn't send your mail, because you can't pay the postage.";
+    -- ["MAILER_CHARACTERNOTSET"] = "You did not specify which character to send your items to. Use /bpu options to open the options and configure in your battle pet character.";
 
     -- World Quest Tracker Strings
     -- ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "We found a world quest with an unknown item reward: %s.";

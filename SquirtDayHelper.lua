@@ -160,7 +160,7 @@ local function createDay(toConvert)
     
     -- TODO: Instead of trimming to 0:00 ST we should trim to
     --       server reset time (whatever that is for the current region)
-    --       How to do that?!
+    --       How to do that?! Especially hard/inconsistent considering daylight saving time
     return daytime;
 end
 local function createNextSquirt(knownSquirts, currentTime)
