@@ -104,7 +104,7 @@ app.Mailer.CheckCharacterStatus = function(self, character)
 
     return true;
 end
-app.Mailer.Enabled = function(self)
+app.Mailer.MailerEnabled = function(self)
     local settings = app.Settings:Get("MailerOptions");
     local character = app.Settings:Get("MailerOptions", "Character");
 
@@ -114,21 +114,21 @@ end
 app:RegisterEvent("MAIL_SHOW", "ItemMailer", function(...)
     app:log("You opened your mail.");
 
-    if app.Mailer:Enabled() then
+    if app.Mailer:MailerEnabled() then
         app.Mailer:ScanBags();
     end
 end);
 app:RegisterEvent("MAIL_SEND_SUCCESS", "ItemMailer", function(...)
     app:log("You successfully sent mail.");
 
-    if app.Mailer:Enabled() and app.Mailer.Continuation then
+    if app.Mailer:MailerEnabled() and app.Mailer.Continuation then
         app.Mailer:ScanBags();
     end
 end);
 app:RegisterEvent("MAIL_FAILED", "ItemMailer", function(...)
     app:log("You tried to send mail, which failed.");
 
-    if app.Mailer:Enabled() then
+    if app.Mailer:MailerEnabled() then
         app.Mailer:ResetScanner();
     end
 end);
