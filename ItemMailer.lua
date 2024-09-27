@@ -117,9 +117,8 @@ app.Mailer.CheckPlayerIsInCharacterList = function(self)
 end
 app.Mailer.MailerEnabled = function(self)
     local settings = app.Settings:Get("MailerOptions");
-    local character = app.Settings:Get("MailerOptions", "Character");
 
-    return settings.Enabled and self:CheckCharacterStatus(character);
+    return settings.Enabled and not settings.UseWarbank and not self:CheckPlayerIsInCharacterList();
 end
 
 app:RegisterEvent("MAIL_SHOW", "ItemMailer", function(...)
