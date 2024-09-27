@@ -11,7 +11,7 @@ locales/enGB.lua
 locales/deDE.lua
 Settings.lua
 BattlePetUtilities.lua
-#ItemMailer.lua
+ItemMailer.lua
 #WorldQuestTracker.lua
 #WorldQuestTrackerData.lua
 SquirtDayHelper.lua
