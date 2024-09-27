@@ -714,8 +714,11 @@ function(self) -- OnClick
     end;
     WarbankTabEditBox:SetScript("OnTextChanged", function(self)
         if initialized then
-            app:log(self:GetNumber());
-            settings:Set("MailerOptions", "WarbankTab", self:GetNumber());
+            if self:GetNumber() <= C_Bank.FetchNumPurchasedBankTabs(2) then
+                settings:Set("MailerOptions", "WarbankTab", self:GetNumber());
+            else
+                self:SetNumber(settings:Get("MailerOptions", "WarbankTab"));
+            end
         end
     end);
     settingsFrame.MostRecentTab:AddObject(WarbankTabEditBox);
