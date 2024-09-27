@@ -24,8 +24,15 @@ end
 app.Mailer.SendMail = function(self, last)
     self.SentMailCount = self.SentMailCount or 0;
 
+    local characters = app.Mailer:GetCharacterStrings();
+
+    if characters < 1 then
+        -- app:print(L[""]); -- TODO: Error message telling you to configure a character to send items to
+        return;
+    end
+
     if GetMoney() >= GetSendMailPrice() then
-        SendMail(app.Settings:Get("MailerOptions", "Character"), L["MAILER_SUBJECT"], L["MAILER_BODY"]);
+        SendMail(characters[1], L["MAILER_SUBJECT"], L["MAILER_BODY"]);
 
         if last then
             app:print(string.format(L["MAILER_SENT"], self.SentMailCount + 1,  self.SentMailCount + 1));
