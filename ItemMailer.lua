@@ -127,6 +127,11 @@ app.Mailer.MailerEnabled = function(self)
 
     return settings.Enabled and not settings.UseWarbank and not self:CheckPlayerIsInCharacterList();
 end
+app.Mailer.WarbankEnabled = function(self)
+    local settings = app.Settings:Get("MailerOptions");
+
+    return settings.Enabled and settings.UseWarbank and not self:CheckPlayerIsInCharacterList();
+end
 
 app:RegisterEvent("MAIL_SHOW", "ItemMailer", function(...)
     app:log("You opened your mail.");
