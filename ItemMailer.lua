@@ -45,7 +45,7 @@ app.Mailer.SendMail = function(self, last)
         app:print(L["MAILER_BROKE"]);
     end
 end
-app.Mailer.ScanBags = function(self)
+app.Mailer.ScanBagsForMail = function(self)
     local startBag = 0;
     local startSlot = 1;
 
@@ -137,14 +137,14 @@ app:RegisterEvent("MAIL_SHOW", "ItemMailer", function(...)
     app:log("You opened your mail.");
 
     if app.Mailer:MailerEnabled() then
-        app.Mailer:ScanBags();
+        app.Mailer:ScanBagsForMail();
     end
 end);
 app:RegisterEvent("MAIL_SEND_SUCCESS", "ItemMailer", function(...)
     app:log("You successfully sent mail.");
 
     if app.Mailer:MailerEnabled() and app.Mailer.Continuation then
-        app.Mailer:ScanBags();
+        app.Mailer:ScanBagsForMail();
     end
 end);
 app:RegisterEvent("MAIL_FAILED", "ItemMailer", function(...)
