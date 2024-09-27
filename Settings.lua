@@ -36,6 +36,7 @@ local SettingsBase = {
     ["MailerOptions"] = {
         ["Enabled"] = false,
         ["UseWarbank"] = true,
+        ["WarbankTab"] = 1,
         ["Character"] = "",
         ["Items"] = {
             [86143]  = true, -- Battle Pet Bandage
@@ -637,18 +638,8 @@ function(self) -- OnClick
     EnabledCheckBox:SetPoint("TOPLEFT", DescriptionLabel, "BOTTOMLEFT", 0, -8);
     EnabledCheckBox:Show();
 
-    local UseWarbankCheckBox = settingsFrame:CreateCheckBox(tab, L["OPTIONS_MAILER_USEWARBANK_DESCRIPTION"],
-            function(self) -- OnRefresh
-                self:SetChecked(settings:Get("MailerOptions", "UseWarbank"));
-            end,
-            function(self) -- OnClick
-                settings:Set("MailerOptions", "UseWarbank", self:GetChecked());
-            end);
-    UseWarbankCheckBox:SetPoint("TOPLEFT", EnabledCheckBox, "BOTTOMLEFT", 0, -8);
-    UseWarbankCheckBox:Show();
-
     local CharacterLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontWhite");
-    CharacterLabel:SetPoint("TOPLEFT", UseWarbankCheckBox, "BOTTOMLEFT", 0, -8);
+    CharacterLabel:SetPoint("TOPLEFT", EnabledCheckBox, "BOTTOMLEFT", 0, -8);
     CharacterLabel:SetJustifyH("LEFT");
     CharacterLabel:SetText(L["OPTIONS_MAILER_CHARACTER_DESCRIPTION"]);
     -- table.insert(settingsFrame.MostRecentTab.objects, CharacterLabel);
@@ -683,8 +674,56 @@ function(self) -- OnClick
     CharacterEditBox:OnRefresh();
     CharacterEditBox:Show();
 
+    local UseWarbankCheckBox = settingsFrame:CreateCheckBox(tab, L["OPTIONS_MAILER_USEWARBANK_DESCRIPTION"],
+            function(self) -- OnRefresh
+                self:SetChecked(settings:Get("MailerOptions", "UseWarbank"));
+            end,
+            function(self) -- OnClick
+                settings:Set("MailerOptions", "UseWarbank", self:GetChecked());
+            end);
+    UseWarbankCheckBox:SetPoint("TOPLEFT", CharacterLabel, "BOTTOMLEFT", 0, -12);
+    UseWarbankCheckBox:Show();
+
+    local WarbankTabLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontWhite");
+    WarbankTabLabel:SetPoint("TOPLEFT", UseWarbankCheckBox, "BOTTOMLEFT", 0, -8);
+    WarbankTabLabel:SetJustifyH("LEFT");
+    WarbankTabLabel:SetText("Warbank tab to use:"); -- TODO: Extract string
+    -- table.insert(settingsFrame.MostRecentTab.objects, CharacterLabel);
+    settingsFrame.MostRecentTab:AddObject(WarbankTabLabel);
+    WarbankTabLabel:Show();
+
+    local WarbankTabEditBox = CreateFrame("EditBox", "WarbankTab-EditBox", tab, "InputBoxTemplate");
+    WarbankTabEditBox:SetFontObject("GameFontWhite");
+    WarbankTabEditBox:SetPoint("TOPLEFT", WarbankTabLabel, "TOPRIGHT", 16, 4);
+    WarbankTabEditBox:SetPoint("RIGHT", scroll, "RIGHT", -32, 0);
+    WarbankTabEditBox:SetHeight(18);
+    WarbankTabEditBox:SetAutoFocus(false);
+    WarbankTabEditBox:SetMultiLine(false);
+    WarbankTabEditBox:SetNumeric(true);
+    WarbankTabEditBox.OnRefresh = function(self)
+        local warbanktab = settings:Get("MailerOptions", "WarbankTab");
+
+        if warbanktab ~= nil and type(warbanktab) == "number" then
+            self:SetNumber(warbanktab);
+
+            if not CharacterEditBox.Initialized then
+                CharacterEditBox:SetCursorPosition(0);
+                CharacterEditBox.Initialized = true;
+            end
+        end
+    end;
+    WarbankTabEditBox:SetScript("OnTextChanged", function(self)
+        if initialized then
+            app:log(self:GetNumber());
+            settings:Set("MailerOptions", "WarbankTab", self:GetNumber());
+        end
+    end);
+    settingsFrame.MostRecentTab:AddObject(WarbankTabEditBox);
+    WarbankTabEditBox:OnRefresh();
+    WarbankTabEditBox:Show();
+
     local ItemLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
-    ItemLabel:SetPoint("TOPLEFT", CharacterLabel, "BOTTOMLEFT", 0, -12);
+    ItemLabel:SetPoint("TOPLEFT", WarbankTabLabel, "BOTTOMLEFT", 0, -8);
     ItemLabel:SetJustifyH("LEFT");
     ItemLabel:SetText(L["OPTIONS_MAILER_ITEMS_HEADER"]);
     settingsFrame.MostRecentTab:AddObject(ItemLabel);
