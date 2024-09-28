@@ -687,7 +687,7 @@ function(self) -- OnClick
     local WarbankTabLabel = tab:CreateFontString(nil, "ARTWORK", "GameFontWhite");
     WarbankTabLabel:SetPoint("TOPLEFT", UseWarbankCheckBox, "BOTTOMLEFT", 0, -8);
     WarbankTabLabel:SetJustifyH("LEFT");
-    WarbankTabLabel:SetText("Warbank tab to use:"); -- TODO: Extract string
+    WarbankTabLabel:SetText(L["OPTIONS_MAILER_WARBANKTAB_DESCRIPTION"]);
     -- table.insert(settingsFrame.MostRecentTab.objects, CharacterLabel);
     settingsFrame.MostRecentTab:AddObject(WarbankTabLabel);
     WarbankTabLabel:Show();

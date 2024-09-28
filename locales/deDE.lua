@@ -25,8 +25,9 @@ for key, value in pairs({
     ["OPTIONS_MAILER_HEADER"] = "Artikel-Mailer";
     ["OPTIONS_MAILER_DESCRIPTION"] = "Wenn aktiviert, wird diese Funktion, jedes Mal wenn Sie das Postfach öffnen, Kampfhaustier-Artikel an einen Charakter senden. Es werden nur Artikel gesendet, welche Sie bestimmen, und an einen Charakter, den ebenfalls Sie bestimmen müssen. Da Sie Post nur an Charaktere auf Ihrem Server senden können, ist diese Einstellung für jeden Server separat gespeichert.\n\nDiese Funktion ist nicht funktional und wird es (mit hoher Wahrscheinlichkeit) auch niemals sein. Dies ist ein Resultat einer Limitation in WeakAuras, welcher ich sogar teilweise zustimmen muss. Da der Code (mit der Ausnahme des Absenden der Post) funktioniert, kann man sich ein Makro erstellen, welches die Post an Ihren bestimmten Charakter sendet, und diese WA nutzen um die Post mit den Artikeln zu befüllen. Hierzu müssen Sie das Kennzeichen `DISABLED` in dem benutzerdefinierten Auslöser \"Pet Items Auto Mailer\" auf false setzen.\n\nDas erwähnte Makro würde wie folgt aussehen: `/run SendMail(\"<char name>\", \"Your Pet Battle Item Package\", \"\");`";
     ["OPTIONS_MAILER_ENABLED_DESCRIPTION"] = "Aktiviere den Artikel-Mailer";
-    ["OPTIONS_MAILER_USEWARBANK_DESCRIPTION"] = "Nutze die Kriegsmeuten-Bank statt die Items per Post zu senden.";
     ["OPTIONS_MAILER_CHARACTER_DESCRIPTION"] = "Charakter:";
+    ["OPTIONS_MAILER_USEWARBANK_DESCRIPTION"] = "Nutze die Kriegsmeuten-Bank statt die Items per Post zu senden.";
+    ["OPTIONS_MAILER_WARBANKTAB_DESCRIPTION"] = "Kriegsmeutenbank-Tab:";
     ["OPTIONS_MAILER_ITEMS_HEADER"] = "Artikel zu Versenden";
 
     -- World Quest Tracker Options Strings
