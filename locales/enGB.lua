@@ -264,6 +264,8 @@ for key, value in pairs({
     -- ["MAILER_ABORT"] = "We had to abort sending your items.";
     -- ["MAILER_BROKE"] = "We couldn't send your mail, because you can't pay the postage.";
     -- ["MAILER_CHARACTERNOTSET"] = "You did not specify which character to send your items to. Use /bpu options to open the options and configure in your battle pet character.";
+    -- ["MAILER_WARBANKFULL"] = "Your configured battle pet warbank tab is full. Please clear some space for additional items or change the used tab.";
+    -- ["MAILER_WARBANKNOTSET"] = "You have not set which warbank tab you would like to deposit your battle pet items to. You can use /bpu options to open the option panel and configure it.";
 
     -- World Quest Tracker Strings
     -- ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "We found a world quest with an unknown item reward: %s.";

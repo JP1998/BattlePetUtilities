@@ -21,6 +21,30 @@ app.Mailer.IsItemToBeMailed = function(self, itemId)
 
     return itemTable[itemId] ~= nil and itemTable[itemId];
 end
+app.Mailer.DepositItemToWarbank = function(self, bag, slot)
+    return true;
+end
+app.Mailer.ScanBagsForWarbank = function(self)
+    if app.Settings.Get("ItemMailer", "WarbankTab") == 0 then
+        print(L["MAILER_WARBANKNOTSET"]);
+        return;
+    end
+
+    for bag = 0, NUM_BAG_SLOTS do
+        for slot = startSlot, C_Container.GetContainerNumSlots(bag) do
+            local itemId = C_Container.GetContainerItemID(bag, slot);
+
+            if itemId ~= nil and self:IsItemToBeMailed(itemId) then
+                local deposited = app.Mailer:DepositItemToWarbank(bag, slot);
+
+                if not deposited then
+                    app.print(L["MAILER_WARBANKFULL"]);
+                    return;
+                end
+            end
+        end
+    end
+end
 app.Mailer.SendMail = function(self, last)
     self.SentMailCount = self.SentMailCount or 0;
 
@@ -152,5 +176,12 @@ app:RegisterEvent("MAIL_FAILED", "ItemMailer", function(...)
 
     if app.Mailer:MailerEnabled() then
         app.Mailer:ResetScanner();
+    end
+end);
+app:RegisterEvent("BANKFRAME_OPENED", "ItemMailer", function(...)
+    app:log("You opened your bank.");
+
+    if app.Mailer:WarbankEnabled() then
+        app.Mailer:ScanBagsForWarbank();
     end
 end);

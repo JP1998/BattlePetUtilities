@@ -264,6 +264,8 @@ for key, value in pairs({
     ["MAILER_ABORT"] = "Wir mussten das Senden deiner Artikel abbrechen.";
     ["MAILER_BROKE"] = "Wir konnten deine Post nicht versenden, da du das Porto nicht bezahlen kannst.";
     ["MAILER_CHARACTERNOTSET"] = "Du hast nicht angegeben an welchen Charakter du deine Items senden möchtest. Du kannst /bpu options nutzen um die Optionen zu öffnen und deinen Kampfhaustier-Charakter anzugeben.";
+    ["MAILER_WARBANKFULL"] = "Der konfigurierte Kriegsmeutenbank-Tab für Kampfhaustiere ist voll. Bitte bereinige diesen, oder ändere den benutzten Tab.";
+    ["MAILER_WARBANKNOTSET"] = "Du hast nicht konfiguriert welchen Kriegsmeutenbank-Tab du für deine Kampfhaustier-Items verwenden möchtest. Du kannst mit /bpu options das Optionsfenster öffnen und dies tun.";
 
     -- World Quest Tracker Strings
     ["WORLDQUESTTRACKER_UNKNOWNITEM"] = "Wir haben einen Quest mit einer unbekannten Artikel-Belohnung gefunden: %s.";
