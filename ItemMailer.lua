@@ -11,6 +11,60 @@ local L = app.L;
 local MAX_NUM_MAIL_ITEMS = 12;
 local MIN_CHARACTER_NAME_LENGTH = 3;
 
+local STACKSIZES = {
+    [86143] = 250, -- Battle Pet Bandage
+
+    [163036] = 5000, -- Polished Pet Charm
+    [116415] = 1000, -- Shiny Pet Charm
+
+    [122457] = 20, -- Ultimate Battle-Training Stone
+    [98715] = 200, -- Marked Flawless Battle-Stone
+    [127755] = 200, -- Fel-Touched Battle-Training Stone
+    [116429] = 200, -- Flawless Battle-Training Stone
+
+    [116374] = 200, -- Beast Battle-Training Stone
+    [92675] = 200, -- Flawless Beast Battle-Stone
+    [116416] = 200, -- Humanoid Battle-Training Stone
+    [92682] = 200, -- Flawless Humanoid Battle-Stone
+    [116417] = 200, -- Mechanical Battle-Training Stone
+    [92680] = 200, -- Flawless Mechanical Battle-Stone
+    [116418] = 200, -- Critter Battle-Training Stone
+    [92676] = 200, -- Flawless Critter Battle-Stone
+    [116419] = 200, -- Dragonkin Battle-Training Stone
+    [92683] = 200, -- Flawless Dragonkin Battle-Stone
+    [116420] = 200, -- Elemental Battle-Training Stone
+    [92665] = 200, -- Flawless Elemental Battle-Stone
+    [116421] = 200, -- Flying Battle-Training Stone
+    [92677] = 200, -- Flawless Flying Battle-Stone
+    [116422] = 200, -- Magic Battle-Training Stone
+    [92678] = 200, -- Flawless Magic Battle-Stone
+    [116423] = 200, -- Undead Battle-Training Stone
+    [92681] = 200, -- Flawless Undead Battle-Stone
+    [116424] = 200, -- Aquatic Battle-Training Stone
+    [92679] = 200, -- Flawless Aquatic Battle-Stone
+
+    [101529] = 50, -- Celestial Coin
+    [151191] = 50, -- Old Bottle Cap
+    [165835] = 50, -- Pristine Gizmo
+    [169665] = 50, -- Cleansed Remains
+    [174360] = 50, -- Shadowy Gem
+    [143753] = 20, -- Damp Pet Supplies
+
+    [116062] = 1, -- Greater Darkmoon Pet Supplies
+    [91086] = 1, -- Darkmoon Pet Supplies
+    [93146] = 1, -- Pandaren Spirit Pet Supplies
+    [93147] = 1, -- Pandaren Spirit Pet Supplies
+    [93148] = 1, -- Pandaren Spirit Pet Supplies
+    [93149] = 1, -- Pandaren Spirit Pet Supplies
+    [89125] = 1, -- Sack of Pet Supplies
+    [118697] = 20, -- Big Bag of Pet Supplies
+    [122535] = 20, -- Traveler's Pet Supplies
+    [151638] = 1, -- Leprous Sack of Pet Supplies
+    [142447] = 1, -- Torn Sack of Pet Supplies
+    [94207] = 1, -- Fabled Pandaren Pet Supplies
+    [184866] = 1, -- Grummlepouch
+};
+
 app.Mailer = {}
 app.Mailer.IsItemToBeMailed = function(self, itemId)
     if itemId == nil then
@@ -21,9 +75,27 @@ app.Mailer.IsItemToBeMailed = function(self, itemId)
 
     return itemTable[itemId] ~= nil and itemTable[itemId];
 end
+
+local function delay(tick)
+    local th = coroutine.running();
+    C_Timer.After(tick, function()
+        coroutine.resume(th);
+    end);
+    coroutine.yield();
+end
+
 app.Mailer.DepositItemToWarbank = function(self, warbanktab, bag, slot)
     local itemID = C_Container.GetContainerItemID(bag, slot);
-    local _,_,_,_,_,_,_, stackSize, _,_,_,_,_,_,_,_,_ = C_Item.GetItemInfo(itemInfo)
+
+    if itemID == nil then
+        return true, false;
+    end
+
+    local stackSize = C_Item.GetItemMaxStackSizeByID(itemID);
+
+    if stackSize == nil then
+        stackSize = STACKSIZES[itemID];
+    end
 
     for warbankslot = 0, C_Container.GetContainerNumSlots(warbanktab) do
         local ci = C_Container.GetContainerItemInfo(warbanktab, warbankslot);
@@ -50,26 +122,34 @@ app.Mailer.DepositItemToWarbank = function(self, warbanktab, bag, slot)
     return false, false;
 end
 app.Mailer.ScanBagsForWarbank = function(self)
-    if app.Settings.Get("ItemMailer", "WarbankTab") == 0 then
-        print(L["MAILER_WARBANKNOTSET"]);
+    local warbanktabsetting = app.Settings:Get("MailerOptions", "WarbankTab");
+
+    if warbanktabsetting == 0 then
+        app:print(L["MAILER_WARBANKNOTSET"]);
         return;
     end
 
-    local warbanktab = 12 + app.Settings.Get("ItemMailer", "WarbankTab");
+    local warbanktab = 12 + warbanktabsetting;
 
     for bag = 0, NUM_BAG_SLOTS do
-        for slot = startSlot, C_Container.GetContainerNumSlots(bag) do
+        for slot = 1, C_Container.GetContainerNumSlots(bag) do
             local itemId = C_Container.GetContainerItemID(bag, slot);
 
             if itemId ~= nil and self:IsItemToBeMailed(itemId) then
+                app:log("Depositing item " .. itemId .. " (bag " .. bag .. "; slot " .. slot .. ")");
+
                 local fullydeposited, possiblyMore;
 
                 repeat
                     fullydeposited, possiblyMore = app.Mailer:DepositItemToWarbank(warbanktab, bag, slot);
+                    delay(0.5);
                 until fullydeposited or not possiblyMore;
 
+                print(fullydeposited);
+                print(possiblyMore);
+
                 if not fullydeposited then
-                    app.print(L["MAILER_WARBANKFULL"]);
+                    app:print(L["MAILER_WARBANKFULL"]);
                     return;
                 end
             end
@@ -213,6 +293,6 @@ app:RegisterEvent("BANKFRAME_OPENED", "ItemMailer", function(...)
     app:log("You opened your bank.");
 
     if app.Mailer:WarbankEnabled() then
-        app.Mailer:ScanBagsForWarbank();
+        coroutine.wrap(app.Mailer.ScanBagsForWarbank)(app.Mailer);
     end
 end);
