@@ -68,7 +68,14 @@ local SettingsBase = {
             [116423] = true, -- Undead Battle-Training Stone
             [92681]  = true, -- Flawless Undead Battle-Stone
             [116424] = true, -- Aquatic Battle-Training Stone
-            [92679]  = true  -- Flawless Aquatic Battle-Stone
+            [92679]  = true, -- Flawless Aquatic Battle-Stone
+
+            [101529] = true, -- Celestial Coins
+            [151191] = true, -- Old Bottle Cap
+            [165835] = true, -- Pristine Gizmo
+            [169665] = true, -- Cleansed Remains
+            [174360] = true, -- Shadowy Gems
+            [143753] = true, -- Damp Pet Supplies
         }
     },
     ["WorldQuestTrackerOptions"] = {
@@ -623,7 +630,7 @@ end)();
     --DescriptionLabel:SetPoint("RIGHT", tab.parent, "TOPRIGHT", -800, 0);
     DescriptionLabel:SetPoint("RIGHT", scroll, "TOPRIGHT", -32, 0);
     DescriptionLabel:SetJustifyH("LEFT");
-    DescriptionLabel:SetText(L["OPTIONS_MAILER_DESCRIPTION"]);
+    DescriptionLabel:SetText(L["OPTIONS_MAILER_DESCRIPTION"]); -- TODO: Gotta update that damn description at some point
     -- table.insert(settingsFrame.MostRecentTab.objects, DescriptionLabel);
     settingsFrame.MostRecentTab:AddObject(DescriptionLabel);
     DescriptionLabel:Show();
@@ -736,7 +743,8 @@ function(self) -- OnClick
         ITEMS_GENERAL,
         ITEMS_PET_CHARMS,
         ITEMS_GENERAL_BS,
-        ITEMS_FAMILY_BS
+        ITEMS_FAMILY_BS,
+        ITEMS_DUNGEON_REWARDS
     }, settings.SetMailerItem, settings.GetMailerItem);
 end)();
 --[[

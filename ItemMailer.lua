@@ -145,9 +145,6 @@ app.Mailer.ScanBagsForWarbank = function(self)
                     delay(0.5);
                 until fullydeposited or not possiblyMore;
 
-                print(fullydeposited);
-                print(possiblyMore);
-
                 if not fullydeposited then
                     app:print(L["MAILER_WARBANKFULL"]);
                     return;
