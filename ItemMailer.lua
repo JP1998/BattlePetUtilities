@@ -21,8 +21,33 @@ app.Mailer.IsItemToBeMailed = function(self, itemId)
 
     return itemTable[itemId] ~= nil and itemTable[itemId];
 end
-app.Mailer.DepositItemToWarbank = function(self, bag, slot)
-    return true;
+app.Mailer.DepositItemToWarbank = function(self, warbanktab, bag, slot)
+    local itemID = C_Container.GetContainerItemID(bag, slot);
+    local _,_,_,_,_,_,_, stackSize, _,_,_,_,_,_,_,_,_ = C_Item.GetItemInfo(itemInfo)
+
+    for warbankslot = 0, C_Container.GetContainerNumSlots(warbanktab) do
+        local ci = C_Container.GetContainerItemInfo(warbanktab, warbankslot);
+
+        if ci ~= nil and itemID == ci.itemID and ci.stackCount < stackSize then
+            C_Container.PickupContainerItem(bag, slot);
+            C_Container.PickupContainerItem(warbanktab, warbankslot);
+
+            return C_Container.GetContainerItemInfo(bag, slot) == nil, true;
+        end
+    end
+
+    for warbankslot = 0, C_Container.GetContainerNumSlots(warbanktab) do
+        local ci = C_Container.GetContainerItemInfo(warbanktab, warbankslot);
+
+        if ci == nil then
+            C_Container.PickupContainerItem(bag, slot);
+            C_Container.PickupContainerItem(warbanktab, warbankslot);
+
+            return true, true;
+        end
+    end
+
+    return false, false;
 end
 app.Mailer.ScanBagsForWarbank = function(self)
     if app.Settings.Get("ItemMailer", "WarbankTab") == 0 then
@@ -30,14 +55,20 @@ app.Mailer.ScanBagsForWarbank = function(self)
         return;
     end
 
+    local warbanktab = 12 + app.Settings.Get("ItemMailer", "WarbankTab");
+
     for bag = 0, NUM_BAG_SLOTS do
         for slot = startSlot, C_Container.GetContainerNumSlots(bag) do
             local itemId = C_Container.GetContainerItemID(bag, slot);
 
             if itemId ~= nil and self:IsItemToBeMailed(itemId) then
-                local deposited = app.Mailer:DepositItemToWarbank(bag, slot);
+                local fullydeposited, possiblyMore;
 
-                if not deposited then
+                repeat
+                    fullydeposited, possiblyMore = app.Mailer:DepositItemToWarbank(warbanktab, bag, slot);
+                until fullydeposited or not possiblyMore;
+
+                if not fullydeposited then
                     app.print(L["MAILER_WARBANKFULL"]);
                     return;
                 end

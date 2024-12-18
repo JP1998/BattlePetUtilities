@@ -9,6 +9,7 @@ local sdh = app.SquirtDayHelper;
 
 sdh.Initialized = false;
 sdh.Location = {};
+sdh.Location.CurrentLocation = -1;
 sdh.Location.SquirtDayHelper = false;
 sdh.Location.AuraReminders = false;
 
@@ -27,6 +28,9 @@ local squirt_pets = {
     1402, -- [3] Puzzle
 };
 local auras_zones = {
+    ["Neutral"] = {
+        71, -- Tanaris (20th Anniversary Event)
+    },
     ["Alliance"] = {
         582, -- Lunarfall
     },
@@ -88,6 +92,7 @@ local sdr_zones = {
         },
     },
     ["Neutral"] = {
+        71, -- Tanaris (20th Anniversary Event)
         111, -- Shattrath
         125, -- Dalaran (Northrend)
         126, --     - Underbelly
@@ -188,6 +193,8 @@ local function checkLocations()
     local currentZone = C_Map.GetBestMapForUnit("player");
     local faction, _ = UnitFactionGroup("player");
     local _, _, classId = UnitClass("player");
+
+    sdh.Location.CurrentLocation = currentZone;
 
     app:log("Checking location. Currently in zone " .. tostring(currentZone) .. " as faction " .. tostring(faction) .. " with class " .. tostring(classId));
 
@@ -341,7 +348,7 @@ sdh.UpdateDisplays = function(self)
             AssureHidden(sdh.Displays.SquirtDayHelper);
         end
 
-        if sdh.Location.AuraReminders and isSquirtDay() then
+        if sdh.Location.AuraReminders and (isSquirtDay() or sdh.Location.CurrentLocation == 71) then
             if not sdh.Auras.PetTreat then
                 sdh.Displays.PetTreat:SetText(L["SDH_PET_TREAT"]:format(app.createItemLinkById(98114)));
                 AssureShown(sdh.Displays.PetTreat);
