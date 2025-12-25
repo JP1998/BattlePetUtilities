@@ -129,7 +129,7 @@ app.Mailer.ScanBagsForWarbank = function(self)
         return;
     end
 
-    local warbanktab = 12 + warbanktabsetting;
+    local warbanktab = 11 + warbanktabsetting;
 
     for bag = 0, NUM_BAG_SLOTS do
         for slot = 1, C_Container.GetContainerNumSlots(bag) do
